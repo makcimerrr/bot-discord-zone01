@@ -14,14 +14,14 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 def fetch_new_jobs():
   url = "https://jsearch.p.rapidapi.com/search"
   querystring = {
-      "query": "Developer fullstack in france",
+      "query": "Developer fullstack in france", #A modifier maybe
       "page": "1",
       "num_pages": "1",
       "date_posted": "all",
       "employment_types": "INTERN"
   }
   headers = {
-      "x-rapidapi-key": "a8fbf570efmsh8342bf88927fc47p1a79c7jsn755be17fe9ae",
+      "x-rapidapi-key": "a8fbf570efmsh8342bf88927fc47p1a79c7jsn755be17fe9ae", #A modifier avec un nouveau compte Rapid API
       "x-rapidapi-host": "jsearch.p.rapidapi.com"
   }
 
@@ -40,14 +40,14 @@ def fetch_new_jobs():
 def fetch_linkedin_jobs():
   url = "https://linkedin-jobs-search.p.rapidapi.com/"
   payload = {
-      "search_terms": "Alternance_Développeur",
+      "search_terms": "Alternance_Développeur", #A modifier maybe
       "location": "Rouen, France",
       "page": "1",
       "employment_type": ["INTERN"]
   }
   headers = {
       "content-type": "application/json",
-      "X-RapidAPI-Key": "a8fbf570efmsh8342bf88927fc47p1a79c7jsn755be17fe9ae",
+      "X-RapidAPI-Key": "a8fbf570efmsh8342bf88927fc47p1a79c7jsn755be17fe9ae", #A modifier avec un nouveau compte Rapid API
       "X-RapidAPI-Host": "linkedin-jobs-search.p.rapidapi.com"
   }
 
@@ -70,7 +70,7 @@ def fetch_indeed_jobs():
       "sort": "date"
   }
   headers = {
-      "x-rapidapi-key": "9ebfc16424msh31785378b8b5536p1d17d6jsncc048dd648a3",
+      "x-rapidapi-key": "9ebfc16424msh31785378b8b5536p1d17d6jsncc048dd648a3", #A modifier avec un nouveau compte Rapid API
       "x-rapidapi-host": "indeed12.p.rapidapi.com"
   }
 
@@ -85,7 +85,7 @@ def fetch_indeed_jobs():
 
 
 async def send_joblist(ctx=None):
-  forum_channel_id = 1245322710825832502  # ID du canal ForumChannel
+  forum_channel_id = 1245322710825832502  # ID du canal ForumChannel ( a modifier avec celui de Zone01 )
   forum_channel = bot.get_channel(forum_channel_id)
 
   if isinstance(forum_channel, discord.ForumChannel):
