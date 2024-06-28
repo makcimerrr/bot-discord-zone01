@@ -1,4 +1,4 @@
-🤖 # Bot d'Aide pour Apprenants
+# 🤖 Bot d'Aide pour Apprenants
 
 Ce bot Discord est conçu pour aider à la gestion des offres d'emploi et à la coordination des demandes d'aide au sein d'un serveur Discord spécifique.
 
