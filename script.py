@@ -9,6 +9,9 @@ from datetime import datetime
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.reactions = True
+intents.guilds = True
+intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 
@@ -226,6 +229,58 @@ async def joblist_evening():
 @bot.command(name='update_jobs')
 async def update_jobs(ctx):
     await send_joblist()
+
+
+# Remplacez selon le message et le rôle à donner pour les aides !
+MESSAGE_ID = 1256205265401937960  # ID du message à surveiller
+ROLE_ID = 1245022484902707243  # Remplacez par l'ID du rôle à attribuer
+
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    if payload.message_id == MESSAGE_ID:
+        guild = bot.get_guild(payload.guild_id)
+        role = guild.get_role(ROLE_ID)
+        member = guild.get_member(payload.user_id)
+
+        if member and role:
+            channel = bot.get_channel(payload.channel_id)
+            message = await channel.fetch_message(MESSAGE_ID)
+
+            for reaction in message.reactions:
+                if reaction.emoji == payload.emoji.name:
+                    if reaction.count > 1:
+                        await member.add_roles(role)
+                        # Modifier le pseudo de l'utilisateur
+                        new_nickname = f"[BESOIN D'AIDE] {member.display_name}"
+                        try:
+                            await member.edit(nick=new_nickname)
+                        except discord.Forbidden:
+                            print(
+                                f"Je n'ai pas la permission de changer le pseudo de {member}."
+                            )
+                        break
+
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    if payload.message_id == MESSAGE_ID:
+        guild = bot.get_guild(payload.guild_id)
+        role = guild.get_role(ROLE_ID)
+        member = guild.get_member(payload.user_id)
+
+        if member and role:
+            await member.remove_roles(role)
+            # Restaurer le pseudo d'origine de l'utilisateur
+            if member.display_name.startswith("[BESOIN D'AIDE]"):
+                original_nickname = member.display_name.replace(
+                    "[BESOIN D'AIDE] ", "")
+                try:
+                    await member.edit(nick=original_nickname)
+                except discord.Forbidden:
+                    print(
+                        f"Je n'ai pas la permission de changer le pseudo de {member}."
+                    )
 
 
 token = os.environ['TOKEN']
