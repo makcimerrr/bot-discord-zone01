@@ -231,6 +231,10 @@ async def update_jobs(ctx):
     await send_joblist()
 
 
+
+## BOT AIDE POUR LES APPRENANTS 
+
+
 # Remplacez selon le message et le rôle à donner pour les aides !
 MESSAGE_ID = 1256205265401937960  # ID du message à surveiller
 ROLE_ID = 1245022484902707243  # Remplacez par l'ID du rôle à attribuer
@@ -252,13 +256,24 @@ async def on_raw_reaction_add(payload):
                     if reaction.count > 1:
                         await member.add_roles(role)
                         # Modifier le pseudo de l'utilisateur
-                        new_nickname = f"[BESOIN D'AIDE] {member.display_name}"
+                        new_nickname = f"🚨 {member.display_name}"
                         try:
                             await member.edit(nick=new_nickname)
                         except discord.Forbidden:
                             print(
                                 f"Je n'ai pas la permission de changer le pseudo de {member}."
                             )
+
+                        help_channel_id = 1245022636367675517 # Changer le cannel de destination
+                        help_channel = bot.get_channel(help_channel_id)
+                        if help_channel:
+                            await help_channel.send(
+                                f"<@{member.id}> a besoin d'aide.")
+                        else:
+                            print(
+                                f"Le canal d'ID {help_channel_id} n'a pas été trouvé."
+                            )
+
                         break
 
 
@@ -272,15 +287,24 @@ async def on_raw_reaction_remove(payload):
         if member and role:
             await member.remove_roles(role)
             # Restaurer le pseudo d'origine de l'utilisateur
-            if member.display_name.startswith("[BESOIN D'AIDE]"):
-                original_nickname = member.display_name.replace(
-                    "[BESOIN D'AIDE] ", "")
+            if member.display_name.startswith("🚨"):
+                original_nickname = member.display_name.replace("🚨 ", "")
                 try:
                     await member.edit(nick=original_nickname)
                 except discord.Forbidden:
                     print(
                         f"Je n'ai pas la permission de changer le pseudo de {member}."
                     )
+                    
+            help_channel_id = 1245022636367675517 # Changer le cannel de destination
+            help_channel = bot.get_channel(help_channel_id)
+            if help_channel:
+                async for message in help_channel.history(limit=None):
+                    if f"<@{member.id}> a besoin d'aide." in message.content:
+                        await message.delete()
+                        break
+            else:
+                print(f"Le canal d'ID {help_channel_id} n'a pas été trouvé.")
 
 
 token = os.environ['TOKEN']
