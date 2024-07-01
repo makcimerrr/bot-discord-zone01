@@ -298,6 +298,10 @@ async def send_embed_error(ctx, error):
 # MESSAGE_ID = 1256205265401937960  # ID du message à surveiller
 ROLE_ID = 1245022484902707243  # Remplacez par l'ID du rôle à attribuer
 HELP_CHANNEL_ID = 1245022636367675517
+
+ROLE_1 = 1245022492230156381  # P1 2023
+ROLE_2 = 1245022493371011135  # P2 2023
+ROLE_3 = 1245022489835339859  # P1 2024
 @bot.event
 async def on_raw_reaction_add(payload):
     if payload.user_id == bot.user.id:
@@ -321,13 +325,27 @@ async def on_raw_reaction_add(payload):
                 except discord.Forbidden:
                     print(f"Je n'ai pas la permission de changer le pseudo de {member}.")
 
-                # Envoyer un message dans le canal d'aide
-                help_channel_id = 1245022636367675517  # Remplacez par l'ID du canal de destination
-                help_channel = bot.get_channel(help_channel_id)
-                if help_channel:
-                    await help_channel.send(f"<@{member.id}> a besoin d'aide.")
-                else:
-                    print(f"Le canal d'ID {help_channel_id} n'a pas été trouvé.")
+                if member:
+                    # Vérifier si le membre possède le rôle spécifique
+                    has_role_1 = any(role.id == ROLE_1 for role in member.roles)
+                    has_role_2 = any(role.id == ROLE_2 for role in member.roles)
+                    has_role_3 = any(role.id == ROLE_3 for role in member.roles)
+
+                    # Déterminer dans quel canal envoyer le message en fonction de la possession du rôle
+                    if has_role_1:
+                        help_channel_id = 1245022642109419585  # ID du canal P1 2023
+                    elif has_role_2:
+                        help_channel_id = 1245022643590266950  # ID du canal P2 2023
+                    elif has_role_3:
+                        help_channel_id = 1245022648577163387  # ID du canal P1 2024
+                    else:
+                        help_channel_id = 1245022628658548778  # ID du canal par défaut
+
+                    help_channel = bot.get_channel(help_channel_id)
+                    if help_channel:
+                        await help_channel.send(f"<@{member.id}> a besoin d'aide.")
+                    else:
+                        print(f"Le canal d'ID {help_channel_id} n'a pas été trouvé.")
 
 
 @bot.event
@@ -350,16 +368,30 @@ async def on_raw_reaction_remove(payload):
                 except discord.Forbidden:
                     print(f"Je n'ai pas la permission de changer le pseudo de {member}.")
 
-            # Supprimer le message dans le canal d'aide
-            help_channel_id = 1245022636367675517  # Remplacez par l'ID du canal de destination
-            help_channel = bot.get_channel(help_channel_id)
-            if help_channel:
-                async for message in help_channel.history(limit=None):
-                    if f"<@{member.id}> a besoin d'aide." in message.content:
-                        await message.delete()
-                        break
-            else:
-                print(f"Le canal d'ID {help_channel_id} n'a pas été trouvé.")
+                if member:
+                    # Vérifier si le membre possède le rôle spécifique
+                    has_role_1 = any(role.id == ROLE_1 for role in member.roles)
+                    has_role_2 = any(role.id == ROLE_2 for role in member.roles)
+                    has_role_3 = any(role.id == ROLE_3 for role in member.roles)
+
+                    # Déterminer dans quel canal envoyer le message en fonction de la possession du rôle
+                    if has_role_1:
+                        help_channel_id = 1245022642109419585  # ID du canal P1 2023
+                    elif has_role_2:
+                        help_channel_id = 1245022643590266950  # ID du canal P2 2023
+                    elif has_role_3:
+                        help_channel_id = 1245022648577163387  # ID du canal P1 2024
+                    else:
+                        help_channel_id = 1245022628658548778  # ID du canal par défaut
+
+                    help_channel = bot.get_channel(help_channel_id)
+                    if help_channel:
+                        async for message in help_channel.history(limit=None):
+                            if f"<@{member.id}> a besoin d'aide." in message.content:
+                                await message.delete()
+                                break
+                    else:
+                        print(f"Le canal d'ID {help_channel_id} n'a pas été trouvé.")
 
 
 token = os.getenv('TOKEN')
