@@ -256,7 +256,7 @@ async def send_embed(ctx, channel: discord.TextChannel, new_description: str = N
         embed_description = DEFAULT_EMBED_DESCRIPTION
 
     embed = discord.Embed(title="Besoin d'aide ?",
-                          description="Pour demander de l'aide auprès d'autres apprenants de ta promo, clique sur le bouton ci-dessous\n\n> Une fois ta demande effectuée, tu te verras attribuer un rôle et un pseudo. Des apprenants viendront sous peu t'apporter de l'aide !\n\n**Pour plus d'aide, hésite pas à ouvrir un ticket**",
+                          description="Pour demander de l'aide auprès d'autres apprenants de ta promo, clique sur le bouton ci-dessous\n\n> Une fois ta demande effectuée, tu te verras attribuer un rôle et un pseudo. Des apprenants viendront sous peu t'apporter de l'aide !",
                           colour=0x002e7a,
                           timestamp=datetime.now())
 
