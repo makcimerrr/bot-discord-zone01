@@ -6,6 +6,10 @@ import asyncio
 from discord.ext import commands, tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime
+from dotenv import load_dotenv  # Import dotenv module
+
+# Load environment variables from .env file
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -230,56 +234,108 @@ async def joblist_evening():
 async def update_jobs(ctx):
     await send_joblist()
 
+# ID du rôle autorisé
+ALLOWED_ROLE_ID = 1245022469719457812  # Remplace par l'ID de ton rôle
 
+# Description par défaut de l'embed
+DEFAULT_EMBED_DESCRIPTION = "Description par défaut de l'embed."
 
-## BOT AIDE POUR LES APPRENANTS 
+last_embed_message_id = {}
+@bot.command(name='sendembed')
+async def send_embed(ctx, channel: discord.TextChannel, new_description: str = None):
+    # Vérifie si l'utilisateur a le rôle autorisé
+    role = discord.utils.get(ctx.guild.roles, id=ALLOWED_ROLE_ID)
+    if role not in ctx.author.roles:
+        await ctx.send("Vous n'avez pas la permission d'utiliser cette commande.")
+        return
+
+    # Créer l'embed avec la description par défaut ou la nouvelle description si fournie
+    if new_description:
+        embed_description = new_description
+    else:
+        embed_description = DEFAULT_EMBED_DESCRIPTION
+
+    embed = discord.Embed(title="Besoin d'aide ?",
+                          description="Pour demander de l'aide auprès d'autres apprenants de ta promo, clique sur le bouton ci-dessous\n\n> Une fois ta demande effectuée, tu te verras attribuer un rôle et un pseudo. Des apprenants viendront sous peu t'apporter de l'aide !\n\n**Pour plus d'aide, hésite pas à ouvrir un ticket**",
+                          colour=0x002e7a,
+                          timestamp=datetime.now())
+
+    embed.set_author(name="Info")
+
+    embed.set_footer(text="Zone01",
+                     icon_url="https://zone01rouennormandie.org/wp-content/uploads/2024/03/01talent-profil-400x400-1.jpg")
+
+    # Vérifie s'il existe déjà un embed dans le salon spécifié
+    if channel.id in last_embed_message_id:
+        try:
+            # Récupère le message en utilisant l'ID stocké et le met à jour avec le nouvel embed et le bouton
+            message = await channel.fetch_message(last_embed_message_id[channel.id])
+            await message.edit(embed=embed)
+            await ctx.send(f"Embed mis à jour dans {channel.mention}")
+        except discord.NotFound:
+            # Message non trouvé, envoie un nouvel embed avec le bouton et met à jour l'ID stocké
+            message = await channel.send(embed=embed)
+            last_embed_message_id[channel.id] = message.id
+            await ctx.send(f"Nouvel embed envoyé à {channel.mention}")
+    else:
+        # Aucun embed précédent trouvé, envoie un nouveau avec le bouton et stocke son ID
+        message = await channel.send(embed=embed)
+        last_embed_message_id[channel.id] = message.id
+        await ctx.send(f"Nouvel embed envoyé à {channel.mention}")
+
+    await message.add_reaction("🆘")
+
+# Commande pour obtenir l'ID du salon mentionné
+@send_embed.error
+async def send_embed_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Veuillez mentionner le salon où envoyer l'embed. Exemple : `!sendembed #nom-du-salon [Nouvelle description de l'embed]`")
+
+## BOT AIDE POUR LES APPRENANTS
 
 
 # Remplacez selon le message et le rôle à donner pour les aides !
-MESSAGE_ID = 1256205265401937960  # ID du message à surveiller
+# MESSAGE_ID = 1256205265401937960  # ID du message à surveiller
 ROLE_ID = 1245022484902707243  # Remplacez par l'ID du rôle à attribuer
-
-
+HELP_CHANNEL_ID = 1245022636367675517
 @bot.event
 async def on_raw_reaction_add(payload):
-    if payload.message_id == MESSAGE_ID:
+    if payload.user_id == bot.user.id:
+        return  # Si c'est le bot qui a réagi, ne rien faire
+
+    if payload.message_id == last_embed_message_id[payload.channel_id]:
         guild = bot.get_guild(payload.guild_id)
         role = guild.get_role(ROLE_ID)
         member = guild.get_member(payload.user_id)
 
         if member and role:
             channel = bot.get_channel(payload.channel_id)
-            message = await channel.fetch_message(MESSAGE_ID)
+            message = await channel.fetch_message(payload.message_id)
 
-            for reaction in message.reactions:
-                if reaction.emoji == payload.emoji.name:
-                    if reaction.count > 1:
-                        await member.add_roles(role)
-                        # Modifier le pseudo de l'utilisateur
-                        new_nickname = f"🚨 {member.display_name}"
-                        try:
-                            await member.edit(nick=new_nickname)
-                        except discord.Forbidden:
-                            print(
-                                f"Je n'ai pas la permission de changer le pseudo de {member}."
-                            )
+            if payload.emoji.name == "🆘":
+                await member.add_roles(role)
+                # Modifier le pseudo de l'utilisateur
+                new_nickname = f"🚨 {member.display_name}"
+                try:
+                    await member.edit(nick=new_nickname)
+                except discord.Forbidden:
+                    print(f"Je n'ai pas la permission de changer le pseudo de {member}.")
 
-                        help_channel_id = 1245022636367675517 # Changer le cannel de destination
-                        help_channel = bot.get_channel(help_channel_id)
-                        if help_channel:
-                            await help_channel.send(
-                                f"<@{member.id}> a besoin d'aide.")
-                        else:
-                            print(
-                                f"Le canal d'ID {help_channel_id} n'a pas été trouvé."
-                            )
-
-                        break
+                # Envoyer un message dans le canal d'aide
+                help_channel_id = 1245022636367675517  # Remplacez par l'ID du canal de destination
+                help_channel = bot.get_channel(help_channel_id)
+                if help_channel:
+                    await help_channel.send(f"<@{member.id}> a besoin d'aide.")
+                else:
+                    print(f"Le canal d'ID {help_channel_id} n'a pas été trouvé.")
 
 
 @bot.event
 async def on_raw_reaction_remove(payload):
-    if payload.message_id == MESSAGE_ID:
+    if payload.user_id == bot.user.id:
+        return  # Si c'est le bot qui a retiré la réaction, ne rien faire
+
+    if payload.message_id == last_embed_message_id[payload.channel_id]:
         guild = bot.get_guild(payload.guild_id)
         role = guild.get_role(ROLE_ID)
         member = guild.get_member(payload.user_id)
@@ -292,11 +348,10 @@ async def on_raw_reaction_remove(payload):
                 try:
                     await member.edit(nick=original_nickname)
                 except discord.Forbidden:
-                    print(
-                        f"Je n'ai pas la permission de changer le pseudo de {member}."
-                    )
-                    
-            help_channel_id = 1245022636367675517 # Changer le cannel de destination
+                    print(f"Je n'ai pas la permission de changer le pseudo de {member}.")
+
+            # Supprimer le message dans le canal d'aide
+            help_channel_id = 1245022636367675517  # Remplacez par l'ID du canal de destination
             help_channel = bot.get_channel(help_channel_id)
             if help_channel:
                 async for message in help_channel.history(limit=None):
@@ -307,5 +362,5 @@ async def on_raw_reaction_remove(payload):
                 print(f"Le canal d'ID {help_channel_id} n'a pas été trouvé.")
 
 
-token = os.environ['TOKEN']
+token = os.getenv('TOKEN')
 bot.run(token)
