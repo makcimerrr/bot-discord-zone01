@@ -36,4 +36,4 @@ Ce bot a été créé par [Maxime Dubois](https://makcimerrr.com) pour [Zone01 R
 
 ## Licence
 
-Ce projet est sous licence MIT. Pour plus de détails, consultez le fichier LICENSE.
+Ce projet est sous licence MIT. Pour plus de détails, consultez le fichier [LICENSE](https://github.com/makcimerrr/bot-discord-zone01/blob/main/LICENSE).
