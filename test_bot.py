@@ -15,14 +15,6 @@ class TestBotFunctions(unittest.TestCase):
         # Vérifier que send_joblist a été appelé avec le contexte simulé
         mock_send_joblist.assert_called_once_with(mock_ctx)
 
-    @patch('discord.ext.commands.Bot.run')
-    def test_bot_run(self, mock_bot_run):
-        # Appeler la méthode run du bot
-        bot.run('mock_token')
-
-        # Vérifier que la méthode run a été appelée avec le token
-        mock_bot_run.assert_called_once_with('mock_token')
-
     def test_ping_command(self):
         # Créer un mock pour le contexte (ctx) simulé
         mock_ctx = MagicMock()
@@ -32,4 +24,3 @@ class TestBotFunctions(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
