@@ -228,12 +228,12 @@ async def send_joblist(ctx=None):
 scheduler = AsyncIOScheduler()
 
 
-@scheduler.scheduled_job("cron", hour=10, minute=0)  # Exécuter à 8h du matin
+@scheduler.scheduled_job("cron", hour=6, minute=0)  # Exécuter à 8h du matin
 async def joblist_morning():
     await send_joblist()
 
 
-@scheduler.scheduled_job("cron", hour=18, minute=0)  # Exécuter à 16h
+@scheduler.scheduled_job("cron", hour=14, minute=0)  # Exécuter à 16h
 async def joblist_evening():
     await send_joblist()
 
