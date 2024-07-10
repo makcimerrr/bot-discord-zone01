@@ -32,8 +32,8 @@ Si vous souhaitez contribuer à ce projet, vous pouvez :
 
 ## Auteurs
 
-Ce bot a été créé par [Votre Nom] pour [Nom du Serveur Discord].
+Ce bot a été créé par [Maxime Dubois](https://makcimerrr.com) pour [Zone01 Rouen](https://zone01rouennormandie.org).
 
 ## Licence
 
-Ce projet est sous licence MIT. Pour plus de détails, consultez le fichier LICENSE.
+Ce projet est sous licence MIT. Pour plus de détails, consultez le fichier [LICENSE](https://github.com/makcimerrr/bot-discord-zone01/blob/main/LICENSE).
