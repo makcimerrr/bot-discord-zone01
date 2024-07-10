@@ -3,6 +3,7 @@ import discord
 import json
 import requests
 import asyncio
+import json
 from discord.ext import commands, tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime
@@ -10,6 +11,14 @@ from dotenv import load_dotenv  # Import dotenv module
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Charger le contenu du fichier JSON
+with open('config.json', 'r') as f:
+    config = json.load(f)
+
+# Accéder aux variables du fichier JSON
+role_ping = config["role_ping"]
+forum_channel_id = config["forum_channel_id"]
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -29,7 +38,7 @@ def fetch_new_jobs():
         "employment_types": "INTERN"
     }
     headers = {
-        "x-rapidapi-key": "a8fbf570efmsh8342bf88927fc47p1a79c7jsn755be17fe9ae",
+        "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
         "x-rapidapi-host": "jsearch.p.rapidapi.com"
     }
 
@@ -55,7 +64,7 @@ def fetch_linkedin_jobs():
     }
     headers = {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "a8fbf570efmsh8342bf88927fc47p1a79c7jsn755be17fe9ae",
+        "X-RapidAPI-Key": os.getenv('RAPIDAPI_KEY'),
         "X-RapidAPI-Host": "linkedin-jobs-search.p.rapidapi.com"
     }
 
@@ -74,11 +83,11 @@ def fetch_indeed_jobs():
         "page_id": "1",
         "locality": "fr",
         "fromage": "1",
-        "radius": "50",
+        "radius": "120",
         "sort": "date"
     }
     headers = {
-        "x-rapidapi-key": "9ebfc16424msh31785378b8b5536p1d17d6jsncc048dd648a3",
+        "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
         "x-rapidapi-host": "indeed12.p.rapidapi.com"
     }
 
@@ -93,7 +102,6 @@ def fetch_indeed_jobs():
 
 
 async def send_joblist(ctx=None):
-    forum_channel_id = 1245322710825832502  # ID du canal ForumChannel
     forum_channel = bot.get_channel(forum_channel_id)
 
     if isinstance(forum_channel, discord.ForumChannel):
@@ -122,12 +130,13 @@ async def send_joblist(ctx=None):
             link = job.get('job_apply_link')
             date = job.get('job_posted_at_datetime_utc')
             technologies = job.get('job_required_skills', 'Non spécifié')
+            city = job.get('job_city', 'Non spécifié')
 
             if title and link and company:
                 thread_title = f"{company} - {title}"
 
                 if date and link:
-                    thread_content = f"Bonjour <@&1245022493371011135> ! Offre d'alternance chez **{company}** qui recherche un développeur **{title}** utilisant les technologies suivantes : **{technologies}**. Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
+                    thread_content = f"Bonjour <@&{role_ping}> ! Offre d'alternance sur **{city}**, chez **{company}** qui recherche un développeur **{title}** utilisant les technologies suivantes : **{technologies}**. Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
 
                     # Chercher un thread existant avec le même titre
                     existing_thread = None
@@ -154,6 +163,8 @@ async def send_joblist(ctx=None):
 
                     # Pause pour éviter de dépasser les limites de taux
                     await asyncio.sleep(1)
+
+                await asyncio.sleep(1)
 
                 if ctx:
                     await ctx.send("Les offres d'emploi ont été mises à jour.")
@@ -168,13 +179,14 @@ async def send_joblist(ctx=None):
             company = job.get("company_name")
             date = job.get("posted_date") or job.get("formatted_relative_time")
             link = job.get("linkedin_job_url_cleaned"
-                           ) or "https://fr.indeed.com" + job.get("link")
+                           ) or job.get("indeed_final_url")
             technologies = job.get('skills', 'Non spécifié')
+            city = job.get('job_location', 'Non spécifié') or job.get('location', 'Non spécifié')
             if title and link and company:
                 thread_title = f"{company} - {title}"
 
                 if date and link:
-                    thread_content = f"Bonjour <@&1245022493371011135> ! Offre d'alternance chez **{company}** qui recherche un développeur **{title}** utilisant les technologies suivantes : **{technologies}**. Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
+                    thread_content = f"Bonjour <@&{role_ping}> ! Offre d'alternance sur **{city}**, chez **{company}** qui recherche un développeur **{title}** utilisant les technologies suivantes : **{technologies}**. Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
 
                     # Chercher un thread existant avec le même titre
                     existing_thread = None
@@ -201,19 +213,15 @@ async def send_joblist(ctx=None):
 
                     # Pause pour éviter de dépasser les limites de taux
                     await asyncio.sleep(1)
+
+        await asyncio.sleep(1)
+
         if ctx:
             await ctx.send("Les offres d'emploi ont été mises à jour.")
     else:
         print("Le canal spécifié n'est pas un ForumChannel.")
         if ctx:
             await ctx.send("Le canal spécifié n'est pas un ForumChannel.")
-
-
-@bot.event
-async def on_ready():
-    print('Bot is ready.')
-    # Démarrage du scheduler pour exécuter la fonction send_joblist deux fois par jour
-    scheduler.start()
 
 
 # Scheduler pour exécuter la fonction send_joblist deux fois par jour
@@ -234,62 +242,13 @@ async def joblist_evening():
 async def update_jobs(ctx):
     await send_joblist()
 
-# ID du rôle autorisé
-ALLOWED_ROLE_ID = 1245022469719457812  # Remplace par l'ID de ton rôle
 
-# Description par défaut de l'embed
-DEFAULT_EMBED_DESCRIPTION = "Description par défaut de l'embed."
+@bot.event
+async def on_ready():
+    print('Bot is ready.')
+    # Démarrage du scheduler pour exécuter la fonction send_joblist deux fois par jour
+    scheduler.start()
 
-last_embed_message_id = {}
-@bot.command(name='sendembed')
-async def send_embed(ctx, channel: discord.TextChannel, new_description: str = None):
-    # Vérifie si l'utilisateur a le rôle autorisé
-    role = discord.utils.get(ctx.guild.roles, id=ALLOWED_ROLE_ID)
-    if role not in ctx.author.roles:
-        await ctx.send("Vous n'avez pas la permission d'utiliser cette commande.")
-        return
 
-    # Créer l'embed avec la description par défaut ou la nouvelle description si fournie
-    if new_description:
-        embed_description = new_description
-    else:
-        embed_description = DEFAULT_EMBED_DESCRIPTION
-
-    embed = discord.Embed(title="Besoin d'aide ?",
-                          description="Pour demander de l'aide auprès d'autres apprenants de ta promo, clique sur le bouton ci-dessous\n\n> Une fois ta demande effectuée, tu te verras attribuer un rôle et un pseudo. Des apprenants viendront sous peu t'apporter de l'aide !",
-                          colour=0x002e7a,
-                          timestamp=datetime.now())
-
-    embed.set_author(name="Info")
-
-    embed.set_footer(text="Zone01",
-                     icon_url="https://zone01rouennormandie.org/wp-content/uploads/2024/03/01talent-profil-400x400-1.jpg")
-
-    # Vérifie s'il existe déjà un embed dans le salon spécifié
-    if channel.id in last_embed_message_id:
-        try:
-            # Récupère le message en utilisant l'ID stocké et le met à jour avec le nouvel embed et le bouton
-            message = await channel.fetch_message(last_embed_message_id[channel.id])
-            await message.edit(embed=embed)
-            await ctx.send(f"Embed mis à jour dans {channel.mention}")
-        except discord.NotFound:
-            # Message non trouvé, envoie un nouvel embed avec le bouton et met à jour l'ID stocké
-            message = await channel.send(embed=embed)
-            last_embed_message_id[channel.id] = message.id
-            await ctx.send(f"Nouvel embed envoyé à {channel.mention}")
-    else:
-        # Aucun embed précédent trouvé, envoie un nouveau avec le bouton et stocke son ID
-        message = await channel.send(embed=embed)
-        last_embed_message_id[channel.id] = message.id
-        await ctx.send(f"Nouvel embed envoyé à {channel.mention}")
-
-    await message.add_reaction("🆘")
-
-# Commande pour obtenir l'ID du salon mentionné
-@send_embed.error
-async def send_embed_error(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Veuillez mentionner le salon où envoyer l'embed. Exemple : `!sendembed #nom-du-salon [Nouvelle description de l'embed]`")
-        
 token = os.getenv('TOKEN')
 bot.run(token)
