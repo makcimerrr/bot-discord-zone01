@@ -12,6 +12,8 @@ from dotenv import load_dotenv  # Import dotenv module
 # Load environment variables from .env file
 load_dotenv()
 
+TEST_MODE = os.getenv('TEST_MODE', '').lower() == 'true'
+
 # Charger le contenu du fichier JSON
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -29,6 +31,8 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 
 def fetch_new_jobs():
+    if TEST_MODE:
+        return []
     url = "https://jsearch.p.rapidapi.com/search"
     querystring = {
         "query": "Developer fullstack in rouen, France",
@@ -67,6 +71,8 @@ def fetch_new_jobs():
 
 # Fonction pour obtenir les offres d'emploi depuis l'API LinkedIn Jobs Search
 def fetch_linkedin_jobs():
+    if TEST_MODE:
+        return []
     url = "https://linkedin-jobs-search.p.rapidapi.com/"
     payload = {
         "search_terms": "Alternance_Développeur",
@@ -103,6 +109,8 @@ def fetch_linkedin_jobs():
 
 # Fonction pour obtenir les offres d'emploi depuis l'API Indeed
 def fetch_indeed_jobs():
+    if TEST_MODE:
+        return []
     url = "https://indeed12.p.rapidapi.com/jobs/search"
     querystring = {
         "query": "alternant développeur",
@@ -139,6 +147,9 @@ def fetch_indeed_jobs():
 
 
 async def send_joblist(ctx=None):
+    if TEST_MODE:
+        print("Mode test activé, les jobs ne seront pas exécutés.")
+        return
     forum_channel = bot.get_channel(forum_channel_id)
 
     if isinstance(forum_channel, discord.ForumChannel):
@@ -264,20 +275,24 @@ async def send_joblist(ctx=None):
 # Scheduler pour exécuter la fonction send_joblist deux fois par jour
 scheduler = AsyncIOScheduler()
 
-
-@scheduler.scheduled_job("cron", hour=6, minute=0)  # Exécuter à 8h du matin
-async def joblist_morning():
-    await send_joblist()
+if not TEST_MODE:
 
 
-@scheduler.scheduled_job("cron", hour=14, minute=0)  # Exécuter à 16h
-async def joblist_evening():
-    await send_joblist()
+    @scheduler.scheduled_job("cron", hour=6, minute=0)  # Exécuter à 8h du matin
+    async def joblist_morning():
+        await send_joblist()
+
+    @scheduler.scheduled_job("cron", hour=14, minute=0)  # Exécuter à 16h
+    async def joblist_evening():
+        await send_joblist()
 
 
 @bot.command(name='update_jobs')
 async def update_jobs(ctx):
     """Force la mise à jour des offres d'emploi."""
+    if TEST_MODE:
+        await ctx.send("Mode test activé, la mise à jour des jobs est désactivée.")
+        return
     await send_joblist()
 
 
@@ -291,7 +306,8 @@ async def ping(ctx):
 async def on_ready():
     print('Bot is ready.')
     # Démarrage du scheduler pour exécuter la fonction send_joblist deux fois par jour
-    scheduler.start()
+    if TEST_MODE:
+        scheduler.start()
 
 
 # HELP COMMAND
