@@ -31,12 +31,14 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 def fetch_new_jobs():
     url = "https://jsearch.p.rapidapi.com/search"
     querystring = {
-        "query": "Developer fullstack in france",
+        "query": "Developer fullstack in rouen, France",
         "page": "1",
         "num_pages": "1",
         "date_posted": "all",
-        "employment_types": "INTERN"
+        "employment_types": "INTERN",
+        "radius": "120"
     }
+
     headers = {
         "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
         "x-rapidapi-host": "jsearch.p.rapidapi.com"
@@ -48,8 +50,14 @@ def fetch_new_jobs():
         data = response.json()
         jobs = data.get('data', [])
         return jobs if isinstance(jobs, list) else []
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 502:
+            print("Error 502 (Bad Gateway) while fetching JSearch jobs.")
+        else:
+            print(f"HTTP error occurred: {http_err}")
+        return []
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching jobs from new API: {e}")
+        print(f"Error fetching JSearch jobs: {e}")
         return []
 
 
@@ -59,6 +67,7 @@ def fetch_linkedin_jobs():
     payload = {
         "search_terms": "Alternance_Développeur",
         "location": "Rouen, France",
+        "radius": "120",
         "page": "1",
         "employment_type": ["INTERN"]
     }
@@ -68,10 +77,20 @@ def fetch_linkedin_jobs():
         "X-RapidAPI-Host": "linkedin-jobs-search.p.rapidapi.com"
     }
 
-    response = requests.post(url, json=payload, headers=headers)
-    jobs = response.json()
-
-    return jobs
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        jobs = response.json()
+        return jobs
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 502:
+            print("Error 502 (Bad Gateway) while fetching LinkedIn jobs.")
+        else:
+            print(f"HTTP error occurred: {http_err}")
+        return {}
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching LinkedIn jobs: {e}")
+        return {}
 
 
 # Fonction pour obtenir les offres d'emploi depuis l'API Indeed
@@ -96,6 +115,12 @@ def fetch_indeed_jobs():
         response.raise_for_status()
         jobs = response.json().get('hits', [])
         return jobs if isinstance(jobs, list) else []
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 502:
+            print("Error 502 (Bad Gateway) while fetching Indeed jobs.")
+        else:
+            print(f"HTTP error occurred: {http_err}")
+        return []
     except requests.exceptions.RequestException as e:
         print(f"Error fetching Indeed jobs: {e}")
         return []
@@ -241,6 +266,16 @@ async def joblist_evening():
 @bot.command(name='update_jobs')
 async def update_jobs(ctx):
     await send_joblist()
+
+
+@bot.command(name='ping')
+async def ping(ctx):
+    await ctx.send("Pong!")
+
+
+@bot.command(name='joblist')
+async def joblist(ctx):
+    fetch_indeed_jobs()
 
 
 @bot.event
