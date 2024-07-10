@@ -1,24 +1,35 @@
-import pytest
-from unittest.mock import AsyncMock, MagicMock
-from bot import send_joblist, update_jobs, ping, bot
+import unittest
+from unittest.mock import patch, MagicMock
+from bot import send_joblist, update_jobs, ping, bot  # Assurez-vous d'importer correctement les éléments nécessaires
 
-# Mock du bot pour éviter l'exécution réelle de bot.run(token)
-@pytest.fixture
-def mock_bot():
-    return MagicMock()
+class TestBotFunctions(unittest.TestCase):
 
-@pytest.mark.asyncio
-async def test_send_joblist(mock_ctx, mock_channel, mock_bot):
-    await send_joblist(mock_ctx, mock_channel)
-    # Ajouter des assertions basées sur le comportement de send_joblist
+    @patch('bot.send_joblist')
+    def test_update_jobs_command(self, mock_send_joblist):
+        # Créer un mock pour le contexte (ctx) simulé
+        mock_ctx = MagicMock()
 
-# Autres tests sans dépendance à bot.run(token)
-@pytest.mark.asyncio
-async def test_update_jobs(mock_ctx, mock_bot):
-    await update_jobs(mock_ctx)
-    # Ajouter des assertions basées sur le comportement de update_jobs
+        # Appeler la commande update_jobs
+        update_jobs(mock_ctx)
 
-@pytest.mark.asyncio
-async def test_ping(mock_ctx, mock_bot):
-    await ping(mock_ctx)
-    # Ajouter des assertions basées sur le comportement de ping command
+        # Vérifier que send_joblist a été appelé avec le contexte simulé
+        mock_send_joblist.assert_called_once_with(mock_ctx)
+
+    @patch('discord.ext.commands.Bot.run')
+    def test_bot_run(self, mock_bot_run):
+        # Appeler la méthode run du bot
+        bot.run('mock_token')
+
+        # Vérifier que la méthode run a été appelée avec le token
+        mock_bot_run.assert_called_once_with('mock_token')
+
+    def test_ping_command(self):
+        # Créer un mock pour le contexte (ctx) simulé
+        mock_ctx = MagicMock()
+
+        # Appeler la commande ping
+        self.assertIsNone(ping(mock_ctx))  # Exemple basique pour tester la fonctionnalité du ping
+
+if __name__ == '__main__':
+    unittest.main()
+
