@@ -53,6 +53,10 @@ def fetch_new_jobs():
     except requests.exceptions.HTTPError as http_err:
         if response.status_code == 502:
             print("Error 502 (Bad Gateway) while fetching JSearch jobs.")
+        elif response.status_code == 504:
+            print("Error 504 (Gateway Timeout) while fetching JSearch jobs.")
+        elif response.status_code == 429:
+            print("Error 429 (Too Many Requests) while fetching JSearch jobs.")
         else:
             print(f"HTTP error occurred: {http_err}")
         return []
@@ -85,6 +89,10 @@ def fetch_linkedin_jobs():
     except requests.exceptions.HTTPError as http_err:
         if response.status_code == 502:
             print("Error 502 (Bad Gateway) while fetching LinkedIn jobs.")
+        elif response.status_code == 504:
+            print("Error 504 (Gateway Timeout) while fetching LinkedIn jobs.")
+        elif response.status_code == 429:
+            print("Error 429 (Too Many Requests) while fetching LinkedIn jobs.")
         else:
             print(f"HTTP error occurred: {http_err}")
         return {}
@@ -118,6 +126,10 @@ def fetch_indeed_jobs():
     except requests.exceptions.HTTPError as http_err:
         if response.status_code == 502:
             print("Error 502 (Bad Gateway) while fetching Indeed jobs.")
+        elif response.status_code == 504:
+            print("Error 504 (Gateway Timeout) while fetching Indeed jobs.")
+        elif response.status_code == 429:
+            print("Error 429 (Too Many Requests) while fetching Indeed jobs.")
         else:
             print(f"HTTP error occurred: {http_err}")
         return []
@@ -265,17 +277,14 @@ async def joblist_evening():
 
 @bot.command(name='update_jobs')
 async def update_jobs(ctx):
+    """Force la mise à jour des offres d'emploi."""
     await send_joblist()
 
 
-@bot.command(name='ping')
+@bot.command()
 async def ping(ctx):
-    await ctx.send("Pong!")
-
-
-@bot.command(name='joblist')
-async def joblist(ctx):
-    fetch_indeed_jobs()
+    """Renvoie la latence du bot en millisecondes."""
+    await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
 
 
 @bot.event
@@ -284,6 +293,68 @@ async def on_ready():
     # Démarrage du scheduler pour exécuter la fonction send_joblist deux fois par jour
     scheduler.start()
 
+
+# HELP COMMAND
+
+attributes = {
+    'name': "help",
+    'aliases': ["helpme"],
+    'cooldown': commands.CooldownMapping.from_cooldown(3, 5, commands.BucketType.user),
+}
+
+
+class SupremeHelpCommand(commands.HelpCommand):
+    def get_command_signature(self, command):
+        return '%s%s %s' % (self.context.clean_prefix, command.qualified_name, command.signature)
+
+    async def send_bot_help(self, mapping):
+        embed = discord.Embed(title="Help", color=discord.Color.blurple())
+        for cog, commands in mapping.items():
+            filtered = await self.filter_commands(commands, sort=True)
+            if command_signatures := [
+                self.get_command_signature(c) for c in filtered
+            ]:
+                cog_name = getattr(cog, "qualified_name", "No Category")
+                embed.add_field(name=cog_name, value="\n".join(command_signatures), inline=False)
+
+        channel = self.get_destination()
+        await channel.send(embed=embed)
+
+    async def send_command_help(self, command):
+        embed = discord.Embed(title=self.get_command_signature(command), color=discord.Color.blurple())
+        if command.help:
+            embed.description = command.help
+        if alias := command.aliases:
+            embed.add_field(name="Aliases", value=", ".join(alias), inline=False)
+
+        channel = self.get_destination()
+        await channel.send(embed=embed)
+
+    async def send_help_embed(self, title, description, commands):  # a helper function to add commands to an embed
+        embed = discord.Embed(title=title, description=description or "No help found...")
+
+        if filtered_commands := await self.filter_commands(commands):
+            for command in filtered_commands:
+                embed.add_field(name=self.get_command_signature(command), value=command.help or "No help found...")
+
+        await self.get_destination().send(embed=embed)
+
+    async def send_group_help(self, group):
+        title = self.get_command_signature(group)
+        await self.send_help_embed(title, group.help, group.commands)
+
+    async def send_cog_help(self, cog):
+        title = cog.qualified_name or "No"
+        await self.send_help_embed(f'{title} Category', cog.description, cog.get_commands())
+
+    async def send_error_message(self, error):
+        embed = discord.Embed(title="Error", description=error, color=discord.Color.red())
+        channel = self.get_destination()
+
+        await channel.send(embed=embed)
+
+
+bot.help_command = SupremeHelpCommand(command_attrs=attributes)
 
 token = os.getenv('TOKEN')
 bot.run(token)
