@@ -10,8 +10,8 @@ from datetime import datetime
 from dotenv import load_dotenv  # Import dotenv module
 
 # Load environment variables from .env file
-#load_dotenv()
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv()
+# load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 # Charger le contenu du fichier JSON
 with open('config.json', 'r') as f:
@@ -29,6 +29,7 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 
+# Function to fetch jobs from JSearch API
 def fetch_new_jobs():
     url = "https://jsearch.p.rapidapi.com/search"
     querystring = {
@@ -39,34 +40,21 @@ def fetch_new_jobs():
         "employment_types": "INTERN",
         "radius": "120"
     }
-
     headers = {
         "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
         "x-rapidapi-host": "jsearch.p.rapidapi.com"
     }
-
     try:
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()
-        data = response.json().get('data', [])  # Assurez-vous que le chemin 'data' est correct
+        data = response.json().get('data', [])
         return data if isinstance(data, list) else []
-    except requests.exceptions.HTTPError as http_err:
-        if response.status_code == 502:
-            print("Error 502 (Bad Gateway) while fetching JSearch jobs.")
-        elif response.status_code == 504:
-            print("Error 504 (Gateway Timeout) while fetching JSearch jobs.")
-        elif response.status_code == 429:
-            print("Error 429 (Too Many Requests) while fetching JSearch jobs.")
-        else:
-            print(f"HTTP error occurred: {http_err}")
-        return []
     except requests.exceptions.RequestException as e:
         print(f"Error fetching JSearch jobs: {e}")
         return []
 
 
-
-# Fonction pour obtenir les offres d'emploi depuis l'API LinkedIn Jobs Search
+# Function to fetch jobs from LinkedIn Jobs Search API
 def fetch_linkedin_jobs():
     url = "https://linkedin-jobs-search.p.rapidapi.com/"
     payload = {
@@ -85,24 +73,27 @@ def fetch_linkedin_jobs():
     try:
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
-        jobs = response.json().get('jobs', [])
-        return jobs if isinstance(jobs, list) else []
-    except requests.exceptions.HTTPError as http_err:
-        if response.status_code == 502:
-            print("Error 502 (Bad Gateway) while fetching LinkedIn jobs.")
-        elif response.status_code == 504:
-            print("Error 504 (Gateway Timeout) while fetching LinkedIn jobs.")
-        elif response.status_code == 429:
-            print("Error 429 (Too Many Requests) while fetching LinkedIn jobs.")
+
+        # Ensure response is parsed as JSON and handle potential list vs dictionary issue
+        jobs = response.json()
+
+        if isinstance(jobs, list):
+            # Handle list response if necessary
+            return jobs
+        elif isinstance(jobs, dict):
+            # Normal case: extract 'jobs' key from dictionary
+            return jobs.get('jobs', [])
         else:
-            print(f"HTTP error occurred: {http_err}")
-        return []
+            # Unexpected response type
+            print(f"Unexpected response type from LinkedIn API: {type(jobs)}")
+            return []
+
     except requests.exceptions.RequestException as e:
         print(f"Error fetching LinkedIn jobs: {e}")
         return []
 
 
-# Fonction pour obtenir les offres d'emploi depuis l'API Indeed
+# Function to fetch jobs from Indeed API
 def fetch_indeed_jobs():
     url = "https://indeed12.p.rapidapi.com/jobs/search"
     querystring = {
@@ -118,28 +109,18 @@ def fetch_indeed_jobs():
         "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
         "x-rapidapi-host": "indeed12.p.rapidapi.com"
     }
-
     try:
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()
         jobs = response.json().get('hits', [])
         return jobs if isinstance(jobs, list) else []
-    except requests.exceptions.HTTPError as http_err:
-        if response.status_code == 502:
-            print("Error 502 (Bad Gateway) while fetching Indeed jobs.")
-        elif response.status_code == 504:
-            print("Error 504 (Gateway Timeout) while fetching Indeed jobs.")
-        elif response.status_code == 429:
-            print("Error 429 (Too Many Requests) while fetching Indeed jobs.")
-        else:
-            print(f"HTTP error occurred: {http_err}")
-        return []
     except requests.exceptions.RequestException as e:
         print(f"Error fetching Indeed jobs: {e}")
         return []
 
 
-async def send_joblist(ctx=None):
+async def send_joblist(ctx=None, loading_message=None):
+    global bugs
     forum_channel = bot.get_channel(forum_channel_id)
 
     if isinstance(forum_channel, discord.ForumChannel):
@@ -154,13 +135,51 @@ async def send_joblist(ctx=None):
 
         # Récupérer les offres d'emploi depuis les API
         linkedin_jobs = fetch_linkedin_jobs()
+        await asyncio.sleep(1)
         indeed_jobs = fetch_indeed_jobs()
+        await asyncio.sleep(1)
         jSearch_jobs = fetch_new_jobs()
+        await asyncio.sleep(1)
+
+        verif1 = False
+        verif2 = False
+        verif3 = False
+
+        if ctx:
+            bugs = []
+            if not linkedin_jobs:
+                # await ctx.send("Erreur lors de la récupération des offres d'emploi depuis LinkedIn.")
+                bugs.append("Linkedin")
+                verif1 = True
+            if not indeed_jobs:
+                # await ctx.send("Erreur lors de la récupération des offres d'emploi depuis Indeed.")
+                bugs.append("Indeed")
+                verif2 = True
+            if not jSearch_jobs:
+                # await ctx.send("Erreur lors de la récupération des offres d'emploi depuis JSearch.")
+                bugs.append("JSearch")
+                verif3 = True
+
+            if verif1 and verif2 and verif3:
+                if loading_message:
+                    # Modifier l'embed de chargement pour indiquer la fin de la mise à jour
+                    embed_updated = discord.Embed(
+                        title="Erreur lors de la mise à jour",
+                        description=f"Aucune des listes d'offres d'emploi n'a pu être mise à jour. Veuillez réessayer plus tard.",
+                        color=discord.Color.red()
+                    )
+                    await loading_message.edit(embed=embed_updated)
+                return
+            elif verif1 or verif2 or verif3:
+                await ctx.send(
+                    f"La liste des offres d'emploi de {bugs} n'a pas pu être mise à jour. Veuillez réessayer plus tard.")
 
         # Fusionner les deux listes d'offres d'emploi
         all_jobs = linkedin_jobs + indeed_jobs
 
         all_new_jobs = jSearch_jobs
+
+        found_threads_jsearch = []
 
         for job in all_new_jobs:
             company = job.get('employer_name')
@@ -181,6 +200,7 @@ async def send_joblist(ctx=None):
                     for thread in all_threads:
                         if thread.name == thread_title:
                             existing_thread = thread
+                            found_threads_jsearch.append(existing_thread)
                             break
 
                     # Si un thread avec le même titre existe déjà, passe au suivant
@@ -198,19 +218,9 @@ async def send_joblist(ctx=None):
                                 "Rate limited by Discord, will try again later."
                             )
                             break
-
-                    # Pause pour éviter de dépasser les limites de taux
                     await asyncio.sleep(1)
 
-                await asyncio.sleep(1)
-
-                if ctx:
-                    await ctx.send("Les offres d'emploi ont été mises à jour.")
-            else:
-                print("Le canal spécifié n'est pas un ForumChannel.")
-                if ctx:
-                    await ctx.send(
-                        "Le canal spécifié n'est pas un ForumChannel.")
+        found_threads = []
 
         for job in all_jobs:
             title = job.get("job_title") or job.get("title")
@@ -231,6 +241,7 @@ async def send_joblist(ctx=None):
                     for thread in all_threads:
                         if thread.name == thread_title:
                             existing_thread = thread
+                            found_threads.append(existing_thread)
                             break
 
                     # Si un thread avec le même titre existe déjà, passe au suivant
@@ -249,13 +260,40 @@ async def send_joblist(ctx=None):
                             )
                             break
 
-                    # Pause pour éviter de dépasser les limites de taux
                     await asyncio.sleep(1)
-
-        await asyncio.sleep(1)
-
         if ctx:
-            await ctx.send("Les offres d'emploi ont été mises à jour.")
+            verif = False
+            bugs = []
+            if len(found_threads) == len(all_jobs):
+                # await ctx.send("Les offres d'emploi de LinkedIn et Indeed sont deja à jour.")
+                bugs.append("Linkedin")
+                bugs.append("Indeed")
+                # print(all_jobs)
+                verif = True
+            if len(found_threads_jsearch) == len(all_new_jobs):
+                # await ctx.send("Les offres d'emploi de JSearch sont déjà à jour.")
+                bugs.append("JSearch")
+                # print(all_new_jobs)
+                verif = True
+
+        if loading_message:
+            if len(bugs) > 0:
+                description = f"Les offres d'emploi de {bugs} sont déjà à jour."
+                # Modifier l'embed de chargement pour indiquer la fin de la mise à jour
+                embed_updated = discord.Embed(
+                    title="Mise à jour terminée",
+                    description=description,
+                    color=discord.Color.green()
+                )
+                await loading_message.edit(embed=embed_updated)
+            else:
+                embed_updated = discord.Embed(
+                    title="Mise à jour terminée",
+                    description="La liste des offres d'emploi a été mise à jour avec succès.",
+                    color=discord.Color.green()
+                )
+                await loading_message.edit(embed=embed_updated)
+
     else:
         print("Le canal spécifié n'est pas un ForumChannel.")
         if ctx:
@@ -268,21 +306,31 @@ scheduler = AsyncIOScheduler()
 
 @scheduler.scheduled_job("cron", hour=8, minute=0)  # Exécuter à 8h du matin
 async def joblist_morning():
-    # print("Updated 1")
     await send_joblist()
+    print(f"Updated jobs list auto 1!")
 
 
-@scheduler.scheduled_job("cron", hour=16, minute=0)  # Exécuter à 16h
+@scheduler.scheduled_job("cron", hour=14, minute=10)  # Exécuter à 16h
 async def joblist_evening():
-    # print("Updated 2")
     await send_joblist()
+    print(f"Updated jobs list auto 2!")
 
 
 @bot.command(name='update_jobs')
 async def update_jobs(ctx):
     """Force la mise à jour des offres d'emploi."""
-    await send_joblist()
     # await ctx.send(f"Updated jobs list !")
+    embed_loading = discord.Embed(
+        title="Mise à jour en cours",
+        description="La liste des offres d'emploi est en cours de mise à jour, veuillez patienter...",
+        color=discord.Color.orange()
+    )
+    embed_loading.set_thumbnail(
+        url="https://i.imgur.com/5AGlfwy.gif")  # Lien vers une icône d'engrenage animée
+    loading_message = await ctx.send(embed=embed_loading)
+
+    await send_joblist(ctx, loading_message)
+    # await ctx.send(f"Fini !")
 
 
 @bot.command()
