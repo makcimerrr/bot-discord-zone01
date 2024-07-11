@@ -2,4 +2,3 @@ discord.py
 requests
 apscheduler
 python-dotenv
-pytest
