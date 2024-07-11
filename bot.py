@@ -48,9 +48,8 @@ def fetch_new_jobs():
     try:
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()
-        data = response.json()
-        jobs = data.get('data', [])
-        return jobs if isinstance(jobs, list) else []
+        data = response.json().get('data', [])  # Assurez-vous que le chemin 'data' est correct
+        return data if isinstance(data, list) else []
     except requests.exceptions.HTTPError as http_err:
         if response.status_code == 502:
             print("Error 502 (Bad Gateway) while fetching JSearch jobs.")
@@ -64,6 +63,7 @@ def fetch_new_jobs():
     except requests.exceptions.RequestException as e:
         print(f"Error fetching JSearch jobs: {e}")
         return []
+
 
 
 # Fonction pour obtenir les offres d'emploi depuis l'API LinkedIn Jobs Search
@@ -85,8 +85,8 @@ def fetch_linkedin_jobs():
     try:
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
-        jobs = response.json()
-        return jobs
+        jobs = response.json().get('jobs', [])
+        return jobs if isinstance(jobs, list) else []
     except requests.exceptions.HTTPError as http_err:
         if response.status_code == 502:
             print("Error 502 (Bad Gateway) while fetching LinkedIn jobs.")
@@ -96,10 +96,10 @@ def fetch_linkedin_jobs():
             print("Error 429 (Too Many Requests) while fetching LinkedIn jobs.")
         else:
             print(f"HTTP error occurred: {http_err}")
-        return {}
+        return []
     except requests.exceptions.RequestException as e:
         print(f"Error fetching LinkedIn jobs: {e}")
-        return {}
+        return []
 
 
 # Fonction pour obtenir les offres d'emploi depuis l'API Indeed
