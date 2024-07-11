@@ -264,12 +264,16 @@ async def send_joblist(ctx=None):
 # Scheduler pour exécuter la fonction send_joblist deux fois par jour
 scheduler = AsyncIOScheduler()
 
-@scheduler.scheduled_job("cron", hour=6, minute=0)  # Exécuter à 8h du matin
+
+@scheduler.scheduled_job("cron", hour=8, minute=0)  # Exécuter à 8h du matin
 async def joblist_morning():
+    # print("Updated 1")
     await send_joblist()
 
-@scheduler.scheduled_job("cron", hour=14, minute=0)  # Exécuter à 16h
+
+@scheduler.scheduled_job("cron", hour=16, minute=0)  # Exécuter à 16h
 async def joblist_evening():
+    # print("Updated 2")
     await send_joblist()
 
 
@@ -277,6 +281,7 @@ async def joblist_evening():
 async def update_jobs(ctx):
     """Force la mise à jour des offres d'emploi."""
     await send_joblist()
+    # await ctx.send(f"Updated jobs list !")
 
 
 @bot.command()
