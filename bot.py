@@ -36,7 +36,7 @@ def fetch_new_jobs():
         "query": "Developer fullstack in rouen, France",
         "page": "1",
         "num_pages": "1",
-        "date_posted": "all",
+        "date_posted": "week",
         "employment_types": "INTERN",
         "radius": "120"
     }
