@@ -25,11 +25,11 @@ jobs:
       - name: Generate documentation
         run: |
           cd docs
-          sphinx-build -b html source _build/html
+          sphinx-build -b html source build/html
 
       - name: Deploy documentation to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.MY_GITHUB_TOKEN }}
-          publish_dir: docs/source/_build/html
+          publish_dir: docs/build/html
           publish_branch: gh-pages
