@@ -22,6 +22,15 @@ jobs:
         run: |
           pip install sphinx  # Installez Sphinx et d'autres dépendances nécessaires
 
+      - name: Check and create docs directory
+        run: |
+          if [ ! -d "docs" ]; then
+            mkdir docs  # Créez le dossier docs s'il n'existe pas
+            echo "Dossier docs créé."
+          else
+            echo "Dossier docs déjà existant."
+          fi
+
       - name: Generate documentation
         run: |
           cd docs  # Naviguez dans le dossier contenant votre configuration Sphinx
