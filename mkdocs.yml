@@ -10,6 +10,12 @@ nav:
           - Gestion Help: cogs/gestion_help.md
           - Gestion Jobs: cogs/gestion_jobs.md
           - Gestion Ping: cogs/gestion_ping.md
+  - Utilitaires:
+      - Utils:
+          - Fetch CDI: utils/cdi_fetcher.md
+          - Fetch Jobs: utils/job_fetcher.md
+          - Scheduler: utils/scheduler.md
+          - Config Loader: utils/config_loader.md
   - Configuration: config.md
   - Contribuer: contributor.md
 theme:
