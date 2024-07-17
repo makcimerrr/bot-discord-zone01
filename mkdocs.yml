@@ -1,4 +1,6 @@
 site_name: 'Documentation du Bot Discord Zone01'
+site_author: 'Makcimerrr'
+copyright: 'Copyright © 2024 Makcimerrr'
 nav:
   - Accueil: index.md
   - Guide d'utilisation:
@@ -20,4 +22,17 @@ nav:
   - Contribuer: contributor.md
 theme:
   name: material
+palette:
+  primary: green
+  accent: light green
+background: white
+font:
+  text: 'Roboto'
+  code: 'Roboto Mono'
+  headline: 'Roboto'
+  logo: 'Roboto'
+favicon: 'https://cdn.discordapp.com/attachments/831271000000000000/831271000000000000/zone01.png'
+repo_url: "https://github.com/makcimerrr/bot-discord-zone01"
+repo_name: "bot-discord-zone01"
+edit_uri: "edit/main/docs/"
 site_url: "https://makcimerrr.github.io/bot-discord-zone01/"
