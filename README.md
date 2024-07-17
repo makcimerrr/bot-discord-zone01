@@ -32,6 +32,11 @@ Si vous souhaitez contribuer à ce projet, vous pouvez :
 - Soumettre des suggestions d'amélioration via les issues.
 - Proposer des pull requests pour résoudre des problèmes ou ajouter des fonctionnalités.
 
+## Documentation du BOT
+
+[Par ici](https://makcimerrr.github.io/bot-discord-zone01/guide/commandes/)
+
+
 ## Auteurs
 
 Ce bot a été créé par [Maxime Dubois](https://makcimerrr.com) pour [Zone01 Rouen](https://zone01rouennormandie.org).
