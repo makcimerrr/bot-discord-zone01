@@ -1,0 +1,48 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - main  # ou la branche que vous utilisez
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Choisissez la version Python souhaitée
+
+      - name: Install dependencies
+        run: |
+          pip install sphinx  # Installez Sphinx et d'autres dépendances nécessaires
+
+      - name: Check and create docs directory
+        run: |
+          if [ ! -d "docs" ]; then
+            mkdir docs  # Créez le dossier docs s'il n'existe pas
+            echo "Dossier docs créé."
+          else
+            echo "Dossier docs déjà existant."
+          fi
+
+      - name: Generate documentation
+        run: |
+          cd docs  # Naviguez dans le dossier contenant votre configuration Sphinx
+          make html  # Générez la documentation au format HTML
+
+      - name: Check if gh-pages branch exists
+        run: |
+          git fetch origin gh-pages || git checkout --orphan gh-pages
+
+      - name: Deploy documentation to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build/html  # Répertoire où la documentation est générée
+          publish_branch: gh-pages  # Branche où vous voulez déployer la doc
