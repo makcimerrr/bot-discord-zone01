@@ -1,12 +1,12 @@
 import requests
-
+import os
 
 def get_details_indeed(job_id):
     url = f"https://indeed12.p.rapidapi.com/job/{job_id}"
     querystring = {"locality": "fr"}
 
     headers = {
-        "x-rapidapi-key": "f2e8741f4dmsh621949c1ae11102p133853jsnec6194e55e2f",
+        "x-rapidapi-key": os.getenv('RAPIDAPI_KEY2'),
         "x-rapidapi-host": "indeed12.p.rapidapi.com"
     }
 

@@ -9,7 +9,7 @@ def fetch_linkedin_cdi():
                    "jobType": "fullTime, contract, partTime", "titleIds": "24&", "sort": "mostRelevant"}
 
     headers = {
-        "x-rapidapi-key": "f2e8741f4dmsh621949c1ae11102p133853jsnec6194e55e2f",
+        "x-rapidapi-key": os.getenv('RAPIDAPI_KEY2'),
         "x-rapidapi-host": "linkedin-data-api.p.rapidapi.com"
     }
     try:
@@ -28,7 +28,7 @@ def fetch_indeed_cdi():
                    "radius": "120", "sort": "date"}
 
     headers = {
-        "x-rapidapi-key": "f2e8741f4dmsh621949c1ae11102p133853jsnec6194e55e2f",
+        "x-rapidapi-key": os.getenv('RAPIDAPI_KEY2'),
         "x-rapidapi-host": "indeed12.p.rapidapi.com"
     }
 
