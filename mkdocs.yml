@@ -1,0 +1,17 @@
+site_name: 'Documentation du Bot Discord Zone01'
+nav:
+  - Accueil: index.md
+  - Guide d'utilisation:
+      - Introduction: guide/introduction.md
+      - Commandes: guide/commandes.md
+  - Référence API:
+      - Cogs:
+          - Gestion CDI: cogs/gestion_cdi.md
+          - Gestion Help: cogs/gestion_help.md
+          - Gestion Jobs: cogs/gestion_jobs.md
+          - Gestion Ping: cogs/gestion_ping.md
+  - Configuration: config.md
+  - Contribuer: contributor.md
+theme:
+  name: material
+site_url: "https://makcimerrr.github.io/bot-discord-zone01/"
