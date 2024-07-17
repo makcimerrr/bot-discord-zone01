@@ -6,7 +6,32 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/config/</loc>
+         <lastmod>2024-07-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/contributor/</loc>
+         <lastmod>2024-07-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://makcimerrr.github.io/bot-discord-zone01/cogs/gestion_cdi/</loc>
+         <lastmod>2024-07-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/cogs/gestion_help/</loc>
+         <lastmod>2024-07-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/cogs/gestion_jobs/</loc>
+         <lastmod>2024-07-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/cogs/gestion_ping/</loc>
          <lastmod>2024-07-17</lastmod>
          <changefreq>daily</changefreq>
     </url>

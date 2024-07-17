@@ -8,25 +8,25 @@
       
       
       
-        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/cogs/gestion_cdi/">
+        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/config/">
       
       
-        <link rel="prev" href="../../guide/commandes/">
+        <link rel="prev" href="../cogs/gestion_ping/">
       
       
-        <link rel="next" href="../gestion_help/">
+        <link rel="next" href="../contributor/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.29">
     
     
       
-        <title>Gestion CDI - Documentation du Bot Discord Zone01</title>
+        <title>Configuration - Documentation du Bot Discord Zone01</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.76a95c52.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.76a95c52.min.css">
       
       
 
@@ -45,7 +45,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#module-de-gestion-des-cdi-cdd-freelance-interim-etc" class="md-skip">
+        <a href="#configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -80,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Documentation du Bot Discord Zone01" class="md-header__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
+    <a href=".." title="Documentation du Bot Discord Zone01" class="md-header__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Gestion CDI
+              Configuration
             
           </span>
         </div>
@@ -175,7 +175,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Documentation du Bot Discord Zone01" class="md-nav__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
+    <a href=".." title="Documentation du Bot Discord Zone01" class="md-nav__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -193,7 +193,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -248,7 +248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/introduction/" class="md-nav__link">
+      <a href="../guide/introduction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -269,7 +269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/commandes/" class="md-nav__link">
+      <a href="../guide/commandes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -294,19 +294,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -320,7 +318,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Référence API
@@ -331,19 +329,17 @@
                 
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
         
           
           <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
@@ -357,7 +353,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             Cogs
@@ -368,30 +364,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Gestion CDI
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cogs/gestion_cdi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -400,77 +376,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#fonctionnalites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fonctionnalités
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Fonctionnalités">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#commande-update_cdi" class="md-nav__link">
-    <span class="md-ellipsis">
-      Commande !update_cdi
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#processus-de-mise-a-jour" class="md-nav__link">
-    <span class="md-ellipsis">
-      Processus de Mise à Jour
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#autres-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      Autres Détails
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -483,7 +388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gestion_help/" class="md-nav__link">
+      <a href="../cogs/gestion_help/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -504,7 +409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gestion_jobs/" class="md-nav__link">
+      <a href="../cogs/gestion_jobs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -525,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gestion_ping/" class="md-nav__link">
+      <a href="../cogs/gestion_ping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -631,7 +536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/cdi_fetcher.md" class="md-nav__link">
+      <a href="../utils/cdi_fetcher.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -652,7 +557,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/job_fetcher.md" class="md-nav__link">
+      <a href="../utils/job_fetcher.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -673,7 +578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/scheduler.md" class="md-nav__link">
+      <a href="../utils/scheduler.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -694,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/config_loader.md" class="md-nav__link">
+      <a href="../utils/config_loader.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -727,10 +632,30 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../config/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -739,6 +664,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fichier-configjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fichier config.json
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -750,7 +704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributor/" class="md-nav__link">
+      <a href="../contributor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -790,53 +744,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#fonctionnalites" class="md-nav__link">
+  <a href="#fichier-configjson" class="md-nav__link">
     <span class="md-ellipsis">
-      Fonctionnalités
+      Fichier config.json
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Fonctionnalités">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#commande-update_cdi" class="md-nav__link">
-    <span class="md-ellipsis">
-      Commande !update_cdi
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#processus-de-mise-a-jour" class="md-nav__link">
-    <span class="md-ellipsis">
-      Processus de Mise à Jour
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#autres-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      Autres Détails
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -855,28 +767,17 @@
                   
 
 
-<h1 id="module-de-gestion-des-cdi-cdd-freelance-interim-etc">Module de Gestion des CDI, CDD, Freelance, Intérim etc...</h1>
-<p>Ce module, intégré au bot Discord Zone01, est responsable de la gestion des offres d'emploi en CDI. Il utilise les APIs de LinkedIn et Indeed pour récupérer les dernières offres et les publier dans un canal spécifique.</p>
-<h2 id="fonctionnalites">Fonctionnalités</h2>
-<h3 id="commande-update_cdi">Commande <code>!update_cdi</code></h3>
-<ul>
-<li><strong>Description</strong> : Cette commande force la mise à jour des offres d'emploi en CDI, CDD, Freelance, Intérim, etc.</li>
-<li><strong>Utilisation</strong> : Lorsqu'un utilisateur exécute cette commande, un message de chargement est envoyé pour indiquer que la mise à jour est en cours. Le bot récupère alors les offres d'emploi depuis LinkedIn et Indeed et les publie dans un canal de forum dédié.</li>
-</ul>
-<h3 id="processus-de-mise-a-jour">Processus de Mise à Jour</h3>
-<ol>
-<li><strong>Récupération des Offres</strong> : Le bot utilise les fonctions <code>fetch_linkedin_cdi</code> et <code>fetch_indeed_cdi</code> pour obtenir les offres d'emploi.</li>
-<li><strong>Création de Threads</strong> : Pour chaque offre valide (titre, entreprise, lien), le bot crée un nouveau thread dans le canal de forum spécifié. Si un thread avec le même titre existe déjà, il passe à l'offre suivante pour éviter les doublons.</li>
-<li><strong>Gestion des Erreurs</strong> : Si l'une des APIs échoue, le bot informe l'utilisateur via un message d'erreur approprié.</li>
-</ol>
-<h3 id="autres-details">Autres Détails</h3>
-<ul>
-<li><strong>Canaux et Rôles</strong> : Le module utilise des identifiants de canal et de rôle définis dans un fichier de configuration, facilitant la gestion des alertes pour les utilisateurs concernés.</li>
-<li><strong>Latence et Débogage</strong> : Des vérifications de latence sont intégrées, et le bot gère les erreurs liées aux appels API et à la création de threads.</li>
-</ul>
-<h3 id="installation">Installation</h3>
-<p>Pour activer ce module, utilisez la commande <code>!update_cdi</code> et suivez les instructions fournies par le bot. </p>
-<p>Ce module contribue à rendre l'accès aux offres d'emploi plus accessible pour les apprenants, en centralisant les informations pertinentes dans un seul endroit sur Discord.</p>
+<h1 id="configuration">Configuration</h1>
+<p>Le bot nécessite un fichier de configuration pour fonctionner correctement. Voici comment le configurer :</p>
+<h2 id="fichier-configjson">Fichier <code>config.json</code></h2>
+<p>Le fichier <code>data/config.json</code> doit être structuré comme suit :</p>
+<pre><code class="language-json">{
+  &quot;forum_channel_id&quot;: 1263144494115590337,
+  &quot;forum_channel_id_cdi&quot;: 1263151656363753512,
+  &quot;role_ping&quot;: 1245022469719457812,
+  &quot;role_ping_cdi&quot;: 1263151656363753512
+}
+</code></pre>
 
 
 
@@ -923,10 +824,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
     
   </body>
