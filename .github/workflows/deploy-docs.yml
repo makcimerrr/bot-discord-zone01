@@ -1,0 +1,32 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Changez par la branche principale de votre projet
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Changez selon votre version de Python
+
+    - name: Install dependencies
+      run: |
+        pip install mkdocs mkdocs-material  # Installez d'autres dépendances si nécessaire
+
+    - name: Build Docs
+      run: mkdocs build
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+        publish_dir: ./site  # Répertoire de sortie de MkDocs
