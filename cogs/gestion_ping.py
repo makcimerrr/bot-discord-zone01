@@ -1,4 +1,5 @@
 from discord.ext import commands
+from utils.config_loader import role_ping
 
 
 class PingCog(commands.Cog):
@@ -10,7 +11,7 @@ class PingCog(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         """Renvoie la latence du bot en millisecondes."""
-        await ctx.send(f"Pong! {round(self.bot.latency * 1000)}ms")
+        await ctx.send(f"Pong! {round(self.bot.latency * 1000)}ms <@&{role_ping}>")
 
 
 async def setup(bot):

@@ -14,4 +14,5 @@ config = load_config()
 
 role_ping = config["role_ping"]
 forum_channel_id = config["forum_channel_id"]
+forum_channel_id_cdi = config["forum_channel_id_cdi"]
 discord_token = os.getenv("TOKEN")

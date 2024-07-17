@@ -13,7 +13,7 @@ intents.guilds = True
 intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs']
+initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi']
 
 
 async def load_extensions(bot):
