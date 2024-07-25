@@ -36,6 +36,14 @@ Si vous souhaitez contribuer à ce projet, vous pouvez :
 
 [Par ici](https://makcimerrr.github.io/bot-discord-zone01/guide/commandes/)
 
+## Convention Release
+
+En suivant les conventions de versionnement sémantique (SemVer), voici comment cela fonctionne :
+
+- **MAJOR**: version (X.y.z) pour les changements incompatibles de l'API.
+- **MINOR**: version (x.Y.z) pour les ajouts de fonctionnalités dans une manière rétrocompatible.
+- **PATCH**: version (x.y.Z) pour les corrections de bugs rétrocompatibles.
+
 
 ## Auteurs
 
