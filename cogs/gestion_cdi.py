@@ -3,7 +3,7 @@ import re
 from discord.ext import commands
 import asyncio
 
-from utils.config_loader import forum_channel_id, role_ping, forum_channel_id_cdi
+from utils.config_loader import forum_channel_id, role_ping_cdi, forum_channel_id_cdi
 from utils.cdi_fetcher import fetch_api_fulltime
 
 
@@ -66,7 +66,7 @@ class CDICog(commands.Cog):
                     thread_title = f"{company} - {title}"
 
                     if date and link:
-                        thread_content = f"Bonjour <@&{role_ping}> ! Offre sur **{city}**, chez **{company}** qui recherche un développeur **{title}**.Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
+                        thread_content = f"Bonjour <@&{role_ping_cdi}> ! Offre sur **{city}**, chez **{company}** qui recherche un développeur **{title}**.Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
 
                         # Chercher un thread existant avec le même titre
                         existing_thread = None
