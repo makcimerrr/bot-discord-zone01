@@ -4,8 +4,7 @@ from discord.ext import commands
 import asyncio
 
 from utils.config_loader import forum_channel_id, role_ping, forum_channel_id_cdi
-from utils.cdi_fetcher import fetch_linkedin_cdi, fetch_indeed_cdi
-from utils.get_details_indeed import get_details_indeed
+from utils.cdi_fetcher import fetch_api_fulltime
 
 
 class CDICog(commands.Cog):
@@ -15,7 +14,6 @@ class CDICog(commands.Cog):
         self.bot = bot
 
     async def send_cdilist(self, ctx=None, loading_message=None):
-        global bugs
 
         forum_channel_cdi = ctx.guild.get_channel(forum_channel_id_cdi)
 
@@ -29,79 +27,46 @@ class CDICog(commands.Cog):
 
             all_threads = active_threads + archived_threads
 
-            linkedin_cdi = fetch_linkedin_cdi()
-            indeed_cdi = fetch_indeed_cdi()
+            list_jobs = await fetch_api_fulltime()
             await asyncio.sleep(1)
 
-            verif1 = False
-            verif2 = False
+            verif = False
 
             if ctx:
-                bugs = []
-                if not linkedin_cdi:
-                    # await ctx.send("Erreur lors de la récupération des offres d'emploi depuis LinkedIn.")
-                    bugs.append("Linkedin")
-                    verif1 = True
-                if not indeed_cdi:
-                    # await ctx.send("Erreur lors de la récupération des offres d'emploi depuis Indeed.")
-                    bugs.append("Indeed")
-                    verif2 = True
+                if not list_jobs:
+                    await ctx.send("Erreur lors de la récupération des offres d'emploi pour les CDI.")
+                    verif = True
 
-            if verif1 and verif2:
-                if loading_message:
-                    # Modifier l'embed de chargement pour indiquer la fin de la mise à jour
-                    embed_updated = discord.Embed(
-                        title="Erreur lors de la mise à jour",
-                        description=f"Aucune des listes d'offres d'emploi n'a pu être mise à jour. Veuillez réessayer plus tard.",
-                        color=discord.Color.red()
-                    )
-                    await loading_message.edit(embed=embed_updated)
-                return
-            elif verif1 or verif2:
-                await ctx.send(
-                    f"La liste des offres d'emploi de {bugs} n'a pas pu être mise à jour. Veuillez réessayer plus tard.")
+                if verif:
+                    if loading_message:
+                        # Modifier l'embed de chargement pour indiquer la fin de la mise à jour
+                        embed_updated = discord.Embed(
+                            title="Erreur lors de la mise à jour",
+                            description=f"Aucune des listes d'offres d'emploi n'a pu être mise à jour. Veuillez "
+                                        f"réessayer plus tard.",
+                            color=discord.Color.red()
+                        )
+                        await loading_message.edit(embed=embed_updated)
+                    return
 
-            all_jobs = linkedin_cdi + indeed_cdi
+            all_jobs = list_jobs
 
             found_threads = []
+            new_threads_created = False
 
             for job in all_jobs:
 
-                title = job.get("title")
-                company = job.get("company", {}).get("name") or job.get("company_name")
-                date = job.get("postDate") or job.get("formatted_relative_time")
-                link = job.get("url")
-                type = job.get("type")
-                city = job.get("location")
-
-                indeed_link = job.get("link")
-
-                # Extracting the ID from the Indeed link if the primary link is not available
-                if indeed_link and not link:
-                    if isinstance(indeed_link, str):  # Check if indeed_link is a string
-                        match = re.search(r'/job/([^/?]+)', indeed_link)  # Changed to indeed_link
-                        if match:
-                            indeed_id = match.group(1)
-                            # Get the details using the ID
-                            indeed_details = get_details_indeed(indeed_id)
-
-                            # Extract the indeed_final_url from the details
-                            if indeed_details:
-                                link = indeed_details.get("indeed_final_url")  # Adjust if it's an object
-                            else:
-                                print("No details found for this job.")
-                        else:
-                            print("No valid Indeed ID found in the link.")
-                    else:
-                        print("Indeed link is not a valid string.")
-                else:
-                    print("No Indeed link provided for the job.")
+                title = job.get("job_title")
+                company = job.get("employer_name")
+                date = job.get("job_posted_at_datetime_utc")
+                link = job.get("job_apply_link")
+                city = job.get("job_city")
 
                 if title and link and company:
                     thread_title = f"{company} - {title}"
 
                     if date and link:
-                        thread_content = f"Bonjour <@&{role_ping}> ! Offre de type **{type}** sur **{city}**, chez **{company}** qui recherche un développeur **{title}**.Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
+                        thread_content = f"Bonjour <@&{role_ping}> ! Offre sur **{city}**, chez **{company}** qui recherche un développeur **{title}**.Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
 
                         # Chercher un thread existant avec le même titre
                         existing_thread = None
@@ -120,6 +85,7 @@ class CDICog(commands.Cog):
                         try:
                             thread = await forum_channel_cdi.create_thread(
                                 name=thread_title, content=thread_content)
+                            new_threads_created = True
                         except discord.errors.HTTPException as e:
                             if e.code == 429:
                                 print(
@@ -128,31 +94,21 @@ class CDICog(commands.Cog):
                                 break
 
                         await asyncio.sleep(1)
-            if ctx:
-                verif = False
-                bugs = []
-                if len(found_threads) == len(all_jobs):
-                    # await ctx.send("Les offres d'emploi de LinkedIn et Indeed sont deja à jour.")
-                    bugs.append("Linkedin")
-                    bugs.append("Indeed")
-                    # print(all_jobs)
-                    verif = True
-
-            if loading_message:
-                if len(bugs) > 0:
-                    description = f"Les offres d'emploi de {bugs} sont déjà à jour."
-                    # Modifier l'embed de chargement pour indiquer la fin de la mise à jour
+            # Vérifier si aucun nouveau thread n'a été créé
+            if not new_threads_created:
+                if loading_message:
                     embed_updated = discord.Embed(
-                        title="Mise à jour terminée",
-                        description=description,
+                        title="Aucune nouvelle offre",
+                        description="Aucune nouvelle offre d'emploi n'a été trouvée.",
                         color=discord.Color.green()
                     )
                     await loading_message.edit(embed=embed_updated)
-                else:
+            else:
+                if loading_message:
                     embed_updated = discord.Embed(
                         title="Mise à jour terminée",
-                        description="La liste des offres d'emploi a été mise à jour avec succès.",
-                        color=discord.Color.green()
+                        description="Toutes les nouvelles offres d'emploi ont été publiées avec succès.",
+                        color=discord.Color.blue()
                     )
                     await loading_message.edit(embed=embed_updated)
 
@@ -168,11 +124,11 @@ class CDICog(commands.Cog):
 
     @commands.command(name='update_cdi')
     async def update_cdi(self, ctx):
-        """Force la mise à jour des offres d'emploi."""
+        """Force la mise à jour des offres d'emploi pour les CDI."""
         # await ctx.send(f"Updated jobs list !")
         embed_loading = discord.Embed(
             title="Mise à jour en cours",
-            description="La liste des offres d'emploi est en cours de mise à jour, veuillez patienter...",
+            description="La liste des offres d'emploi pour les CDI est en cours de mise à jour, veuillez patienter...",
             color=discord.Color.orange()
         )
         embed_loading.set_thumbnail(
