@@ -11,6 +11,7 @@ intents.message_content = True
 intents.reactions = True
 intents.guilds = True
 intents.members = True
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi']
@@ -26,7 +27,7 @@ async def on_ready():
     print('Bot is ready.')
     await load_extensions(bot)
     # Start the scheduler to run the send_joblist function twice a day
-    start_scheduler()
+    start_scheduler(bot)
 
 
 attributes = {

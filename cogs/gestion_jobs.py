@@ -3,8 +3,7 @@ import discord
 from discord.ext import commands
 import asyncio
 
-from utils.config_loader import forum_channel_id, role_ping
-from utils.get_details_indeed import get_details_indeed
+from utils.config_loader import forum_channel_id, role_ping, guild_id
 from utils.intern_fetcher import fetch_api_intern
 
 
@@ -16,7 +15,17 @@ class JobCog(commands.Cog):
 
     async def send_joblist(self, ctx=None, loading_message=None):
 
-        forum_channel = ctx.guild.get_channel(forum_channel_id)
+        # forum_channel = ctx.guild.get_channel(forum_channel_id)
+
+        if ctx:
+            guild = ctx.guild
+            forum_channel = guild.get_channel(forum_channel_id)
+        else:
+            guild = self.bot.get_guild(guild_id)
+            if guild is None:
+                print("Guild not found")
+                return
+            forum_channel = guild.get_channel(forum_channel_id)
 
         if isinstance(forum_channel, discord.ForumChannel):
             # Obtenir les threads actifs et archivés existants

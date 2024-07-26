@@ -16,4 +16,5 @@ role_ping = config["role_ping"]
 role_ping_cdi = config["role_ping_cdi"]
 forum_channel_id = config["forum_channel_id"]
 forum_channel_id_cdi = config["forum_channel_id_cdi"]
+guild_id = config["guild_id"]
 discord_token = os.getenv("TOKEN")

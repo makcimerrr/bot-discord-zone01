@@ -3,7 +3,7 @@ import re
 from discord.ext import commands
 import asyncio
 
-from utils.config_loader import forum_channel_id, role_ping_cdi, forum_channel_id_cdi
+from utils.config_loader import role_ping_cdi, forum_channel_id_cdi, guild_id
 from utils.cdi_fetcher import fetch_api_fulltime
 
 
@@ -15,7 +15,17 @@ class CDICog(commands.Cog):
 
     async def send_cdilist(self, ctx=None, loading_message=None):
 
-        forum_channel_cdi = ctx.guild.get_channel(forum_channel_id_cdi)
+        if ctx:
+            guild = ctx.guild
+            forum_channel_cdi = guild.get_channel(forum_channel_id_cdi)
+        else:
+            guild = self.bot.get_guild(guild_id)
+            if guild is None:
+                print("Guild not found")
+                return
+            forum_channel_cdi = guild.get_channel(forum_channel_id_cdi)
+
+        # forum_channel_cdi = ctx.guild.get_channel(forum_channel_id_cdi)
 
         if isinstance(forum_channel_cdi, discord.ForumChannel):
             # Obtenir les threads actifs et archivés existants
