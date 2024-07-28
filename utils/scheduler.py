@@ -32,12 +32,12 @@ async def cdi_evening(bot):
 
 def start_scheduler(bot):
     # Scheduler jobs with bot parameter
-    @scheduler.scheduled_job("cron", hour=8, minute=0)  # Run at 8 AM
+    @scheduler.scheduled_job("cron", hour=9, minute=0)  # Run at 9 AM
     async def schedule_joblist_morning():
         await joblist_morning(bot)
         await cdi_morning(bot)
 
-    @scheduler.scheduled_job("cron", hour=14, minute=58)  # Run at 2:36 PM
+    @scheduler.scheduled_job("cron", hour=18, minute=0)  # Run at 6 PM
     async def schedule_joblist_evening():
         await joblist_evening(bot)
         await cdi_evening(bot)
