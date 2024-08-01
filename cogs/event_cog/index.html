@@ -13,6 +13,10 @@
         <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/cogs/event_cog/">
       
       
+        <link rel="prev" href="../gestion_ping/">
+      
+      
+        <link rel="next" href="../../config/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +24,7 @@
     
     
       
-        <title>Module de Gestion des Événements - Documentation du Bot Discord Zone01</title>
+        <title>Gestion Event - Documentation du Bot Discord Zone01</title>
       
     
     
@@ -98,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Module de Gestion des Événements
+              Gestion Event
             
           </span>
         </div>
@@ -316,17 +320,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -340,7 +346,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Référence API
@@ -351,17 +357,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
         
           
           <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
@@ -375,7 +383,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             Cogs
@@ -461,6 +469,160 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Gestion Event
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Gestion Event
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnalites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnalités
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnalités">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commande-create_event" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commande /create_event
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boutons-dinteraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boutons d'Interaction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Boutons d'Interaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bouton-sinscrire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bouton "S'inscrire" (✅)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bouton-effacer-un-etudiant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bouton "Effacer un étudiant" (🗑️)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bouton-supprimer-lembed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bouton "Supprimer l'embed" (🚫)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bouton-cloturer-les-inscriptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bouton "Clôturer les inscriptions" (🔒)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-creation-devenement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemple de Création d'Événement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
