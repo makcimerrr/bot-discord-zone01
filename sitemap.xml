@@ -50,4 +50,24 @@
          <lastmod>2024-08-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/utils/cdi_fetcher/</loc>
+         <lastmod>2024-08-01</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/utils/config_loader/</loc>
+         <lastmod>2024-08-01</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/utils/job_fetcher/</loc>
+         <lastmod>2024-08-01</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/utils/scheduler/</loc>
+         <lastmod>2024-08-01</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
 </urlset>
