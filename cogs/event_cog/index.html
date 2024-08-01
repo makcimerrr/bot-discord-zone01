@@ -10,13 +10,9 @@
         <meta name="author" content="Makcimerrr">
       
       
-        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/cogs/gestion_cdi/">
+        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/cogs/event_cog/">
       
       
-        <link rel="prev" href="../../guide/commandes/">
-      
-      
-        <link rel="next" href="../gestion_help/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +20,7 @@
     
     
       
-        <title>Gestion CDI - Documentation du Bot Discord Zone01</title>
+        <title>Module de Gestion des Événements - Documentation du Bot Discord Zone01</title>
       
     
     
@@ -66,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#module-de-gestion-des-cdi-cdd-freelance-interim-etc" class="md-skip">
+        <a href="#module-de-gestion-des-evenements" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Gestion CDI
+              Module de Gestion des Événements
             
           </span>
         </div>
@@ -320,19 +316,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -346,7 +340,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Référence API
@@ -357,19 +351,17 @@
                 
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
         
           
           <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
@@ -383,7 +375,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             Cogs
@@ -394,30 +386,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Gestion CDI
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../gestion_cdi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -426,77 +398,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#fonctionnalites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fonctionnalités
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Fonctionnalités">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#commande-update_cdi" class="md-nav__link">
-    <span class="md-ellipsis">
-      Commande !update_cdi
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#processus-de-mise-a-jour" class="md-nav__link">
-    <span class="md-ellipsis">
-      Processus de Mise à Jour
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#autres-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      Autres Détails
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -826,36 +727,78 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#commande-update_cdi" class="md-nav__link">
+  <a href="#commande-create_event" class="md-nav__link">
     <span class="md-ellipsis">
-      Commande !update_cdi
+      Commande /create_event
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#processus-de-mise-a-jour" class="md-nav__link">
+  <a href="#boutons-dinteraction" class="md-nav__link">
     <span class="md-ellipsis">
-      Processus de Mise à Jour
+      Boutons d'Interaction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Boutons d'Interaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bouton-sinscrire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bouton "S'inscrire" (✅)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#autres-details" class="md-nav__link">
+  <a href="#bouton-effacer-un-etudiant" class="md-nav__link">
     <span class="md-ellipsis">
-      Autres Détails
+      Bouton "Effacer un étudiant" (🗑️)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+  <a href="#bouton-supprimer-lembed" class="md-nav__link">
     <span class="md-ellipsis">
-      Installation
+      Bouton "Supprimer l'embed" (🚫)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bouton-cloturer-les-inscriptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bouton "Clôturer les inscriptions" (🔒)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-creation-devenement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemple de Création d'Événement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes
     </span>
   </a>
   
@@ -884,28 +827,61 @@
   
 
 
-<h1 id="module-de-gestion-des-cdi-cdd-freelance-interim-etc">Module de Gestion des CDI, CDD, Freelance, Intérim etc...</h1>
-<p>Ce module, intégré au bot Discord Zone01, est responsable de la gestion des offres d'emploi en CDI. Il utilise une API générale regroupement de multiples applications de recrutement comme Linkedin, Indeed, HelloWork etc... pour récupérer les dernières offres et les publier dans un canal spécifique.</p>
+<h1 id="module-de-gestion-des-evenements">Module de Gestion des Événements</h1>
+<p>Ce module, intégré au bot Discord Zone01, est responsable de la création et de la gestion des événements au sein du serveur Discord. Il permet aux utilisateurs de s'inscrire à des événements et offre aux administrateurs des outils pour gérer les inscriptions.</p>
 <h2 id="fonctionnalites">Fonctionnalités</h2>
-<h3 id="commande-update_cdi">Commande <code>!update_cdi</code></h3>
+<h3 id="commande-create_event">Commande <code>/create_event</code></h3>
 <ul>
-<li><strong>Description</strong> : Cette commande force la mise à jour des offres d'emploi en CDI, CDD, Freelance, Intérim, etc.</li>
-<li><strong>Utilisation</strong> : Lorsqu'un utilisateur exécute cette commande, un message de chargement est envoyé pour indiquer que la mise à jour est en cours. Le bot récupère alors les offres d'emploi depuis LinkedIn, Indeed LinkedIn, Indeed et autres APIs et les publie dans un canal de forum dédié.</li>
+<li><strong>Description</strong> : Cette commande permet aux administrateurs de créer un nouvel événement. Un message avec un embed sera envoyé, contenant les détails de l'événement et les boutons d'interaction pour les utilisateurs et les administrateurs.</li>
+<li><strong>Utilisation</strong> : <code>/create_event</code></li>
+<li><strong>Paramètres</strong> :</li>
+<li><code>nom_d'événement</code> : Le nom de l'événement.</li>
+<li><code>description</code> : La description de l'événement</li>
+<li><code>date</code> : La date de l'événement (format JJ/MM/AAAA).</li>
+<li><code>heures</code> : La plage horaire de l'événement (format HH:MM - HH:MM).</li>
+<li><code>durée</code> : La durée de chaque créneau horaire en minutes.</li>
 </ul>
-<h3 id="processus-de-mise-a-jour">Processus de Mise à Jour</h3>
-<ol>
-<li><strong>Récupération des Offres</strong> : Le bot utilise les fonctions <code>fetch_api_fulltime</code> pour obtenir les offres d'emploi.</li>
-<li><strong>Création de Threads</strong> : Pour chaque offre valide (titre, entreprise, lien), le bot crée un nouveau thread dans le canal de forum spécifié. Si un thread avec le même titre existe déjà, il passe à l'offre suivante pour éviter les doublons.</li>
-<li><strong>Gestion des Erreurs</strong> : Si l'une des APIs échoue, le bot informe l'utilisateur via un message d'erreur approprié.</li>
-</ol>
-<h3 id="autres-details">Autres Détails</h3>
+<h3 id="boutons-dinteraction">Boutons d'Interaction</h3>
+<h4 id="bouton-sinscrire">Bouton "S'inscrire" (✅)</h4>
 <ul>
-<li><strong>Canaux et Rôles</strong> : Le module utilise des identifiants de canal et de rôle définis dans un fichier de configuration, facilitant la gestion des alertes pour les utilisateurs concernés.</li>
-<li><strong>Latence et Débogage</strong> : Des vérifications de latence sont intégrées, et le bot gère les erreurs liées aux appels API et à la création de threads.</li>
+<li><strong>Description</strong> : Permet aux utilisateurs de s'inscrire à l'événement.</li>
+<li><strong>Fonctionnement</strong> : </li>
+<li>Lorsqu'un utilisateur clique sur ce bouton, il est ajouté à la liste des participants avec un créneau horaire spécifique.</li>
+<li>Si l'utilisateur est déjà inscrit, un message d'erreur est affiché.</li>
 </ul>
-<h3 id="installation">Installation</h3>
-<p>Pour activer ce module, utilisez la commande <code>!update_cdi</code> et suivez les instructions fournies par le bot. </p>
-<p>Ce module contribue à rendre l'accès aux offres d'emploi plus accessible pour les apprenants, en centralisant les informations pertinentes dans un seul endroit sur Discord.</p>
+<h4 id="bouton-effacer-un-etudiant">Bouton "Effacer un étudiant" (🗑️)</h4>
+<ul>
+<li><strong>Description</strong> : Permet aux administrateurs de supprimer un utilisateur de la liste des participants.</li>
+<li><strong>Fonctionnement</strong> :</li>
+<li>Lorsqu'un administrateur clique sur ce bouton, le premier utilisateur de la liste est supprimé.</li>
+<li>Le prochain utilisateur dans la liste est notifié pour son entretien.</li>
+</ul>
+<h4 id="bouton-supprimer-lembed">Bouton "Supprimer l'embed" (🚫)</h4>
+<ul>
+<li><strong>Description</strong> : Permet aux administrateurs de supprimer le message embed de l'événement.</li>
+<li><strong>Fonctionnement</strong> :</li>
+<li>Lorsqu'un administrateur clique sur ce bouton, le message embed est supprimé et l'événement est effacé de la base de données.</li>
+</ul>
+<h4 id="bouton-cloturer-les-inscriptions">Bouton "Clôturer les inscriptions" (🔒)</h4>
+<ul>
+<li><strong>Description</strong> : Permet aux administrateurs de clôturer les inscriptions pour l'événement.</li>
+<li><strong>Fonctionnement</strong> :</li>
+<li>Lorsqu'un administrateur clique sur ce bouton, le bouton d'inscription est désactivé, empêchant de nouvelles inscriptions.</li>
+</ul>
+<h3 id="exemple-de-creation-devenement">Exemple de Création d'Événement</h3>
+<ul>
+<li><strong>Commande</strong> : <code>/create_event</code> </li>
+<li>Réunion Audit Sudoku 15/08/2024 14:00 - 18:00 30
+<img alt="Create Event" src="../images/Create_Event.png" /></li>
+<li><strong>Résultat</strong> : Un message embed est créé avec les détails de l'événement et les utilisateurs peuvent commencer à s'inscrire.
+<img alt="Result Event" src="../images/Event_Result.png" /></li>
+</ul>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>Les administrateurs doivent avoir les permissions nécessaires pour utiliser les boutons de gestion.</li>
+<li>Les utilisateurs ne peuvent s'inscrire qu'une seule fois par événement.</li>
+<li>Les créneaux horaires sont calculés automatiquement en fonction de l'heure de début et de la durée spécifiée lors de la création de l'événement.</li>
+</ul>
 
 
 

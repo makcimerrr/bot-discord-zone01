@@ -485,11 +485,53 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#soon" class="md-nav__link">
+  <a href="#fonctionnalites" class="md-nav__link">
     <span class="md-ellipsis">
-      SOON
+      Fonctionnalités
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnalités">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commande-update_jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commande !update_jobs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processus-de-mise-a-jour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processus de Mise à Jour
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autres-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Autres Détails
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -774,11 +816,53 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#soon" class="md-nav__link">
+  <a href="#fonctionnalites" class="md-nav__link">
     <span class="md-ellipsis">
-      SOON
+      Fonctionnalités
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnalités">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commande-update_jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commande !update_jobs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processus-de-mise-a-jour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processus de Mise à Jour
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autres-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Autres Détails
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -801,7 +885,27 @@
 
 
 <h1 id="module-de-gestion-des-alternances">Module de Gestion des Alternances</h1>
-<h2 id="soon">SOON</h2>
+<p>Ce module, intégré au bot Discord Zone01, est responsable de la gestion des offres d'emploi en alternance. Il utilise une API générale regroupement de multiples applications de recrutement comme Linkedin, Indeed, HelloWork etc... pour récupérer les dernières offres et les publier dans un canal spécifique.</p>
+<h2 id="fonctionnalites">Fonctionnalités</h2>
+<h3 id="commande-update_jobs">Commande <code>!update_jobs</code></h3>
+<ul>
+<li><strong>Description</strong> : Cette commande force la mise à jour des offres d'emploi en alternances uniquement.</li>
+<li><strong>Utilisation</strong> : Lorsqu'un utilisateur exécute cette commande, un message de chargement est envoyé pour indiquer que la mise à jour est en cours. Le bot récupère alors les offres d'emploi depuis LinkedIn, Indeed et autres APIs et les publie dans un canal de forum dédié.</li>
+</ul>
+<h3 id="processus-de-mise-a-jour">Processus de Mise à Jour</h3>
+<ol>
+<li><strong>Récupération des Offres</strong> : Le bot utilise les fonctions <code>fetch_api_intern</code> pour obtenir les offres d'emploi.</li>
+<li><strong>Création de Threads</strong> : Pour chaque offre valide (titre, entreprise, lien), le bot crée un nouveau thread dans le canal de forum spécifié. Si un thread avec le même titre existe déjà, il passe à l'offre suivante pour éviter les doublons.</li>
+<li><strong>Gestion des Erreurs</strong> : Si l'une des APIs échoue, le bot informe l'utilisateur via un message d'erreur approprié.</li>
+</ol>
+<h3 id="autres-details">Autres Détails</h3>
+<ul>
+<li><strong>Canaux et Rôles</strong> : Le module utilise des identifiants de canal et de rôle définis dans un fichier de configuration, facilitant la gestion des alertes pour les utilisateurs concernés.</li>
+<li><strong>Latence et Débogage</strong> : Des vérifications de latence sont intégrées, et le bot gère les erreurs liées aux appels API et à la création de threads.</li>
+</ul>
+<h3 id="installation">Installation</h3>
+<p>Pour activer ce module, utilisez la commande <code>!update_jobs</code> et suivez les instructions fournies par le bot. </p>
+<p>Ce module contribue à rendre l'accès aux offres d'emploi plus accessible pour les apprenants, en centralisant les informations pertinentes dans un seul endroit sur Discord.</p>
 
 
 
