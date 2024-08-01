@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#documentation-pour-la-gestion-des-taches-programmees-avec-asyncioscheduler-le-module-schedulerpy" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -630,6 +635,19 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Scheduler
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -640,6 +658,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#importations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnalites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnalités
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnalités">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fonctions-de-mise-a-jour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctions de mise à jour
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fonction-de-demarrage-du-planificateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonction de démarrage du planificateur
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d'utilisation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-des-erreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestion des erreurs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remarques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remarques
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -739,6 +854,94 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#importations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnalites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnalités
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnalités">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fonctions-de-mise-a-jour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctions de mise à jour
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fonction-de-demarrage-du-planificateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonction de démarrage du planificateur
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d'utilisation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-des-erreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestion des erreurs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remarques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remarques
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -756,9 +959,78 @@
   
 
 
-  <h1>Scheduler</h1>
-
-
+<h1 id="documentation-pour-la-gestion-des-taches-programmees-avec-asyncioscheduler-le-module-schedulerpy">Documentation pour la gestion des tâches programmées avec <code>AsyncIOScheduler</code>, le module scheduler.py</h1>
+<h2 id="description">Description</h2>
+<p>Ce module utilise <code>AsyncIOScheduler</code> de la bibliothèque <code>APScheduler</code> pour planifier des tâches asynchrones liées à la mise à jour des listes d'emplois et de CDI. Les tâches sont planifiées pour s'exécuter à des heures spécifiques chaque jour, en utilisant des fonctions définies pour envoyer des mises à jour des listes.</p>
+<h2 id="importations">Importations</h2>
+<ul>
+<li><strong><code>AsyncIOScheduler</code></strong> : Un planificateur de tâches asynchrone qui fonctionne avec la boucle d'événements <code>asyncio</code>.</li>
+<li><strong><code>JobCog</code></strong> et <strong><code>CDICog</code></strong> : Cogs définis dans les modules <code>cogs.gestion_jobs</code> et <code>cogs.gestion_cdi</code> respectivement, utilisés pour envoyer des listes d'emplois et de CDI.</li>
+</ul>
+<h2 id="fonctionnalites">Fonctionnalités</h2>
+<h3 id="fonctions-de-mise-a-jour">Fonctions de mise à jour</h3>
+<ol>
+<li><strong><code>joblist_morning(bot)</code></strong> :</li>
+<li>Instancie un objet <code>JobCog</code> avec le bot.</li>
+<li>Appelle la méthode <code>send_joblist()</code> pour envoyer la liste des emplois.</li>
+<li>
+<p>Imprime un message indiquant que la liste des emplois a été mise à jour pour la matinée.</p>
+</li>
+<li>
+<p><strong><code>joblist_evening(bot)</code></strong> :</p>
+</li>
+<li>Instancie un objet <code>JobCog</code> avec le bot.</li>
+<li>Appelle la méthode <code>send_joblist()</code> pour envoyer la liste des emplois.</li>
+<li>
+<p>Imprime un message indiquant que la liste des emplois a été mise à jour pour le soir.</p>
+</li>
+<li>
+<p><strong><code>cdi_morning(bot)</code></strong> :</p>
+</li>
+<li>Instancie un objet <code>CDICog</code> avec le bot.</li>
+<li>Appelle la méthode <code>send_cdilist()</code> pour envoyer la liste des CDI.</li>
+<li>
+<p>Imprime un message indiquant que la liste des CDI a été mise à jour pour la matinée.</p>
+</li>
+<li>
+<p><strong><code>cdi_evening(bot)</code></strong> :</p>
+</li>
+<li>Instancie un objet <code>CDICog</code> avec le bot.</li>
+<li>Appelle la méthode <code>send_cdilist()</code> pour envoyer la liste des CDI.</li>
+<li>Imprime un message indiquant que la liste des CDI a été mise à jour pour le soir.</li>
+</ol>
+<h3 id="fonction-de-demarrage-du-planificateur">Fonction de démarrage du planificateur</h3>
+<p><strong><code>start_scheduler(bot)</code></strong> :
+   - Configure les tâches programmées pour le bot.
+   - Utilise des tâches cron pour exécuter les mises à jour :
+     - <strong>Matin</strong> : À 9h00, appelle <code>joblist_morning(bot)</code> et <code>cdi_morning(bot)</code>.
+     - <strong>Soir</strong> : À 18h00, appelle <code>joblist_evening(bot)</code> et <code>cdi_evening(bot)</code>.
+   - Démarre le planificateur avec <code>scheduler.start()</code>.</p>
+<h2 id="exemples-dutilisation">Exemples d'utilisation</h2>
+<pre><code class="language-python"># Supposons que `bot` soit une instance de votre bot Discord
+start_scheduler(bot)
+</code></pre>
+<h2 id="gestion-des-erreurs">Gestion des erreurs</h2>
+<ul>
+<li>Les erreurs potentielles liées aux appels de méthodes <code>send_joblist()</code> et <code>send_cdilist()</code> doivent être gérées dans les définitions de ces méthodes. Les exceptions levées par ces appels seront capturées et traitées par les fonctions appelantes.</li>
+</ul>
+<h2 id="remarques">Remarques</h2>
+<ul>
+<li><strong>APScheduler</strong> :</li>
+<li>
+<p>Assurez-vous que <code>APScheduler</code> est correctement installé et configuré dans votre environnement. La configuration est nécessaire pour utiliser <code>AsyncIOScheduler</code> et les tâches cron.</p>
+</li>
+<li>
+<p><strong>Cogs</strong> :</p>
+</li>
+<li>
+<p>Assurez-vous que les cogs <code>JobCog</code> et <code>CDICog</code> sont correctement définis et importés. Les méthodes <code>send_joblist()</code> et <code>send_cdilist()</code> doivent être correctement implémentées dans ces cogs.</p>
+</li>
+<li>
+<p><strong>Bot</strong> :</p>
+</li>
+<li>Le paramètre <code>bot</code> passé aux fonctions doit être une instance valide de votre bot Discord, qui est utilisé pour interagir avec l'API Discord.</li>
+</ul>
 
 
 

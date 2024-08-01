@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#documentation-pour-le-module-job_fetcher" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -609,6 +614,19 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Fetch Jobs
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -619,6 +637,79 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details-de-limplementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Détails de l'implémentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnalite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnalité
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d'utilisation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-des-erreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestion des erreurs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remarques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remarques
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -739,6 +830,70 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details-de-limplementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Détails de l'implémentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnalite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnalité
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d'utilisation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-des-erreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestion des erreurs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remarques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remarques
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -756,9 +911,73 @@
   
 
 
-  <h1>Fetch Jobs</h1>
-
-
+<h1 id="documentation-pour-le-module-job_fetcher">Documentation pour le module job_fetcher</h1>
+<h2 id="description">Description</h2>
+<p>La fonction <code>fetch_api_intern</code> est une fonction asynchrone qui récupère des offres de stage pour des postes de Développeur Full Stack Alternant à Rouen, France, via l'API JSearch. Elle filtre les résultats pour ne conserver que les offres de stage publiées aujourd'hui.</p>
+<h2 id="details-de-limplementation">Détails de l'implémentation</h2>
+<ul>
+<li><strong>URL de l'API</strong> : <code>https://jsearch.p.rapidapi.com/search</code></li>
+<li><strong>Méthode HTTP utilisée</strong> : <code>GET</code></li>
+<li><strong>Paramètres de la requête</strong> :</li>
+<li><code>query</code> : "Full Stack Developer Alternant Rouen France"</li>
+<li><code>page</code> : "1"</li>
+<li><code>num_pages</code> : "1"</li>
+<li><code>date_posted</code> : "today"</li>
+<li><code>employment_types</code> : "INTERN"</li>
+<li>
+<p><code>radius</code> : "120"</p>
+</li>
+<li>
+<p><strong>En-têtes de la requête</strong> :</p>
+</li>
+<li><code>x-rapidapi-key</code> : Clé d'API récupérée depuis la variable d'environnement <code>RAPIDAPI_KEY</code></li>
+<li><code>x-rapidapi-host</code> : "jsearch.p.rapidapi.com"</li>
+</ul>
+<h2 id="fonctionnalite">Fonctionnalité</h2>
+<ol>
+<li><strong>Envoi de la requête</strong> :</li>
+<li>
+<p>La fonction envoie une requête HTTP GET à l'URL de l'API avec les en-têtes et paramètres définis.</p>
+</li>
+<li>
+<p><strong>Traitement de la réponse</strong> :</p>
+</li>
+<li>La fonction vérifie que la réponse est valide et lève une exception en cas d'erreur de requête (<code>RequestException</code>).</li>
+<li>Si la requête est réussie, elle extrait les données JSON de la réponse.</li>
+<li>
+<p>Elle retourne la liste des résultats sous la clé <code>'data'</code> si les données sont sous forme de liste ; sinon, elle retourne une liste vide.</p>
+</li>
+<li>
+<p><strong>Gestion des erreurs</strong> :</p>
+</li>
+<li>En cas d'échec de la requête, la fonction imprime un message d'erreur et retourne une liste vide.</li>
+</ol>
+<h2 id="exemples-dutilisation">Exemples d'utilisation</h2>
+<pre><code class="language-python">data = await fetch_api_intern()
+print(data)
+</code></pre>
+<h2 id="gestion-des-erreurs">Gestion des erreurs</h2>
+<ul>
+<li><strong>Exceptions possibles</strong> :</li>
+<li><code>requests.exceptions.RequestException</code> : Exception générale pour les erreurs de requête HTTP, comme les problèmes de connexion ou les réponses invalides.</li>
+</ul>
+<h2 id="remarques">Remarques</h2>
+<ul>
+<li><strong>Variables d'environnement</strong> :</li>
+<li>
+<p>Assurez-vous que la variable d'environnement <code>RAPIDAPI_KEY</code> est correctement définie et contient une clé API valide pour accéder à l'API JSearch.</p>
+</li>
+<li>
+<p><strong>Environnement asynchrone</strong> :</p>
+</li>
+<li>
+<p>La fonction est conçue pour être utilisée dans un environnement compatible avec <code>asyncio</code>, bien que la fonction utilise <code>requests</code>, qui est une bibliothèque synchrone. Pour une utilisation entièrement asynchrone, envisagez d'utiliser <code>aiohttp</code> à la place de <code>requests</code>.</p>
+</li>
+<li>
+<p><strong>Configuration</strong> :</p>
+</li>
+<li>Assurez-vous que les paramètres de la requête (comme <code>query</code>, <code>radius</code>, etc.) sont adaptés aux besoins spécifiques de votre recherche.</li>
+</ul>
 
 
 

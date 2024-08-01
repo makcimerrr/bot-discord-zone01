@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#documentation-pour-le-module-config_loader" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -651,6 +656,19 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Config Loader
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -661,6 +679,88 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details-de-limplementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Détails de l'implémentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnalite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnalité
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-globales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variables globales
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d'utilisation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-des-erreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestion des erreurs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remarques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remarques
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -739,6 +839,79 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details-de-limplementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Détails de l'implémentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnalite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnalité
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-globales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variables globales
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d'utilisation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-des-erreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestion des erreurs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remarques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remarques
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -756,9 +929,71 @@
   
 
 
-  <h1>Config Loader</h1>
+<h1 id="documentation-pour-le-module-config_loader">Documentation pour le module config_loader</h1>
+<h2 id="description">Description</h2>
+<p>La fonction <code>load_config</code> est utilisée pour charger et lire les paramètres de configuration depuis un fichier JSON. Ces paramètres sont ensuite utilisés pour configurer des variables globales nécessaires au fonctionnement d'une application.</p>
+<h2 id="details-de-limplementation">Détails de l'implémentation</h2>
+<ul>
+<li><strong>Fichier de configuration</strong> : <code>data/config.json</code></li>
+<li><strong>Format du fichier</strong> : JSON</li>
+</ul>
+<h2 id="fonctionnalite">Fonctionnalité</h2>
+<ol>
+<li><strong>Chargement du fichier de configuration</strong> :</li>
+<li>La fonction ouvre le fichier <code>data/config.json</code> en mode lecture.</li>
+<li>
+<p>Elle utilise la bibliothèque <code>json</code> pour lire le contenu du fichier et le convertir en dictionnaire Python.</p>
+</li>
+<li>
+<p><strong>Retour des données</strong> :</p>
+</li>
+<li>La fonction retourne le dictionnaire Python chargé à partir du fichier JSON.</li>
+</ol>
+<h2 id="variables-globales">Variables globales</h2>
+<p>Après l'appel à <code>load_config</code>, les variables globales suivantes sont définies en utilisant les données du fichier de configuration et des variables d'environnement :</p>
+<ul>
+<li><code>role_ping</code> : Valeur extraite de <code>config["role_ping"]</code></li>
+<li><code>role_ping_cdi</code> : Valeur extraite de <code>config["role_ping_cdi"]</code></li>
+<li><code>forum_channel_id</code> : Valeur extraite de <code>config["forum_channel_id"]</code></li>
+<li><code>forum_channel_id_cdi</code> : Valeur extraite de <code>config["forum_channel_id_cdi"]</code></li>
+<li><code>guild_id</code> : Valeur extraite de <code>config["guild_id"]</code></li>
+<li><code>discord_token</code> : Valeur de la variable d'environnement <code>TOKEN</code>, obtenue via <code>os.getenv("TOKEN")</code></li>
+</ul>
+<h2 id="exemples-dutilisation">Exemples d'utilisation</h2>
+<pre><code class="language-python"># Charger les configurations
+config = load_config()
 
+# Accéder aux paramètres de configuration
+print(config[&quot;role_ping&quot;])
+print(config[&quot;forum_channel_id&quot;])
 
+# Accéder aux variables globales
+print(role_ping)
+print(discord_token)
+</code></pre>
+<h2 id="gestion-des-erreurs">Gestion des erreurs</h2>
+<ul>
+<li>La fonction <code>load_config</code> suppose que le fichier <code>data/config.json</code> existe et est bien formé. En cas d'absence du fichier ou de format incorrect, des exceptions (<code>FileNotFoundError</code>, <code>json.JSONDecodeError</code>) peuvent être levées.</li>
+<li>La variable d'environnement <code>TOKEN</code> doit être définie pour obtenir le jeton Discord. Sinon, <code>discord_token</code> sera <code>None</code>.</li>
+</ul>
+<h2 id="remarques">Remarques</h2>
+<ul>
+<li><strong>Dépendances</strong> :</li>
+<li><code>python-dotenv</code> : Utilisé pour charger les variables d'environnement depuis un fichier <code>.env</code>.</li>
+<li>
+<p><code>json</code> : Utilisé pour lire les données du fichier de configuration en format JSON.</p>
+</li>
+<li>
+<p><strong>Fichier <code>.env</code></strong> :</p>
+</li>
+<li>
+<p>Assurez-vous que le fichier <code>.env</code> est présent et contient la variable <code>TOKEN</code> avec une clé valide pour l'application Discord.</p>
+</li>
+<li>
+<p><strong>Chemin du fichier</strong> :</p>
+</li>
+<li>Le fichier de configuration est supposé être situé dans le répertoire <code>data</code>. Modifiez le chemin si le fichier est stocké ailleurs.</li>
+</ul>
 
 
 
