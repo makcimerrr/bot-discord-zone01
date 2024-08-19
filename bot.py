@@ -11,28 +11,12 @@ from utils.scheduler import start_scheduler
 
 intents = discord.Intents.all()
 
-logging.basicConfig(level=logging.INFO)
-
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi', 'cogs.event_cog', 'cogs.helped_student']
 
 # Flag to check if the bot is loading for the first time
 first_ready = True
-
-
-@tasks.loop(minutes=5.0)
-async def keep_alive():
-    try:
-        await bot.ws.ping()
-        logging.info("Sent a ping to keep the connection alive")
-    except Exception as e:
-        logging.error(f"Error while sending ping: {e}")
-
-
-@keep_alive.before_loop
-async def before_keep_alive():
-    await bot.wait_until_ready()
 
 
 async def load_extensions(bot):
@@ -48,7 +32,6 @@ async def load_extensions(bot):
 async def on_ready():
     global first_ready
     print('Bot is ready.')
-    keep_alive.start()
 
     if first_ready:
         await load_extensions(bot)
