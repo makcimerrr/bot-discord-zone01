@@ -6,7 +6,7 @@ class PingCog(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-
+        
     @commands.command()
     async def ping(self, ctx):
         """Renvoie la latence du bot en millisecondes."""
