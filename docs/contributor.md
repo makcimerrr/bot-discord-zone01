@@ -1,31 +1,23 @@
-# ⚙️ Configuration
+# 🤝 Contribuer
 
-Pour que le bot fonctionne correctement, un fichier de configuration est nécessaire. Suivez ces instructions pour le configurer :
+Merci beaucoup pour votre intérêt à contribuer au projet Bot Discord Zone01 ! Nous sommes ravis de recevoir des contributions et d'améliorer ensemble ce bot. Voici comment vous pouvez participer :
 
-## 🗂️ Fichier `config.json`
+## 1. 🚨 Rapport de Bugs
+Si vous découvrez un bug, ouvrez un problème (issue) sur GitHub. Veuillez fournir autant de détails que possible pour nous aider à comprendre et résoudre le problème rapidement.
 
-Le fichier `data/config.json` doit être structuré comme suit :
+## 2. 💡 Soumettre une Fonctionnalité
+Si vous avez une idée d'amélioration ou une nouvelle fonctionnalité que vous aimeriez voir ajoutée, n'hésitez pas à soumettre une proposition. Nous apprécions les suggestions créatives qui peuvent enrichir le bot.
 
-```json
-{
-  "forum_channel_id": votre_canal_id,                   // ID du canal pour les offres d'alternance
-  "forum_channel_id_cdi": votre_canal_id_cdi,           // ID du canal pour les offres CDI, CDD, Freelance, Intérim
-  "role_ping": votre_role_id,                          // ID du rôle pour les notifications d'alternance
-  "role_ping_cdi": votre_role_id_cdi,                  // ID du rôle pour les notifications CDI, CDD, Freelance, Intérim
-  "guild_id": votre_guild_id,                          // ID de votre serveur Discord
-  "role_p1_2023": votre_role_id_p1_2023,               // ID du rôle pour les apprenants P1 2023
-  "role_p2_2023": votre_role_id_p2_2023,               // ID du rôle pour les apprenants P2 2023
-  "role_p1_2024": votre_role_id_p1_2024,               // ID du rôle pour les apprenants P1 2024
-  "role_help": votre_role_id_help                       // ID du rôle pour les demandes d'aide
-}
-```
-## 📝 Explications des Champs
-- `forum_channel_id` : L'ID du canal où les offres d'alternance seront publiées.
-- `forum_channel_id_cdi` : L'ID du canal où les offres CDI, CDD, Freelance, Intérim seront publiées.
-- `role_ping` : L'ID du rôle qui sera mentionné pour les notifications d'alternance.
-- `role_ping_cdi` : L'ID du rôle qui sera mentionné pour les notifications CDI, CDD, Freelance, Intérim.
-- `guild_id` : L'ID de votre serveur Discord, nécessaire pour que le bot puisse interagir avec le bon serveur.
-- `role_p1_2023` : L'ID du rôle pour les apprenants de la promo P1 2023.
-- `role_p2_2023` : L'ID du rôle pour les apprenants de la promo P2 2023.
-- `role_p1_2024` : L'ID du rôle pour les apprenants de la promo P1 2024.
-- `role_help` : L'ID du rôle utilisé pour les demandes d'aide.
+## 3. 🔄 Pull Requests
+Pour contribuer directement au code, suivez ces étapes :
+- **Fork le Dépôt** : Clonez le dépôt sur votre propre compte GitHub.
+- **Créez une Branche** : Créez une nouvelle branche pour votre fonctionnalité ou correction de bug.
+- **Effectuez vos Modifications** : Implémentez les changements nécessaires sur votre branche.
+- **Ouvrez une Pull Request** : Soumettez une Pull Request en décrivant les modifications apportées. Assurez-vous de bien expliquer les changements pour faciliter la revue.
+
+### 📜 Bonnes Pratiques
+- Respectez les bonnes pratiques de codage et suivez les conventions du projet.
+- Ajoutez des tests pour vérifier que vos modifications fonctionnent comme prévu.
+- Vérifiez que votre code est compatible avec les autres fonctionnalités du bot.
+
+Nous vous remercions pour votre aide et votre contribution à améliorer le Bot Discord Zone01 ! 🙌
