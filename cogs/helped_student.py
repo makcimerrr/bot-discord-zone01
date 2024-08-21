@@ -2,12 +2,20 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ui import Modal, TextInput, Button, View
-from utils.config_loader import role_help
+from utils.config_loader import role_help, role_p1_2023, role_p2_2023, role_p1_2024
+
+# Dictionnaire pour les IDs de canal associés aux rôles
+role_channel_mapping = {
+    role_p1_2023: 1045019188927938641,  # Remplacez par les IDs de vos canaux
+    role_p2_2023: 1133380731461193769,
+    role_p1_2024: 1222587487969611906
+}
 
 # Création de la classe pour les boutons
 class HelpView(discord.ui.View):
-    def __init__(self):
+    def __init__(self, bot: commands.Bot):
         super().__init__(timeout=None)
+        self.bot = bot  # Ajout du bot comme attribut
         self.session_open = True  # État initial de la session
 
     @discord.ui.button(label="Fermer la session", style=discord.ButtonStyle.danger, emoji="🔒")
@@ -60,6 +68,34 @@ class HelpView(discord.ui.View):
                 await interaction.message.edit(view=self)
                 await interaction.response.send_message("Le rôle vous a été retiré et votre pseudo a été réinitialisé.",
                                                         ephemeral=True)
+                # Supprimer les messages d'aide existants dans le canal du rôle
+                user_roles = [role.id for role in interaction.user.roles]
+                channel_id = None
+
+                # Vérifier les rôles et sélectionner le canal approprié
+                for role_id, target_channel_id in role_channel_mapping.items():
+                    if role_id in user_roles:
+                        channel_id = target_channel_id
+                        break
+
+                if channel_id:
+                    channel = interaction.guild.get_channel(channel_id)
+                    if channel:
+                        # Recherche des messages dans le canal correspondant
+                        async for message in channel.history(limit=100):
+                            if message.author == self.bot.user and "a besoin d'aide" in message.content and interaction.user.mention in message.content:
+                                try:
+                                    await message.delete()
+                                    #print(f"Deleted message: {message.id}")  # Debugging
+                                except discord.Forbidden:
+                                    print("Bot lacks permission to delete messages.")  # Debugging
+                                except discord.HTTPException as e:
+                                    print(f"Failed to delete message: {e}")  # Debugging
+                    else:
+                        await interaction.followup.send("Le canal pour envoyer le message d'aide est introuvable.", ephemeral=True)
+                else:
+                    await interaction.followup.send("Aucun canal correspondant aux rôles de l'utilisateur n'a été trouvé.", ephemeral=True)
+
             else:
                 await interaction.user.add_roles(role)  # Ajoute le rôle
                 # Ajoute le préfixe 🚨 uniquement si le pseudo actuel n'a pas déjà ce préfixe
@@ -75,8 +111,31 @@ class HelpView(discord.ui.View):
                 await interaction.message.edit(view=self)
                 await interaction.response.send_message("Vous avez été attribué le rôle et votre pseudo a été modifié.",
                                                         ephemeral=True)
+
+                # Determine the appropriate channel based on the user's roles
+                channel_id = None
+                user_roles = [role.id for role in interaction.user.roles]  # Get the list of role IDs of the user
+
+                #print("User Roles:", user_roles)  # Debugging line
+                #print("Role Channel Mapping:", role_channel_mapping)  # Debugging line
+
+                for role_id, target_channel_id in role_channel_mapping.items():
+                    if role_id in user_roles:
+                        channel_id = target_channel_id
+                        break
+
+                if channel_id:
+                    channel = interaction.guild.get_channel(channel_id)
+                    if channel:
+                        await channel.send(f"{interaction.user.mention} a besoin d'aide !")
+                    else:
+                        await interaction.followup.send(
+                            "Le canal pour envoyer le message d'aide est introuvable.", ephemeral=True)
+                else:
+                    await interaction.followup.send(
+                        "Aucun canal correspondant aux rôles de l'utilisateur n'a été trouvé.", ephemeral=True)
         else:
-            await interaction.response.send_message("Le rôle pour la demande d'aide n'existe pas.", ephemeral=True)
+            await interaction.followup.send("Le rôle pour la demande d'aide n'existe pas.", ephemeral=True)
 
 def is_admin():
     async def predicate(interaction: discord.Interaction) -> bool:
@@ -106,12 +165,11 @@ class HelpCommand(commands.Cog):
         embed.set_footer(text="Zone01",
                          icon_url="https://zone01rouennormandie.org/wp-content/uploads/2024/03/01talent-profil-400x400-1.jpg")
 
-        view = HelpView()
+        view = HelpView(self.bot)
 
         # Envoyer l'embed dans le canal spécifié
         await channel.send(embed=embed, view=view)
         await interaction.response.send_message(f"L'embed d'aide a été envoyé dans {channel.mention}.", ephemeral=True)
-
 
 async def setup(bot):
     await bot.add_cog(HelpCommand(bot))
