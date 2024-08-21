@@ -1,12 +1,12 @@
-# 🛠️ Documentation de la Commande `/send_embed_help`
+# 🛠️ Documentation de la Commande `/send_help_embed`
 
 ## Description
 
-La commande `/send_embed_help` permet d'envoyer un message d'aide dans un canal spécifique. Le message inclut un embed avec un bouton pour demander de l'aide. Selon le rôle de l'utilisateur, le message est envoyé dans un canal déterminé.
+La commande `/send_help_embed` permet d'envoyer un message d'aide dans un canal spécifique. Le message inclut un embed avec un bouton pour demander de l'aide. Selon le rôle de l'utilisateur, le message est envoyé dans un canal déterminé.
 
 ## Utilisation
 
-**Commande :** `/send_embed_help`
+**Commande :** `/send_help_embed`
 
 ### Paramètres
 
@@ -22,4 +22,3 @@ La commande `/send_embed_help` permet d'envoyer un message d'aide dans un canal 
 
 ```markdown
 /send_embed_help channel:<#123456789012345678>
-```
