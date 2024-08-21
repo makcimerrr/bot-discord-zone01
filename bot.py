@@ -13,7 +13,7 @@ intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi', 'cogs.event_cog', 'cogs.helped_student']
+initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi', 'cogs.event_cog', 'cogs.helped_student', 'cogs.embed_cog']
 
 # Flag to check if the bot is loading for the first time
 first_ready = True
