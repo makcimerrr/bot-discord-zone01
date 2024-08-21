@@ -772,9 +772,33 @@
         <li class="md-nav__item">
   <a href="#fichier-configjson" class="md-nav__link">
     <span class="md-ellipsis">
-      Fichier config.json
+      🗂️ Fichier config.json
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explications-des-champs" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Explications des Champs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Explications des Champs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assurez-vous-que-chaque-id-est-correctement-renseigne-pour-que-le-bot-fonctionne-comme-prevu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assurez-vous que chaque ID est correctement renseigné pour que le bot fonctionne comme prévu. 🛠️
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -835,9 +859,33 @@
         <li class="md-nav__item">
   <a href="#fichier-configjson" class="md-nav__link">
     <span class="md-ellipsis">
-      Fichier config.json
+      🗂️ Fichier config.json
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explications-des-champs" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Explications des Champs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Explications des Champs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assurez-vous-que-chaque-id-est-correctement-renseigne-pour-que-le-bot-fonctionne-comme-prevu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assurez-vous que chaque ID est correctement renseigné pour que le bot fonctionne comme prévu. 🛠️
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -859,22 +907,36 @@
   
 
 
-<h1 id="configuration">Configuration</h1>
-<p>Le bot nécessite un fichier de configuration pour fonctionner correctement. Voici comment le configurer :</p>
-<h2 id="fichier-configjson">Fichier <code>config.json</code></h2>
+<h1 id="configuration">⚙️ Configuration</h1>
+<p>Pour que le bot fonctionne correctement, un fichier de configuration est nécessaire. Suivez ces instructions pour le configurer :</p>
+<h2 id="fichier-configjson">🗂️ Fichier <code>config.json</code></h2>
 <p>Le fichier <code>data/config.json</code> doit être structuré comme suit :</p>
 <pre><code class="language-json">{
-  &quot;forum_channel_id&quot;: votre_canal_id,
-  &quot;forum_channel_id_cdi&quot;: votre_canal_id_cdi,
-  &quot;role_ping&quot;: votre_role_id, ,
-  &quot;role_ping_cdi&quot;: votre_role_id_cdi,
-  &quot;guild_id&quot;: votre_guild_id,
-  &quot;role_p1_2023&quot;: votre_role_id_p1_2023,
-  &quot;role_p2_2023&quot;: votre_role_id_p2_2023,
-  &quot;role_p1_2024&quot;: votre_role_id_p1_2024,
-  &quot;role_help&quot;: votre_role_id_help
+  &quot;forum_channel_id&quot;: votre_canal_id,                   // ID du canal pour les offres d'alternance
+  &quot;forum_channel_id_cdi&quot;: votre_canal_id_cdi,           // ID du canal pour les offres CDI, CDD, Freelance, Intérim
+  &quot;role_ping&quot;: votre_role_id,                          // ID du rôle pour les notifications d'alternance
+  &quot;role_ping_cdi&quot;: votre_role_id_cdi,                  // ID du rôle pour les notifications CDI, CDD, Freelance, Intérim
+  &quot;guild_id&quot;: votre_guild_id,                          // ID de votre serveur Discord
+  &quot;role_p1_2023&quot;: votre_role_id_p1_2023,               // ID du rôle pour les apprenants P1 2023
+  &quot;role_p2_2023&quot;: votre_role_id_p2_2023,               // ID du rôle pour les apprenants P2 2023
+  &quot;role_p1_2024&quot;: votre_role_id_p1_2024,               // ID du rôle pour les apprenants P1 2024
+  &quot;role_help&quot;: votre_role_id_help                       // ID du rôle pour les demandes d'aide
 }
 </code></pre>
+<h2 id="explications-des-champs">📝 Explications des Champs</h2>
+<ul>
+<li><code>forum_channel_id</code> : L'ID du canal où les offres d'alternance seront publiées.</li>
+<li><code>forum_channel_id_cdi</code> : L'ID du canal où les offres CDI, CDD, Freelance, Intérim seront publiées.</li>
+<li><code>role_ping</code> : L'ID du rôle qui sera mentionné pour les notifications d'alternance.</li>
+<li><code>role_ping_cdi</code> : L'ID du rôle qui sera mentionné pour les notifications CDI, CDD, Freelance, Intérim.</li>
+<li><code>guild_id</code> : L'ID de votre serveur Discord, nécessaire pour que le bot puisse interagir avec le bon serveur.</li>
+<li><code>role_p1_2023</code> : L'ID du rôle pour les apprenants de la promo P1 2023.</li>
+<li><code>role_p2_2023</code> : L'ID du rôle pour les apprenants de la promo P2 2023.</li>
+<li><code>role_p1_2024</code> : L'ID du rôle pour les apprenants de la promo P1 2024.</li>
+<li><code>role_help</code> : L'ID du rôle utilisé pour les demandes d'aide.</li>
+</ul>
+<h3 id="assurez-vous-que-chaque-id-est-correctement-renseigne-pour-que-le-bot-fonctionne-comme-prevu">Assurez-vous que chaque ID est correctement renseigné pour que le bot fonctionne comme prévu. 🛠️</h3>
+<p>Cette version est conçue pour être plus engageante et facile à comprendre, avec des commentaires pour expliquer chaque champ dans le fichier de configuration.</p>
 
 
 
