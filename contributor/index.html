@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#contribuer" class="md-skip">
+        <a href="#configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -517,7 +517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cogs/gestion_ask_help.md" class="md-nav__link">
+      <a href="../cogs/gestion_ask_help/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -788,27 +788,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-rapport-de-bugs" class="md-nav__link">
+  <a href="#fichier-configjson" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Rapport de bugs
+      🗂️ Fichier config.json
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-soumettre-une-fonctionnalite" class="md-nav__link">
+  <a href="#explications-des-champs" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Soumettre une fonctionnalité
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-pull-requests" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Pull Requests
+      📝 Explications des Champs
     </span>
   </a>
   
@@ -849,27 +840,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-rapport-de-bugs" class="md-nav__link">
+  <a href="#fichier-configjson" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Rapport de bugs
+      🗂️ Fichier config.json
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-soumettre-une-fonctionnalite" class="md-nav__link">
+  <a href="#explications-des-champs" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Soumettre une fonctionnalité
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-pull-requests" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Pull Requests
+      📝 Explications des Champs
     </span>
   </a>
   
@@ -893,20 +875,34 @@
   
 
 
-<h1 id="contribuer">Contribuer</h1>
-<p>Merci de votre intérêt pour contribuer au projet Bot Discord Zone01 ! Voici comment vous pouvez aider :</p>
-<h2 id="1-rapport-de-bugs">1. Rapport de bugs</h2>
-<p>Si vous trouvez un bug, ouvrez un problème sur GitHub en fournissant autant de détails que possible.</p>
-<h2 id="2-soumettre-une-fonctionnalite">2. Soumettre une fonctionnalité</h2>
-<p>Si vous avez une idée d'amélioration, n'hésitez pas à soumettre une proposition.</p>
-<h2 id="3-pull-requests">3. Pull Requests</h2>
+<h1 id="configuration">⚙️ Configuration</h1>
+<p>Pour que le bot fonctionne correctement, un fichier de configuration est nécessaire. Suivez ces instructions pour le configurer :</p>
+<h2 id="fichier-configjson">🗂️ Fichier <code>config.json</code></h2>
+<p>Le fichier <code>data/config.json</code> doit être structuré comme suit :</p>
+<pre><code class="language-json">{
+  &quot;forum_channel_id&quot;: votre_canal_id,                   // ID du canal pour les offres d'alternance
+  &quot;forum_channel_id_cdi&quot;: votre_canal_id_cdi,           // ID du canal pour les offres CDI, CDD, Freelance, Intérim
+  &quot;role_ping&quot;: votre_role_id,                          // ID du rôle pour les notifications d'alternance
+  &quot;role_ping_cdi&quot;: votre_role_id_cdi,                  // ID du rôle pour les notifications CDI, CDD, Freelance, Intérim
+  &quot;guild_id&quot;: votre_guild_id,                          // ID de votre serveur Discord
+  &quot;role_p1_2023&quot;: votre_role_id_p1_2023,               // ID du rôle pour les apprenants P1 2023
+  &quot;role_p2_2023&quot;: votre_role_id_p2_2023,               // ID du rôle pour les apprenants P2 2023
+  &quot;role_p1_2024&quot;: votre_role_id_p1_2024,               // ID du rôle pour les apprenants P1 2024
+  &quot;role_help&quot;: votre_role_id_help                       // ID du rôle pour les demandes d'aide
+}
+</code></pre>
+<h2 id="explications-des-champs">📝 Explications des Champs</h2>
 <ul>
-<li>Fork le dépôt.</li>
-<li>Créez une branche pour votre fonctionnalité ou correction de bug.</li>
-<li>Effectuez vos modifications.</li>
-<li>Ouvrez une Pull Request en décrivant les changements.</li>
+<li><code>forum_channel_id</code> : L'ID du canal où les offres d'alternance seront publiées.</li>
+<li><code>forum_channel_id_cdi</code> : L'ID du canal où les offres CDI, CDD, Freelance, Intérim seront publiées.</li>
+<li><code>role_ping</code> : L'ID du rôle qui sera mentionné pour les notifications d'alternance.</li>
+<li><code>role_ping_cdi</code> : L'ID du rôle qui sera mentionné pour les notifications CDI, CDD, Freelance, Intérim.</li>
+<li><code>guild_id</code> : L'ID de votre serveur Discord, nécessaire pour que le bot puisse interagir avec le bon serveur.</li>
+<li><code>role_p1_2023</code> : L'ID du rôle pour les apprenants de la promo P1 2023.</li>
+<li><code>role_p2_2023</code> : L'ID du rôle pour les apprenants de la promo P2 2023.</li>
+<li><code>role_p1_2024</code> : L'ID du rôle pour les apprenants de la promo P1 2024.</li>
+<li><code>role_help</code> : L'ID du rôle utilisé pour les demandes d'aide.</li>
 </ul>
-<p>Merci de respecter les bonnes pratiques de codage et d'ajouter des tests si nécessaire !</p>
 
 
 

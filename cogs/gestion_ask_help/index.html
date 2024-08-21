@@ -10,21 +10,25 @@
         <meta name="author" content="Makcimerrr">
       
       
-        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/gestion_ask_help/">
+        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/cogs/gestion_ask_help/">
       
       
+        <link rel="prev" href="../embed_session_cog/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+        <link rel="next" href="../../utils/cdi_fetcher/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.32">
     
     
       
-        <title>🛠️ Documentation de la Commande /send_embed_help - Documentation du Bot Discord Zone01</title>
+        <title>Gestion Ask Help - Documentation du Bot Discord Zone01</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.3cba04c6.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
       
       
 
@@ -43,7 +47,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -62,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#documentation-de-la-commande-send_embed_help" class="md-skip">
+        <a href="#documentation-de-la-commande-send_help_embed" class="md-skip">
           Skip to content
         </a>
       
@@ -78,7 +82,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Documentation du Bot Discord Zone01" class="md-header__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
+    <a href="../.." title="Documentation du Bot Discord Zone01" class="md-header__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -98,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              🛠️ Documentation de la Commande /send_embed_help
+              Gestion Ask Help
             
           </span>
         </div>
@@ -185,7 +189,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Documentation du Bot Discord Zone01" class="md-nav__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
+    <a href="../.." title="Documentation du Bot Discord Zone01" class="md-nav__button md-logo" aria-label="Documentation du Bot Discord Zone01" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -215,7 +219,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -270,7 +274,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guide/introduction/" class="md-nav__link">
+      <a href="../../guide/introduction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -291,7 +295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guide/commandes/" class="md-nav__link">
+      <a href="../../guide/commandes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -316,17 +320,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -340,7 +346,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Référence API
@@ -351,17 +357,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
         
           
           <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
@@ -375,7 +383,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             Cogs
@@ -389,7 +397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cogs/gestion_cdi/" class="md-nav__link">
+      <a href="../gestion_cdi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -410,7 +418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cogs/gestion_help/" class="md-nav__link">
+      <a href="../gestion_help/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -431,7 +439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cogs/gestion_jobs/" class="md-nav__link">
+      <a href="../gestion_jobs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -452,7 +460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cogs/gestion_ping/" class="md-nav__link">
+      <a href="../gestion_ping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -473,7 +481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cogs/event_cog/" class="md-nav__link">
+      <a href="../event_cog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -494,7 +502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cogs/embed_session_cog/" class="md-nav__link">
+      <a href="../embed_session_cog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -512,10 +520,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../cogs/gestion_ask_help.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Gestion Ask Help
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -524,6 +552,77 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilisation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paramètres
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemple
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -621,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/cdi_fetcher/" class="md-nav__link">
+      <a href="../../utils/cdi_fetcher/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -642,7 +741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/job_fetcher/" class="md-nav__link">
+      <a href="../../utils/job_fetcher/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -663,7 +762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/scheduler/" class="md-nav__link">
+      <a href="../../utils/scheduler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -684,7 +783,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/config_loader/" class="md-nav__link">
+      <a href="../../utils/config_loader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -720,7 +819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../config/" class="md-nav__link">
+      <a href="../../config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -740,7 +839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributor/" class="md-nav__link">
+      <a href="../../contributor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -848,11 +947,11 @@
   
 
 
-<h1 id="documentation-de-la-commande-send_embed_help">🛠️ Documentation de la Commande <code>/send_embed_help</code></h1>
+<h1 id="documentation-de-la-commande-send_help_embed">🛠️ Documentation de la Commande <code>/send_help_embed</code></h1>
 <h2 id="description">Description</h2>
-<p>La commande <code>/send_embed_help</code> permet d'envoyer un message d'aide dans un canal spécifique. Le message inclut un embed avec un bouton pour demander de l'aide. Selon le rôle de l'utilisateur, le message est envoyé dans un canal déterminé.</p>
+<p>La commande <code>/send_help_embed</code> permet d'envoyer un message d'aide dans un canal spécifique. Le message inclut un embed avec un bouton pour demander de l'aide. Selon le rôle de l'utilisateur, le message est envoyé dans un canal déterminé.</p>
 <h2 id="utilisation">Utilisation</h2>
-<p><strong>Commande :</strong> <code>/send_embed_help</code></p>
+<p><strong>Commande :</strong> <code>/send_help_embed</code></p>
 <h3 id="parametres">Paramètres</h3>
 <ul>
 <li><strong>channel</strong> <em>(Type : <code>TextChannel</code>)</em> : Le canal où l'embed d'aide sera envoyé.</li>
@@ -864,8 +963,8 @@
 <li><strong>Réponses et Réactions :</strong> La commande ajoute des réactions au message pour simuler un sondage ou des réponses.</li>
 </ol>
 <h3 id="exemple">Exemple</h3>
-<pre><code class="language-markdown">/send_embed_help channel:&lt;#123456789012345678&gt;
-</code></pre>
+<p>```markdown
+/send_embed_help channel:&lt;#123456789012345678&gt;</p>
 
 
 
@@ -916,10 +1015,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.471ce7a9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.471ce7a9.min.js"></script>
       
     
   </body>
