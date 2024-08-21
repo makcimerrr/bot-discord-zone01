@@ -16,6 +16,16 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/gestion_ask_help/</loc>
+         <lastmod>2024-08-21</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://makcimerrr.github.io/bot-discord-zone01/cogs/embed_session_cog/</loc>
+         <lastmod>2024-08-21</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://makcimerrr.github.io/bot-discord-zone01/cogs/event_cog/</loc>
          <lastmod>2024-08-21</lastmod>
          <changefreq>daily</changefreq>

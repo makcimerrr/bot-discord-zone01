@@ -10,13 +10,13 @@
         <meta name="author" content="Makcimerrr">
       
       
-        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/utils/config_loader/">
+        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/cogs/embed_session_cog/">
       
       
-        <link rel="prev" href="../scheduler/">
+        <link rel="prev" href="../event_cog/">
       
       
-        <link rel="next" href="../../config/">
+        <link rel="next" href="../../utils/cdi_fetcher/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Config Loader - Documentation du Bot Discord Zone01</title>
+        <title>Gestion Embed Session - Documentation du Bot Discord Zone01</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#documentation-pour-le-module-config_loader" class="md-skip">
+        <a href="#documentation-de-la-commande-create_embed" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Config Loader
+              Gestion Embed Session
             
           </span>
         </div>
@@ -320,17 +320,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -344,7 +346,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Référence API
@@ -355,17 +357,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
         
           
           <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
@@ -379,7 +383,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             Cogs
@@ -393,7 +397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cogs/gestion_cdi/" class="md-nav__link">
+      <a href="../gestion_cdi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,7 +418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cogs/gestion_help/" class="md-nav__link">
+      <a href="../gestion_help/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -435,7 +439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cogs/gestion_jobs/" class="md-nav__link">
+      <a href="../gestion_jobs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -456,7 +460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cogs/gestion_ping/" class="md-nav__link">
+      <a href="../gestion_ping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -477,7 +481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cogs/event_cog/" class="md-nav__link">
+      <a href="../event_cog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -495,10 +499,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../cogs/embed_session_cog/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Gestion Embed Session
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -507,6 +531,77 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilisation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paramètres
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemple
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -519,7 +614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cogs/gestion_ask_help.md" class="md-nav__link">
+      <a href="../gestion_ask_help.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -552,19 +647,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -578,7 +671,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Utilitaires
@@ -589,19 +682,17 @@
                 
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
           <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
@@ -615,7 +706,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             Utils
@@ -629,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cdi_fetcher/" class="md-nav__link">
+      <a href="../../utils/cdi_fetcher/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -650,7 +741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../job_fetcher/" class="md-nav__link">
+      <a href="../../utils/job_fetcher/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -671,7 +762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scheduler/" class="md-nav__link">
+      <a href="../../utils/scheduler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -689,30 +780,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Config Loader
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../utils/config_loader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -721,89 +792,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    <span class="md-ellipsis">
-      Description
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#details-de-limplementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Détails de l'implémentation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fonctionnalite" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fonctionnalité
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#variables-globales" class="md-nav__link">
-    <span class="md-ellipsis">
-      Variables globales
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exemples-dutilisation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Exemples d'utilisation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#gestion-des-erreurs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gestion des erreurs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#remarques" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remarques
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -900,56 +888,44 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#details-de-limplementation" class="md-nav__link">
+  <a href="#utilisation" class="md-nav__link">
     <span class="md-ellipsis">
-      Détails de l'implémentation
+      Utilisation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paramètres
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#fonctionnalite" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
     <span class="md-ellipsis">
-      Fonctionnalité
+      Fonctionnement
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#variables-globales" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#exemple" class="md-nav__link">
     <span class="md-ellipsis">
-      Variables globales
+      Exemple
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#exemples-dutilisation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Exemples d'utilisation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#gestion-des-erreurs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gestion des erreurs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#remarques" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remarques
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -971,71 +947,33 @@
   
 
 
-<h1 id="documentation-pour-le-module-config_loader">Documentation pour le module config_loader</h1>
+<h1 id="documentation-de-la-commande-create_embed">✨ Documentation de la Commande <code>/create_embed</code></h1>
 <h2 id="description">Description</h2>
-<p>La fonction <code>load_config</code> est utilisée pour charger et lire les paramètres de configuration depuis un fichier JSON. Ces paramètres sont ensuite utilisés pour configurer des variables globales nécessaires au fonctionnement d'une application.</p>
-<h2 id="details-de-limplementation">Détails de l'implémentation</h2>
+<p>La commande <code>/create_embed</code> permet de créer un embed personnalisé. L'utilisateur remplit un formulaire avec des informations telles que le titre, la description, le pied de page, le nombre de sessions et le maximum de personnes par session. L'embed est ensuite envoyé dans le canal d'origine de la commande.</p>
+<h2 id="utilisation">Utilisation</h2>
+<p><strong>Commande :</strong> <code>/create_embed</code></p>
+<h3 id="parametres">Paramètres</h3>
 <ul>
-<li><strong>Fichier de configuration</strong> : <code>data/config.json</code></li>
-<li><strong>Format du fichier</strong> : JSON</li>
+<li><strong>channel</strong> <em>(Type : <code>TextChannel</code>)</em> : Le canal où l'embed de demande de session sera envoyé.</li>
 </ul>
-<h2 id="fonctionnalite">Fonctionnalité</h2>
+<h3 id="fonctionnement">Fonctionnement</h3>
 <ol>
-<li><strong>Chargement du fichier de configuration</strong> :</li>
-<li>La fonction ouvre le fichier <code>data/config.json</code> en mode lecture.</li>
+<li><strong>Formulaire de Création :</strong> Un modal est présenté à l'utilisateur pour entrer les informations suivantes :</li>
+<li><strong>Event Title</strong> <em>(Titre de l'événement)</em> 🎉</li>
+<li><strong>Description</strong> <em>(Description de l'événement)</em> 📝</li>
+<li><strong>Footer</strong> <em>(Pied de page de l'embed)</em> 📜</li>
+<li><strong>Number of Sessions</strong> <em>(Nombre de sessions)</em> 🔢</li>
 <li>
-<p>Elle utilise la bibliothèque <code>json</code> pour lire le contenu du fichier et le convertir en dictionnaire Python.</p>
+<p><strong>How much by session</strong> <em>(Nombre maximum de personnes par session)</em> 👥</p>
 </li>
 <li>
-<p><strong>Retour des données</strong> :</p>
+<p><strong>Envoi de l'Embed :</strong> Une fois le formulaire soumis, l'embed est créé avec les informations fournies et est envoyé dans le canal où la commande a été exécutée.</p>
 </li>
-<li>La fonction retourne le dictionnaire Python chargé à partir du fichier JSON.</li>
+<li><strong>Ajout de Réactions :</strong> Des réactions sont ajoutées à l'embed pour permettre aux utilisateurs de voter ou de répondre au sondage. ✅</li>
 </ol>
-<h2 id="variables-globales">Variables globales</h2>
-<p>Après l'appel à <code>load_config</code>, les variables globales suivantes sont définies en utilisant les données du fichier de configuration et des variables d'environnement :</p>
-<ul>
-<li><code>role_ping</code> : Valeur extraite de <code>config["role_ping"]</code></li>
-<li><code>role_ping_cdi</code> : Valeur extraite de <code>config["role_ping_cdi"]</code></li>
-<li><code>forum_channel_id</code> : Valeur extraite de <code>config["forum_channel_id"]</code></li>
-<li><code>forum_channel_id_cdi</code> : Valeur extraite de <code>config["forum_channel_id_cdi"]</code></li>
-<li><code>guild_id</code> : Valeur extraite de <code>config["guild_id"]</code></li>
-<li><code>discord_token</code> : Valeur de la variable d'environnement <code>TOKEN</code>, obtenue via <code>os.getenv("TOKEN")</code></li>
-</ul>
-<h2 id="exemples-dutilisation">Exemples d'utilisation</h2>
-<pre><code class="language-python"># Charger les configurations
-config = load_config()
-
-# Accéder aux paramètres de configuration
-print(config[&quot;role_ping&quot;])
-print(config[&quot;forum_channel_id&quot;])
-
-# Accéder aux variables globales
-print(role_ping)
-print(discord_token)
+<h3 id="exemple">Exemple</h3>
+<pre><code class="language-markdown">/create_embed channel:&lt;#123456789012345678&gt;
 </code></pre>
-<h2 id="gestion-des-erreurs">Gestion des erreurs</h2>
-<ul>
-<li>La fonction <code>load_config</code> suppose que le fichier <code>data/config.json</code> existe et est bien formé. En cas d'absence du fichier ou de format incorrect, des exceptions (<code>FileNotFoundError</code>, <code>json.JSONDecodeError</code>) peuvent être levées.</li>
-<li>La variable d'environnement <code>TOKEN</code> doit être définie pour obtenir le jeton Discord. Sinon, <code>discord_token</code> sera <code>None</code>.</li>
-</ul>
-<h2 id="remarques">Remarques</h2>
-<ul>
-<li><strong>Dépendances</strong> :</li>
-<li><code>python-dotenv</code> : Utilisé pour charger les variables d'environnement depuis un fichier <code>.env</code>.</li>
-<li>
-<p><code>json</code> : Utilisé pour lire les données du fichier de configuration en format JSON.</p>
-</li>
-<li>
-<p><strong>Fichier <code>.env</code></strong> :</p>
-</li>
-<li>
-<p>Assurez-vous que le fichier <code>.env</code> est présent et contient la variable <code>TOKEN</code> avec une clé valide pour l'application Discord.</p>
-</li>
-<li>
-<p><strong>Chemin du fichier</strong> :</p>
-</li>
-<li>Le fichier de configuration est supposé être situé dans le répertoire <code>data</code>. Modifiez le chemin si le fichier est stocké ailleurs.</li>
-</ul>
 
 
 
