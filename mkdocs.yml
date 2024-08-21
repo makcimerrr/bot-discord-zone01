@@ -13,6 +13,8 @@ nav:
           - Gestion Jobs: cogs/gestion_jobs.md
           - Gestion Ping: cogs/gestion_ping.md
           - Gestion Event: cogs/event_cog.md
+          - Gestion Embed Session: cogs/embed_session_cog.md
+          - Gestion Ask Help: cogs/gestion_ask_help.md
   - Utilitaires:
       - Utils:
           - Fetch CDI: utils/cdi_fetcher.md
