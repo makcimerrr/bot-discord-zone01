@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import asyncio
 
-from utils.config_loader import forum_channel_id, role_ping, guild_id
+from utils.config_loader import forum_channel_id, role_ping, guild_id, role_p1_2023, role_p2_2023
 from utils.intern_fetcher import fetch_api_intern
 
 
@@ -78,7 +78,7 @@ class JobCog(commands.Cog):
                     thread_title = f"{company} - {title}"
 
                     if date and link:
-                        thread_content = f"Bonjour <@&{role_ping}> ! Offre d'alternance sur **{city}**, chez **{company}** qui recherche un développeur **{title}** utilisant les technologies suivantes : **{technologies}**. Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
+                        thread_content = f"Bonjour <@&{role_p1_2023}> et <@&{role_p2_2023}> ! Offre d'alternance sur **{city}**, chez **{company}** qui recherche un développeur **{title}** utilisant les technologies suivantes : **{technologies}**. Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
 
                         # Chercher un thread existant avec le même titre
                         existing_thread = None
