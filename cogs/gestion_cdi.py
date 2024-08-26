@@ -44,7 +44,7 @@ class CDICog(commands.Cog):
 
             if ctx:
                 if not list_jobs:
-                    await ctx.send("Erreur lors de la récupération des offres d'emploi pour les CDI.")
+                    await ctx.send("Aucune nouvelles offres d'emploi pour les CDI.")
                     verif = True
 
                 if verif:
