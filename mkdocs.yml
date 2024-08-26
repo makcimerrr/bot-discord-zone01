@@ -15,8 +15,7 @@ nav:
           - Gestion Event: cogs/event_cog.md
           - Gestion Embed Session: cogs/embed_session_cog.md
           - Gestion Ask Help: cogs/gestion_ask_help.md
-  - Utilitaires:
-      - Utils:
+  - Utils:
           - Fetch CDI: utils/cdi_fetcher.md
           - Fetch Jobs: utils/job_fetcher.md
           - Scheduler: utils/scheduler.md
