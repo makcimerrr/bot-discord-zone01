@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ui import Modal, TextInput, Button, View
-from utils.config_loader import role_help, role_p1_2023, role_p2_2023, role_p1_2024
+from utils.config_loader import role_help, role_p1_2023, role_p2_2023, role_p1_2024, channel_inter_promo
 
 # Dictionnaire pour les IDs de canal associés aux rôles
 role_channel_mapping = {
@@ -61,22 +61,23 @@ class HelpView(discord.ui.View):
                     await interaction.user.edit(nick=original_nick)
 
                 # Change le bouton pour revenir à l'état initial
-                button.label = "Demander de l'aide"
-                button.style = discord.ButtonStyle.success
-                button.emoji = "✅"
+                # button.label = "Demander de l'aide"
+                # button.style = discord.ButtonStyle.success
+                # button.emoji = "✅"
 
-                await interaction.message.edit(view=self)
+                # await interaction.message.edit(view=self)
                 await interaction.response.send_message("Le rôle vous a été retiré et votre pseudo a été réinitialisé.",
                                                         ephemeral=True)
                 # Supprimer les messages d'aide existants dans le canal du rôle
-                user_roles = [role.id for role in interaction.user.roles]
-                channel_id = None
+                # user_roles = [role.id for role in interaction.user.roles]
+                # channel_id = None
+                channel_id = channel_inter_promo
 
                 # Vérifier les rôles et sélectionner le canal approprié
-                for role_id, target_channel_id in role_channel_mapping.items():
-                    if role_id in user_roles:
-                        channel_id = target_channel_id
-                        break
+                # for role_id, target_channel_id in role_channel_mapping.items():
+                    # if role_id in user_roles:
+                        # channel_id = target_channel_id
+                        # break
 
                 if channel_id:
                     channel = interaction.guild.get_channel(channel_id)
@@ -104,25 +105,26 @@ class HelpView(discord.ui.View):
                     await interaction.user.edit(nick=new_nickname)
 
                 # Change l'aspect du bouton une fois le rôle attribué
-                button.label = "Rôle attribué"
-                button.style = discord.ButtonStyle.danger  # Change la couleur du bouton
-                button.emoji = "❌"
+                # button.label = "Rôle attribué"
+                # button.style = discord.ButtonStyle.danger  # Change la couleur du bouton
+                # button.emoji = "❌"
 
-                await interaction.message.edit(view=self)
+                # await interaction.message.edit(view=self)
                 await interaction.response.send_message("Vous avez été attribué le rôle et votre pseudo a été modifié.",
                                                         ephemeral=True)
 
                 # Determine the appropriate channel based on the user's roles
-                channel_id = None
-                user_roles = [role.id for role in interaction.user.roles]  # Get the list of role IDs of the user
+                # channel_id = None
+                channel_id = channel_inter_promo
+                # user_roles = [role.id for role in interaction.user.roles]  # Get the list of role IDs of the user
 
                 #print("User Roles:", user_roles)  # Debugging line
                 #print("Role Channel Mapping:", role_channel_mapping)  # Debugging line
 
-                for role_id, target_channel_id in role_channel_mapping.items():
-                    if role_id in user_roles:
-                        channel_id = target_channel_id
-                        break
+                # for role_id, target_channel_id in role_channel_mapping.items():
+                    # if role_id in user_roles:
+                        # channel_id = target_channel_id
+                        # break
 
                 if channel_id:
                     channel = interaction.guild.get_channel(channel_id)
