@@ -69,15 +69,15 @@ class HelpView(discord.ui.View):
                 await interaction.response.send_message("Le rôle vous a été retiré et votre pseudo a été réinitialisé.",
                                                         ephemeral=True)
                 # Supprimer les messages d'aide existants dans le canal du rôle
-                # user_roles = [role.id for role in interaction.user.roles]
-                # channel_id = None
-                channel_id = channel_inter_promo
+                user_roles = [role.id for role in interaction.user.roles]
+                channel_id = None
+                # channel_id = channel_inter_promo
 
                 # Vérifier les rôles et sélectionner le canal approprié
-                # for role_id, target_channel_id in role_channel_mapping.items():
-                    # if role_id in user_roles:
-                        # channel_id = target_channel_id
-                        # break
+                for role_id, target_channel_id in role_channel_mapping.items():
+                    if role_id in user_roles:
+                        channel_id = target_channel_id
+                        break
 
                 if channel_id:
                     channel = interaction.guild.get_channel(channel_id)
@@ -114,17 +114,17 @@ class HelpView(discord.ui.View):
                                                         ephemeral=True)
 
                 # Determine the appropriate channel based on the user's roles
-                # channel_id = None
-                channel_id = channel_inter_promo
-                # user_roles = [role.id for role in interaction.user.roles]  # Get the list of role IDs of the user
+                channel_id = None
+                # channel_id = channel_inter_promo
+                user_roles = [role.id for role in interaction.user.roles]  # Get the list of role IDs of the user
 
-                #print("User Roles:", user_roles)  # Debugging line
-                #print("Role Channel Mapping:", role_channel_mapping)  # Debugging line
+                print("User Roles:", user_roles)  # Debugging line
+                print("Role Channel Mapping:", role_channel_mapping)  # Debugging line
 
-                # for role_id, target_channel_id in role_channel_mapping.items():
-                    # if role_id in user_roles:
-                        # channel_id = target_channel_id
-                        # break
+                for role_id, target_channel_id in role_channel_mapping.items():
+                    if role_id in user_roles:
+                        channel_id = target_channel_id
+                        break
 
                 if channel_id:
                     channel = interaction.guild.get_channel(channel_id)
