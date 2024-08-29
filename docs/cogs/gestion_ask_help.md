@@ -22,3 +22,4 @@ La commande `/send_help_embed` permet d'envoyer un message d'aide dans un canal 
 
 ```markdown
 /send_embed_help channel:<#123456789012345678>
+```

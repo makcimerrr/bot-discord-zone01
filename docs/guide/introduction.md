@@ -33,3 +33,4 @@ Pour démarrer le bot :
 1. Exécutez le fichier Python `bot.py` :
    ```bash
    python bot.py
+   ```
