@@ -96,6 +96,7 @@ class CDICog(commands.Cog):
                             thread = await forum_channel_cdi.create_thread(
                                 name=thread_title, content=thread_content)
                             new_threads_created = True
+                            await asyncio.sleep(1)
                         except discord.errors.HTTPException as e:
                             if e.code == 429:
                                 print(
