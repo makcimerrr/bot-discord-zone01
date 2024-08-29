@@ -44,7 +44,7 @@ class JobCog(commands.Cog):
 
             if ctx:
                 if not intern_jobs:
-                    await ctx.send("Aucune nouvelles offres d'emploi pour les alternants.")
+                    await ctx.send("Aucune nouvelle offre d'emploi pour les alternants.")
                     verif = True
 
                 if verif:
