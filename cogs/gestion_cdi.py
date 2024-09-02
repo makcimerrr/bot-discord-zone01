@@ -71,6 +71,8 @@ class CDICog(commands.Cog):
                 date = job.get("job_posted_at_datetime_utc")
                 link = job.get("job_apply_link")
                 city = job.get("job_city")
+                if not city:
+                    city = job.get("job_state")
 
                 if title and link and company:
                     thread_title = f"{company} - {title}"

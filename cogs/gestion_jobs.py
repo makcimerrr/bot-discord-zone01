@@ -1,49 +1,50 @@
-import re
 import discord
+import re
 from discord.ext import commands
 import asyncio
 
-from utils.config_loader import forum_channel_id, role_ping, guild_id, role_p1_2023, role_p2_2023
+from utils.config_loader import role_p1_2023, role_p2_2023, forum_channel_id, guild_id
 from utils.intern_fetcher import fetch_api_intern
 
 
 class JobCog(commands.Cog):
-    """Cog pour la gestion des offres d'emploi."""
+    """Cog pour la gestion des offres d'alternance."""
 
     def __init__(self, bot):
         self.bot = bot
 
-    async def send_joblist(self, ctx=None, loading_message=None):
-
-        # forum_channel = ctx.guild.get_channel(forum_channel_id)
+    async def send_jobslist(self, ctx=None, loading_message=None):
 
         if ctx:
             guild = ctx.guild
-            forum_channel = guild.get_channel(forum_channel_id)
+            forum_channel_job = guild.get_channel(forum_channel_id)
         else:
             guild = self.bot.get_guild(guild_id)
             if guild is None:
                 print("Guild not found")
                 return
-            forum_channel = guild.get_channel(forum_channel_id)
+            forum_channel_job = guild.get_channel(forum_channel_id)
 
-        if isinstance(forum_channel, discord.ForumChannel):
+        # forum_channel_job = ctx.guild.get_channel(forum_channel_id)
+
+        if isinstance(forum_channel_job, discord.ForumChannel):
             # Obtenir les threads actifs et archivés existants
-            active_threads = forum_channel.threads
+            active_threads = forum_channel_job.threads
             archived_threads = [
                 thread
-                async for thread in forum_channel.archived_threads(limit=100)
+                async for thread in forum_channel_job.archived_threads(limit=100)
             ]
 
             all_threads = active_threads + archived_threads
 
-            # Récupérer les offres d'emploi depuis les API
-            intern_jobs = await fetch_api_intern()
+            list_jobs = await fetch_api_intern()
+
             await asyncio.sleep(1)
+
             verif = False
 
             if ctx:
-                if not intern_jobs:
+                if not list_jobs:
                     await ctx.send("Aucune nouvelle offre d'emploi pour les alternants.")
                     verif = True
 
@@ -59,8 +60,7 @@ class JobCog(commands.Cog):
                         await loading_message.edit(embed=embed_updated)
                     return
 
-            # Fusionner les deux listes d'offres d'emploi
-            all_jobs = intern_jobs
+            all_jobs = list_jobs
 
             found_threads = []
             new_threads_created = False
@@ -72,13 +72,14 @@ class JobCog(commands.Cog):
                 date = job.get("job_posted_at_datetime_utc")
                 link = job.get("job_apply_link")
                 city = job.get("job_city")
-                technologies = job.get("job_technologies")
+                if not city:
+                    city = job.get("job_state")
 
                 if title and link and company:
                     thread_title = f"{company} - {title}"
 
                     if date and link:
-                        thread_content = f"Bonjour <@&{role_p1_2023}> et <@&{role_p2_2023}> ! Offre d'alternance sur **{city}**, chez **{company}** qui recherche un développeur **{title}** utilisant les technologies suivantes : **{technologies}**. Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
+                        thread_content = f"Bonjour <@&{role_p1_2023}> et <@&{role_p2_2023}> ! Offre d'alternance sur **{city}**, chez **{company}** qui recherche un développeur **{title}**.Pour plus de détails et pour postuler, cliquez sur le lien : {link}"
 
                         # Chercher un thread existant avec le même titre
                         existing_thread = None
@@ -95,9 +96,10 @@ class JobCog(commands.Cog):
 
                         # Créer le nouveau thread
                         try:
-                            thread = await forum_channel.create_thread(
+                            thread = await forum_channel_job.create_thread(
                                 name=thread_title, content=thread_content)
                             new_threads_created = True
+                            await asyncio.sleep(1)
                         except discord.errors.HTTPException as e:
                             if e.code == 429:
                                 print(
@@ -111,7 +113,7 @@ class JobCog(commands.Cog):
                 if loading_message:
                     embed_updated = discord.Embed(
                         title="Aucune nouvelle offre",
-                        description="Aucune nouvelle offre d'emploi n'a été trouvée.",
+                        description="Aucune nouvelle offre d'alternance n'a été trouvée.",
                         color=discord.Color.green()
                     )
                     await loading_message.edit(embed=embed_updated)
@@ -119,11 +121,10 @@ class JobCog(commands.Cog):
                 if loading_message:
                     embed_updated = discord.Embed(
                         title="Mise à jour terminée",
-                        description="Toutes les nouvelles offres d'emploi ont été publiées avec succès.",
+                        description="Toutes les nouvelles offres d'alternance ont été publiées avec succès.",
                         color=discord.Color.blue()
                     )
                     await loading_message.edit(embed=embed_updated)
-
 
         else:
             print("Le canal spécifié n'est pas un ForumChannel.")
@@ -135,21 +136,20 @@ class JobCog(commands.Cog):
                 )
                 await loading_message.edit(embed=embed_updated)
 
-    @commands.command(name='update_jobs')
-    async def update_jobs(self, ctx):
+    @commands.command(name='update_internships', aliases=['update_jobs'], description="Force la mise à jour des offres d'emploi pour les alternants.")
+    async def update_job(self, ctx):
         """Force la mise à jour des offres d'emploi pour les alternants."""
         # await ctx.send(f"Updated jobs list !")
         embed_loading = discord.Embed(
             title="Mise à jour en cours",
-            description="La liste des offres d'emploi pour les alternants est en cours de mise à jour, veuillez "
-                        "patienter...",
+            description="La liste des offres d'emploi pour l'alternance est en cours de mise à jour, veuillez patienter...",
             color=discord.Color.orange()
         )
         embed_loading.set_thumbnail(
             url="https://i.imgur.com/5AGlfwy.gif")  # Lien vers une icône d'engrenage animée
         loading_message = await ctx.send(embed=embed_loading)
 
-        await self.send_joblist(ctx, loading_message)
+        await self.send_jobslist(ctx, loading_message)
         # await ctx.send(f"Fini !")
 
 

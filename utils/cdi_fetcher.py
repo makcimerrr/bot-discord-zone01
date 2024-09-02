@@ -5,8 +5,7 @@ import requests
 async def fetch_api_fulltime():
     url = "https://jsearch.p.rapidapi.com/search"
 
-    querystring = {"query":"full stack developer in Rouen, france","page":"1","num_pages":"10","date_posted":"today","employment_types":"FULLTIME","radius":"100","exclude_job_publishers":"OpenClassrooms"}
-
+    querystring = {"query":"full stack developer in France","page":"1","num_pages":"10","date_posted":"today","employment_types":"FULLTIME","radius":"200"}
 
     headers = {
         "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
