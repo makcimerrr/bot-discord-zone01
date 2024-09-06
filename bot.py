@@ -13,7 +13,8 @@ intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi', 'cogs.event_cog', 'cogs.helped_student', 'cogs.embed_cog']
+initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi', 'cogs.event_cog',
+                      'cogs.helped_student', 'cogs.embed_cog', 'cogs.query_cog']
 
 # Flag to check if the bot is loading for the first time
 first_ready = True
@@ -71,6 +72,37 @@ async def on_connect():
 @bot.event
 async def on_close():
     print("Bot disconnected from Discord.")
+
+
+# Ajoutez ce gestionnaire d'erreurs globalement dans votre fichier principal
+# Gestionnaire d'événements pour les erreurs globales
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        embed = discord.Embed(
+            title="🚫 Commande Inconnue",
+            description="La commande que vous avez essayée n'existe pas. Veuillez vérifier la commande et réessayer.",
+            color=discord.Color.red()
+        )
+        embed.set_footer(text="Utilisez !help pour voir les commandes disponibles.")
+        await ctx.send(embed=embed)
+    elif isinstance(error, commands.CommandInvokeError):
+        # Gestion d'erreurs spécifiques
+        embed = discord.Embed(
+            title="❌ Erreur d'Exécution",
+            description="Une erreur s'est produite lors de l'exécution de la commande. Veuillez réessayer plus tard.",
+            color=discord.Color.red()
+        )
+        embed.set_footer(text="Veuillez vérifier et réessayer.")
+        await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(
+            title="❌ Erreur",
+            description=str(error),
+            color=discord.Color.red()
+        )
+        embed.set_footer(text="Veuillez vérifier la commande et réessayer.")
+        await ctx.send(embed=embed)
 
 
 attributes = {
