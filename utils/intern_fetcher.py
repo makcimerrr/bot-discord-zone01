@@ -2,10 +2,26 @@ import os
 import requests
 
 
-async def fetch_api_intern():
+async def fetch_api_intern(bot):
+    # On récupère le Cog QueryCog depuis l'instance du bot
+    query_cog = bot.get_cog('QueryCog')
+
+    # Vérifier si le Cog est bien chargé
+    if query_cog is None:
+        print("Le Cog QueryCog n'est pas chargé.")
+        return [], "Le Cog QueryCog n'est pas chargé"
+
+    # Obtenir la valeur de query_intern à partir du Cog
+    query_intern = query_cog.get_query_intern()
+
+    # Vérifier si une query a été définie
+    if query_intern is None:
+        print("Aucune query n'a été définie.")
+        return [], "Aucune query n'a été définie"
+
     url = "https://jsearch.p.rapidapi.com/search"
 
-    querystring = {"query":"full stack developer in France","page":"1","num_pages":"10","date_posted":"today","employment_types":"INTERN","radius":"200"}
+    querystring = {"query":query_intern,"page":"1","num_pages":"10","date_posted":"today","employment_types":"INTERN","radius":"200"}
 
     headers = {
         "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
@@ -16,7 +32,7 @@ async def fetch_api_intern():
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()
         data = response.json().get('data', [])
-        return data if isinstance(data, list) else []
+        return data if isinstance(data, list) else [], query_intern
     except requests.exceptions.RequestException as e:
         print(f"Error fetching JSearch jobs: {e}")
-        return []
+        return [], query_intern
