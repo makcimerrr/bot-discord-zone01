@@ -40,7 +40,7 @@ async def on_ready():
             print(f"Synced {len(synced)} command(s)")
         except Exception as e:
             print(e)
-        # Start the scheduler to run the send_joblist function twice a day
+        # Start the scheduler to run the send_joblist and send_cdilist function twice a day
         start_scheduler(bot)
         first_ready = False
 

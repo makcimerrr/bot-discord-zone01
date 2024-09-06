@@ -1,4 +1,5 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from datetime import datetime
 
 from cogs.gestion_jobs import JobCog
 from cogs.gestion_cdi import CDICog
@@ -8,29 +9,31 @@ scheduler = AsyncIOScheduler()
 
 async def joblist_morning(bot):
     job_cog = JobCog(bot)  # Instanciez votre cog
-    await job_cog.send_joblist()  # Appelez la méthode send_joblist
-    print("Updated jobs list auto 1!")
+    await job_cog.send_jobslist()  # Appelez la méthode send_joblist
+    print("Updated list internship auto 1!")
 
 
 async def joblist_evening(bot):
     job_cog = JobCog(bot)  # Instanciez votre cog
-    await job_cog.send_joblist()  # Appelez la méthode send_joblist
-    print("Updated jobs list alternants auto 2!")
+    await job_cog.send_jobslist()  # Appelez la méthode send_joblist
+    print("Updated list internship auto 2!")
 
 
 async def cdi_morning(bot):
     cdi_cog = CDICog(bot)  # Instanciez votre cog
     await cdi_cog.send_cdilist()  # Appelez la méthode send_joblist
-    print("Updated jobs list auto 1!")
+    print("Updated list full-time auto 1!")
 
 
 async def cdi_evening(bot):
     cdi_cog = CDICog(bot)  # Instanciez votre cog
     await cdi_cog.send_cdilist()  # Appelez la méthode send_joblist
-    print("Updated jobs list cdi auto 2!")
+    print("Updated list full-time auto 2!")
 
 
 def start_scheduler(bot):
+    # Print the time of the scheduler start
+    print(f"Scheduler started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     # Scheduler jobs with bot parameter
     @scheduler.scheduled_job("cron", hour=9, minute=0)  # Run at 9 AM
     async def schedule_joblist_morning():
