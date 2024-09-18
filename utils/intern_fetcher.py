@@ -1,9 +1,11 @@
 import os
 import requests
 
+from utils.config_loader import query_intern
+
 
 async def fetch_api_intern(bot):
-    # On récupère le Cog QueryCog depuis l'instance du bot
+    """# On récupère le Cog QueryCog depuis l'instance du bot
     query_cog = bot.get_cog('QueryCog')
 
     # Vérifier si le Cog est bien chargé
@@ -12,7 +14,7 @@ async def fetch_api_intern(bot):
         return [], "Le Cog QueryCog n'est pas chargé", None
 
     # Obtenir la valeur de query_intern à partir du Cog
-    query_intern = query_cog.get_query_intern()
+    query_intern = query_cog.get_query_intern()"""
 
     # Vérifier si une query a été définie
     if query_intern is None or query_intern == "":

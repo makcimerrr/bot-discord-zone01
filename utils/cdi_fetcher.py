@@ -1,9 +1,10 @@
 import os
 import requests
 
+from utils.config_loader import query_fulltime
 
 async def fetch_api_fulltime(bot):
-    # On récupère le Cog QueryCog depuis l'instance du bot
+    """# On récupère le Cog QueryCog depuis l'instance du bot
     query_cog = bot.get_cog('QueryCog')
 
     # Vérifier si le Cog est bien chargé
@@ -12,12 +13,12 @@ async def fetch_api_fulltime(bot):
         return [], "Le Cog QueryCog n'est pas chargé"
 
     # Obtenir la valeur de query_fulltime à partir du Cog
-    query_fulltime = query_cog.get_query_fulltime()
+    query_fulltime = query_cog.get_query_fulltime()"""
 
     # Vérifier si une query a été définie
     if query_fulltime is None:
         print("Aucune query n'a été définie.")
-        return [], "Aucune query n'a été définie"
+        return [], "Aucune query n'a été définie", None
 
     url = "https://jsearch.p.rapidapi.com/search"
 
@@ -32,7 +33,7 @@ async def fetch_api_fulltime(bot):
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()
         data = response.json().get('data', [])
-        return data if isinstance(data, list) else [], query_fulltime
+        return data if isinstance(data, list) else [], query_fulltime, None
     except requests.exceptions.RequestException as e:
         print(f"Error fetching JSearch jobs: {e}")
-        return [], query_fulltime
+        return [], query_fulltime, e

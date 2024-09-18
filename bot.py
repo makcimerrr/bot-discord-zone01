@@ -1,4 +1,5 @@
 import asyncio
+import traceback
 from sched import scheduler
 import discord
 import logging
@@ -13,8 +14,7 @@ intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-initial_extensions = ['cogs.gestion_ping', 'cogs.gestion_jobs', 'cogs.gestion_cdi', 'cogs.event_cog',
-                      'cogs.helped_student', 'cogs.embed_cog', 'cogs.query_cog']
+initial_extensions = ['cogs.administration_cog', 'cogs.configuration_cog', 'cogs.utilitaire_cog']
 
 # Flag to check if the bot is loading for the first time
 first_ready = True
@@ -88,13 +88,41 @@ async def on_command_error(ctx, error):
         await ctx.send(embed=embed)
     elif isinstance(error, commands.CommandInvokeError):
         # Gestion d'erreurs spécifiques
-        embed = discord.Embed(
-            title="❌ Erreur d'Exécution",
-            description="Une erreur s'est produite lors de l'exécution de la commande. Veuillez réessayer plus tard.",
-            color=discord.Color.red()
-        )
-        embed.set_footer(text="Veuillez vérifier et réessayer.")
-        await ctx.send(embed=embed)
+        tb = traceback.extract_tb(error.original.__traceback__)
+        filename = tb[-1].filename
+        line_number = tb[-1].lineno
+        error_message = str(error)
+
+        # Récupérer le dernier embed envoyé avec l'identifiant unique
+        async for message in ctx.channel.history(limit=10):
+            if message.embeds and message.embeds[0].footer.text == "unique_identifier":
+                embed = message.embeds[0]
+
+                # Modifier le dernier embed avec les nouvelles erreurs
+                embed.title = "❌ Erreur d'Exécution"
+                embed.description = "Une erreur s'est produite lors de l'exécution de la commande. Veuillez réessayer plus tard."
+                embed.color=discord.Color.red()
+                embed.set_thumbnail(url=None)
+                embed.add_field(name="Erreur", value=error_message)
+                embed.add_field(name="Fichier", value=filename)
+                embed.add_field(name="Ligne", value=line_number)
+                embed.add_field(name="Fonction", value=ctx.command.name)
+                embed.set_footer(text="Veuillez vérifier et réessayer.")
+                await message.edit(embed=embed)
+                break
+        else:
+            # Si aucun embed n'est trouvé, créer un nouvel embed
+            embed = discord.Embed(
+                title="❌ Erreur d'Exécution",
+                description="Une erreur s'est produite lors de l'exécution de la commande. Veuillez réessayer plus tard.",
+                color=discord.Color.red()
+            )
+            embed.add_field(name="Erreur", value=error_message)
+            embed.add_field(name="Fichier", value=filename)
+            embed.add_field(name="Ligne", value=line_number)
+            embed.add_field(name="Fonction", value=ctx.command.name)
+            embed.set_footer(text="Veuillez vérifier et réessayer.")
+            await ctx.send(embed=embed)
     else:
         embed = discord.Embed(
             title="❌ Erreur",
