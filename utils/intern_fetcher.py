@@ -9,15 +9,15 @@ async def fetch_api_intern(bot):
     # Vérifier si le Cog est bien chargé
     if query_cog is None:
         print("Le Cog QueryCog n'est pas chargé.")
-        return [], "Le Cog QueryCog n'est pas chargé"
+        return [], "Le Cog QueryCog n'est pas chargé", None
 
     # Obtenir la valeur de query_intern à partir du Cog
     query_intern = query_cog.get_query_intern()
 
     # Vérifier si une query a été définie
-    if query_intern is None:
+    if query_intern is None or query_intern == "":
         print("Aucune query n'a été définie.")
-        return [], "Aucune query n'a été définie"
+        return [], "Aucune query n'a été définie", None
 
     url = "https://jsearch.p.rapidapi.com/search"
 
@@ -32,7 +32,7 @@ async def fetch_api_intern(bot):
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()
         data = response.json().get('data', [])
-        return data if isinstance(data, list) else [], query_intern
+        return data if isinstance(data, list) else [], query_intern, None
     except requests.exceptions.RequestException as e:
         print(f"Error fetching JSearch jobs: {e}")
-        return [], query_intern
+        return [], query_intern, e
