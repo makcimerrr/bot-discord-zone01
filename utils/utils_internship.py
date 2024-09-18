@@ -126,7 +126,7 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
                 thread_title = f"{company} - {title}"
                 if date and link:
                     thread_content = (
-                        f"👋 Bonjour <@&{role_p1_2023}> et <@&{role_p2_2023}> !\n\n"
+                        f"👋 Bonjour Apprenants !\n\n"
                         f"🔎 Offre d'alternance sur **{city}** chez **{company}**.\n"
                         f"📈 Poste recherché : **{title}**\n"
                         f"💻 Technologies : **{technologies_text}**\n"

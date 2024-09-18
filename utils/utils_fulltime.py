@@ -126,7 +126,7 @@ async def send_cdilist(bot, ctx=None, loading_message=None):
                 thread_title = f"{company} - {title}"
                 if date and link:
                     thread_content = (
-                        f"👋 Bonjour <@&{role_ping_cdi}> !\n\n"
+                        f"👋 Bonjour Apprenants !\n\n"
                         f"🔎 Offre sur **{city}** chez **{company}**.\n"
                         f"📈 Poste recherché : **{title}**\n"
                         f"💻 Technologies : **{technologies_text}**\n"
