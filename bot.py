@@ -58,6 +58,15 @@ async def on_error(event, *args, **kwargs):
     with open("err.log", "a") as f:
         f.write(f"Error in {event}: {args[0]}\n")
 
+@bot.event
+async def on_message(message):
+    try:
+        # Your existing on_message code here
+        await bot.process_commands(message)
+    except Exception as e:
+        logging.error(f"An error occurred in event on_message: {message}", exc_info=True)
+
+
 
 @bot.event
 async def on_resumed():
@@ -123,6 +132,13 @@ async def on_command_error(ctx, error):
             embed.add_field(name="Fonction", value=ctx.command.name)
             embed.set_footer(text="Veuillez vérifier et réessayer.")
             await ctx.send(embed=embed)
+    elif isinstance(error, commands.MissingPermissions):
+        embed = discord.Embed(
+            title="🚫 Permissions Manquantes",
+            description="Vous n'avez pas les permissions nécessaires pour exécuter cette commande.",
+            color=discord.Color.red()
+        )
+        await ctx.send(embed=embed)
     else:
         embed = discord.Embed(
             title="❌ Erreur",

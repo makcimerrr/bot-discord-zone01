@@ -3,7 +3,7 @@ from discord.ext import commands
 from utils.config_loader import query_intern, query_fulltime
 from dotenv import set_key
 from pathlib import Path
-from utils.utils_function import get_query_intern, get_query_fulltime
+from utils.utils_function import get_query_intern, get_query_fulltime, is_admin
 
 class Configuration(commands.Cog):
     def __init__(self, bot):
@@ -12,6 +12,7 @@ class Configuration(commands.Cog):
         self.query_fulltime = query_fulltime  # Ajouter la variable pour fulltime
 
     @commands.command(name='showqueryIntern')
+    @is_admin()
     async def show_query_intern(self, ctx):
         """Commande pour afficher la query actuelle pour les alternances/stages."""
         if not self.query_intern:
@@ -30,6 +31,7 @@ class Configuration(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name='showqueryFulltime')
+    @is_admin()
     async def show_query_fulltime(self, ctx):
         """Commande pour afficher la query actuelle pour les emplois à temps plein."""
         if not self.query_fulltime:

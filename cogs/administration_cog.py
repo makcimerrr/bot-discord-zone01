@@ -6,7 +6,7 @@ from discord.ext import commands
 from dotenv import set_key
 from pathlib import Path
 
-from utils.utils_function import get_query_intern, get_query_fulltime
+from utils.utils_function import get_query_intern, get_query_fulltime, is_admin
 from utils.config_loader import role_ping_cdi, forum_channel_id_cdi, role_p1_2023, role_p2_2023, forum_channel_id, guild_id, forbidden_words, technologies, query_intern, query_fulltime
 from utils.cdi_fetcher import fetch_api_fulltime
 from utils.intern_fetcher import fetch_api_intern
@@ -23,6 +23,7 @@ class Administration(commands.Cog):
         self.send_cdilist = send_cdilist
 
     @commands.command(name='setqueryIntern')
+    @is_admin()
     async def set_query_intern(self, ctx, query: str = None):
         """Commande pour définir une query de rechercher pour les alternances/stages."""
         if query is None:
@@ -88,6 +89,7 @@ class Administration(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name='setqueryFulltime')
+    @is_admin()
     async def set_query_fulltime(self, ctx, query: str = None):
         """Commande pour définir une query de recherche pour les emplois à temps plein."""
         if query is None:
@@ -153,6 +155,7 @@ class Administration(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name='update_fulltime', aliases=['update_cdi'], description="Force la mise à jour des offres d'emploi pour les CDI.")
+    @is_admin()
     async def update_cdi(self, ctx):
         """Force la mise à jour des offres d'emploi pour les CDI."""
         embed_loading = discord.Embed(
@@ -170,6 +173,7 @@ class Administration(commands.Cog):
 
     @commands.command(name='update_internships', aliases=['update_jobs'],
                       description="Force la mise à jour des offres d'emploi pour les alternances.")
+    @is_admin()
     async def update_job(self, ctx):
         """Force la mise à jour des offres d'emploi pour les alternances."""
         embed_loading = discord.Embed(
