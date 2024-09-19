@@ -33,4 +33,4 @@ channel_inter_promo = config["channel_inter_promo"]
 discord_token = os.getenv("TOKEN")
 query_intern = os.getenv("QUERY_INTERNSHIP")
 query_fulltime = os.getenv("QUERY_FULLTIME")
-forbidden_words = ["Openclassrooms", "MyDigitalSchool", "ISCOD", "EPSI"]
+forbidden_words = ["Openclassrooms", "MyDigitalSchool", "ISCOD", "EPSI", "2I Academy", "Studi CFA"]

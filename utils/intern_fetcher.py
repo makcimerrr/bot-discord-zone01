@@ -1,8 +1,6 @@
 import os
 import requests
-
-from utils.config_loader import query_intern
-
+from dotenv import load_dotenv
 
 async def fetch_api_intern(bot):
     """# On récupère le Cog QueryCog depuis l'instance du bot
@@ -15,6 +13,9 @@ async def fetch_api_intern(bot):
 
     # Obtenir la valeur de query_intern à partir du Cog
     query_intern = query_cog.get_query_intern()"""
+
+    load_dotenv(override=True)
+    query_intern = os.getenv('QUERY_INTERNSHIP')
 
     # Vérifier si une query a été définie
     if query_intern is None or query_intern == "":

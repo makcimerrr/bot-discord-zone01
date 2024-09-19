@@ -1,10 +1,8 @@
 import discord
-import re
-from discord.ext import commands
 import asyncio
 
-from utils.utils_function import get_query_intern, contains_forbidden_words, extract_technologies
-from utils.config_loader import role_p1_2023, role_p2_2023, forum_channel_id, guild_id, forbidden_words, technologies, query_intern
+from utils.utils_function import contains_forbidden_words, extract_technologies
+from utils.config_loader import forum_channel_id, guild_id, technologies
 from utils.intern_fetcher import fetch_api_intern
 
 async def send_jobslist(bot, ctx=None, loading_message=None):

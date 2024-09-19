@@ -1,23 +1,22 @@
-import discord
-import re
-import asyncio
-
-from discord.ext import commands
-from dotenv import set_key
+import os
 from pathlib import Path
 
-from utils.utils_function import get_query_intern, get_query_fulltime, is_admin
-from utils.config_loader import role_ping_cdi, forum_channel_id_cdi, role_p1_2023, role_p2_2023, forum_channel_id, guild_id, forbidden_words, technologies, query_intern, query_fulltime
-from utils.cdi_fetcher import fetch_api_fulltime
-from utils.intern_fetcher import fetch_api_intern
-from utils.utils_internship import send_jobslist
+import discord
+from discord.ext import commands
+from dotenv import set_key, load_dotenv
+
+from utils.config_loader import forbidden_words
 from utils.utils_fulltime import send_cdilist
+from utils.utils_function import is_admin
+from utils.utils_internship import send_jobslist
+
 
 class Administration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.query_intern = query_intern  # Initialiser avec la variable depuis .env
-        self.query_fulltime = query_fulltime  # Ajouter la variable pour fulltime
+        load_dotenv(override=True)
+        self.query_intern = os.getenv('QUERY_INTERNSHIP')  # Initialiser avec la variable depuis .env
+        self.query_fulltime = os.getenv('QUERY_FULLTIME')  # Ajouter la variable pour fulltime
         self.forbidden_words = forbidden_words
         self.send_jobslist = send_jobslist
         self.send_cdilist = send_cdilist
@@ -163,6 +162,7 @@ class Administration(commands.Cog):
             description="La liste des offres d'emploi pour les CDI est en cours de mise à jour, veuillez patienter...",
             color=discord.Color.orange()
         )
+        embed_loading.add_field(name="Query :", value=self.query_fulltime, inline=False)
         embed_loading.set_thumbnail(
             url="https://i.imgur.com/5AGlfwy.gif"
         )  # Lien vers une icône d'engrenage animée
@@ -181,6 +181,7 @@ class Administration(commands.Cog):
             description="La liste des offres d'emploi pour l'alternance est en cours de mise à jour. Veuillez patienter...",
             color=discord.Color.orange()
         )
+        embed_loading.add_field(name="Query :", value=self.query_intern, inline=False)
         embed_loading.set_thumbnail(
             url="https://i.imgur.com/5AGlfwy.gif"  # Lien vers une icône d'engrenage animée
         )

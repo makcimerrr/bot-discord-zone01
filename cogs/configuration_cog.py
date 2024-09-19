@@ -1,21 +1,24 @@
+import os
+
 import discord
 from discord.ext import commands
-from utils.config_loader import query_intern, query_fulltime
-from dotenv import set_key
-from pathlib import Path
-from utils.utils_function import get_query_intern, get_query_fulltime, is_admin
+from dotenv import load_dotenv
+
+from utils.utils_function import is_admin
+
 
 class Configuration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.query_intern = query_intern  # Initialiser avec la variable depuis .env
-        self.query_fulltime = query_fulltime  # Ajouter la variable pour fulltime
 
     @commands.command(name='showqueryIntern')
     @is_admin()
     async def show_query_intern(self, ctx):
         """Commande pour afficher la query actuelle pour les alternances/stages."""
-        if not self.query_intern:
+        load_dotenv(override=True)  # Recharger les variables d'environnement
+        query_intern = os.getenv('QUERY_INTERNSHIP')  # Récupérer la variable mise à jour
+
+        if not query_intern or query_intern == "":
             embed = discord.Embed(
                 title="❌ Aucune Query Définie",
                 description="Aucune query n'a été définie. Utilisez la commande `!setqueryIntern` pour en définir une.",
@@ -24,7 +27,7 @@ class Configuration(commands.Cog):
         else:
             embed = discord.Embed(
                 title="🔍 Query Actuelle",
-                description=f"La query actuelle est : **{self.query_intern}**",
+                description=f"La query actuelle est : **{query_intern}**",
                 color=discord.Color.blue()
             )
 
@@ -34,7 +37,9 @@ class Configuration(commands.Cog):
     @is_admin()
     async def show_query_fulltime(self, ctx):
         """Commande pour afficher la query actuelle pour les emplois à temps plein."""
-        if not self.query_fulltime:
+        load_dotenv(override=True)  # Recharger les variables d'environnement
+        query_fulltime = os.getenv('QUERY_FULLTIME')  # Récupérer la variable mise à jour
+        if not query_fulltime or query_fulltime == "":
             embed = discord.Embed(
                 title="❌ Aucune Query Définie",
                 description="Aucune query n'a été définie. Utilisez la commande `!setqueryFulltime` pour en définir une.",
@@ -43,11 +48,12 @@ class Configuration(commands.Cog):
         else:
             embed = discord.Embed(
                 title="🔍 Query Actuelle",
-                description=f"La query actuelle est : **{self.query_fulltime}**",
+                description=f"La query actuelle est : **{query_fulltime}**",
                 color=discord.Color.blue()
             )
 
         await ctx.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(Configuration(bot))

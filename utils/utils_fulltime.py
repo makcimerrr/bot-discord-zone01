@@ -1,10 +1,8 @@
 import discord
-import re
-from discord.ext import commands
 import asyncio
 
-from utils.utils_function import get_query_fulltime, contains_forbidden_words, extract_technologies
-from utils.config_loader import role_ping_cdi, forum_channel_id_cdi, guild_id, forbidden_words, technologies, query_fulltime
+from utils.utils_function import contains_forbidden_words, extract_technologies
+from utils.config_loader import forum_channel_id_cdi, guild_id, technologies
 from utils.cdi_fetcher import fetch_api_fulltime
 
 async def send_cdilist(bot, ctx=None, loading_message=None):
