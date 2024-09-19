@@ -28,8 +28,11 @@ def extract_technologies(description, technologies):
     """Extrait les technologies mentionnées dans la description."""
     extracted_techs = []
     for tech in technologies:
-        if re.search(rf"\b{tech}\b", description, re.IGNORECASE):
+        if re.search(rf"\b{re.escape(tech)}\b", description, re.IGNORECASE):
             extracted_techs.append(tech)
+            print(f"'{tech}' trouvé dans la description.")
+        else:
+            print(f"'{tech}' non trouvé dans la description.")
     return extracted_techs
 
 
