@@ -38,7 +38,7 @@ def extract_technologies(description, technologies):
 
 def is_admin():
     async def predicate(ctx):
-        if ctx.author.id == 360058840240226316 or ctx.author.guild_permissions.administrator:
+        if ctx.author.id == 360058840240226316 or ctx.author.id == 190547491916087296 or ctx.author.id == 163179195042758657:
             return True
         else:
             raise commands.MissingPermissions(["administrator"])
