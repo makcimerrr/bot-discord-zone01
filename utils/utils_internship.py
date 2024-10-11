@@ -2,8 +2,10 @@ import discord
 import asyncio
 
 from utils.utils_function import contains_forbidden_words, extract_technologies
-from utils.config_loader import forum_channel_id, guild_id, technologies
+from utils.config_loader import forum_channel_id, guild_id, technologies, role_p1_2023, role_p2_2023
 from utils.intern_fetcher import fetch_api_intern
+from utils.utils_departement import get_departement
+
 
 async def send_jobslist(bot, ctx=None, loading_message=None):
     if ctx:
@@ -89,6 +91,8 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
         found_threads = []
         new_threads_created = False
 
+        normandie_count = 0
+
         for job in all_jobs:
             title = job.get("job_title")
             company = job.get("employer_name")
@@ -99,6 +103,10 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
             description = job.get("job_description")
             if not city or city == "None":
                 city = job.get("job_state")
+
+            departement = get_departement(city)
+
+            normandie = ["Calvados", "Eure", "Manche", "Orne", "Seine-Maritime"]
 
             # Vérification des mots interdits
             if contains_forbidden_words(company) or contains_forbidden_words(publisher):
@@ -123,13 +131,24 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
 
                 thread_title = f"{company} - {title}"
                 if date and link:
-                    thread_content = (
-                        f"👋 Bonjour Apprenants !\n\n"
-                        f"🔎 Offre d'alternance sur **{city}** chez **{company}**.\n"
-                        f"📈 Poste recherché : **{title}**\n"
-                        f"💻 Technologies : **{technologies_text}**\n"
-                        f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
-                    )
+
+                    if departement in normandie and job.get("job_state") != "IDF":
+                        normandie_count += 1
+                        thread_content = (
+                            f"👋 Bonjour Apprenants <@{role_p1_2023}>, <@{role_p2_2023}>!\n\n"
+                            f"🔎 Offre sur **{city}** chez **{company}**.\n"
+                            f"📈 Poste recherché : **{title}**\n"
+                            f"💻 Technologies : **{technologies_text}**\n"
+                            f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
+                        )
+                    else:
+                        thread_content = (
+                            f"👋 Bonjour Apprenants !\n\n"
+                            f"🔎 Offre d'alternance sur **{city}** chez **{company}**.\n"
+                            f"📈 Poste recherché : **{title}**\n"
+                            f"💻 Technologies : **{technologies_text}**\n"
+                            f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
+                        )
 
                     # Chercher un thread existant avec le même titre
                     existing_thread = None
@@ -191,7 +210,7 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
             if loading_message:
                 embed_updated = discord.Embed(
                     title="✅ Mise à Jour Terminée",
-                    description="Toutes les nouvelles offres d'alternance ont été publiées avec succès.",
+                    description=f"Toutes les nouvelles offres d'alternance ont été publiées avec succès.\nNombre d'offres pour Normandie: {normandie_count}",
                     color=discord.Color.blue()
                 )
                 embed_updated.add_field(
@@ -200,6 +219,16 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
                     inline=False
                 )
                 await loading_message.edit(embed=embed_updated)
+            else:
+                channel_id = 1257310056546963479
+                channel = bot.get_channel(channel_id)
+                if channel and normandie_count > 0:
+                    embed_update = discord.Embed(
+                        title="✅ Mise à Jour Terminée",
+                        description=f"Nombre d'offres d'alternance pour la Normandie: {normandie_count}",
+                        color=discord.Color.blue()
+                    )
+                    await channel.send(embed=embed_update)
 
     else:
         print("Le canal spécifié n'est pas un ForumChannel.")
