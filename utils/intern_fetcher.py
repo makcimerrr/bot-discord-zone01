@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
+
 async def fetch_api_intern(bot):
     """# On récupère le Cog QueryCog depuis l'instance du bot
     query_cog = bot.get_cog('QueryCog')
@@ -24,7 +25,8 @@ async def fetch_api_intern(bot):
 
     url = "https://jsearch.p.rapidapi.com/search"
 
-    querystring = {"query":query_intern,"page":"1","num_pages":"10","date_posted":"today","employment_types":"INTERN","radius":"200"}
+    querystring = {"query": query_intern, "page": "1", "num_pages": "10", "country": "fr", "date_posted": "today",
+                   "employment_types": "INTERN", "radius": "200"}
 
     headers = {
         "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
