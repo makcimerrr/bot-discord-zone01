@@ -31,6 +31,14 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
 
         list_jobs, query_message, error = await fetch_api_intern(bot)
 
+        """for offre in list_jobs:
+            print(f"Job Apply Link: {offre['job_apply_link']}")
+            print(f"Job Publisher: {offre['job_publisher']}")
+            print("---")
+
+        # Afficher le nombre total d'offres
+        print(f"Total number of offers: {len(list_jobs)}")"""
+
         if error:
             if ctx:
                 if loading_message:
@@ -130,67 +138,66 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
                 """
 
                 thread_title = f"{company} - {title}"
-                if date and link:
 
-                    if departement in normandie and job.get("job_state") != "IDF":
-                        normandie_count += 1
-                        thread_content = (
-                            f"👋 Bonjour Apprenants <@{role_p1_2023}>, <@{role_p2_2023}>!\n\n"
-                            f"🔎 Offre sur **{city}** chez **{company}**.\n"
-                            f"📈 Poste recherché : **{title}**\n"
-                            f"💻 Technologies : **{technologies_text}**\n"
-                            f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
-                        )
-                    else:
-                        thread_content = (
-                            f"👋 Bonjour Apprenants !\n\n"
-                            f"🔎 Offre d'alternance sur **{city}** chez **{company}**.\n"
-                            f"📈 Poste recherché : **{title}**\n"
-                            f"💻 Technologies : **{technologies_text}**\n"
-                            f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
-                        )
+                if departement in normandie and job.get("job_state") != "IDF":
+                    normandie_count += 1
+                    thread_content = (
+                        f"👋 Bonjour Apprenants <@{role_p1_2023}>, <@{role_p2_2023}>!\n\n"
+                        f"🔎 Offre sur **{city}** chez **{company}**.\n"
+                        f"📈 Poste recherché : **{title}**\n"
+                        f"💻 Technologies : **{technologies_text}**\n"
+                        f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
+                    )
+                else:
+                    thread_content = (
+                        f"👋 Bonjour Apprenants !\n\n"
+                        f"🔎 Offre d'alternance sur **{city}** chez **{company}**.\n"
+                        f"📈 Poste recherché : **{title}**\n"
+                        f"💻 Technologies : **{technologies_text}**\n"
+                        f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
+                    )
 
-                    # Chercher un thread existant avec le même titre
-                    existing_thread = None
-                    for thread in all_threads:
-                        if thread.name == thread_title:
-                            existing_thread = thread
-                            found_threads.append(existing_thread)
-                            break
+                # Chercher un thread existant avec le même titre
+                existing_thread = None
+                for thread in all_threads:
+                    if thread.name == thread_title:
+                        existing_thread = thread
+                        found_threads.append(existing_thread)
+                        break
 
-                    # Si un thread avec le même titre existe déjà, passe au suivant
-                    if existing_thread:
-                        print("Thread found:", existing_thread.name)
-                        continue
+                # Si un thread avec le même titre existe déjà, passe au suivant
+                if existing_thread:
+                    print("Thread found:", existing_thread.name)
+                    continue
 
-                    # Gérer les tags
-                    thread_tags = []
-                    for tech in extracted_techs[:5]:  # Limite de 5 tags
-                        tag = next((t for t in available_tags if t.name.lower() == tech.lower()), None)
-                        if not tag:
-                            # Vérifier si le nombre de tags existants est inférieur à 20
-                            if len(available_tags) < 20:
-                                # Créer le tag si il n'existe pas
-                                tag = await forum_channel_job.create_tag(name=tech)
-                                available_tags.append(tag)
-                            else:
-                                # print(f"Nombre maximum de tags atteint. Impossible de créer le tag: {tech}")
-                                continue
-                        thread_tags.append(tag)
+                # Gérer les tags
+                thread_tags = []
+                for tech in extracted_techs[:5]:  # Limite de 5 tags
+                    tag = next((t for t in available_tags if t.name.lower() == tech.lower()), None)
+                    if not tag:
+                        # Vérifier si le nombre de tags existants est inférieur à 20
+                        if len(available_tags) < 20:
+                            # Créer le tag si il n'existe pas
+                            tag = await forum_channel_job.create_tag(name=tech)
+                            available_tags.append(tag)
+                        else:
+                            # print(f"Nombre maximum de tags atteint. Impossible de créer le tag: {tech}")
+                            continue
+                    thread_tags.append(tag)
 
-                    # Créer le nouveau thread
-                    try:
-                        thread = await forum_channel_job.create_thread(
-                            name=thread_title, content=thread_content, applied_tags=thread_tags
-                        )
-                        new_threads_created = True
-                        await asyncio.sleep(1)
-                    except discord.errors.HTTPException as e:
-                        if e.code == 429:
-                            print("Rate limited by Discord, will try again later.")
-                            break
-
+                # Créer le nouveau thread
+                try:
+                    thread = await forum_channel_job.create_thread(
+                        name=thread_title, content=thread_content, applied_tags=thread_tags
+                    )
+                    new_threads_created = True
                     await asyncio.sleep(1)
+                except discord.errors.HTTPException as e:
+                    if e.code == 429:
+                        print("Rate limited by Discord, will try again later.")
+                        break
+
+                await asyncio.sleep(1)
 
         # Vérifier si aucun nouveau thread n'a été créé
         if not new_threads_created:

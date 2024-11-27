@@ -130,67 +130,66 @@ async def send_cdilist(bot, ctx=None, loading_message=None):
                 """
 
                 thread_title = f"{company} - {title}"
-                if date and link:
 
-                    if departement in normandie and job.get("job_state") != "IDF":
-                        normandie_count += 1
-                        thread_content = (
-                            f"👋 Bonjour Apprenants <@{role_ping_cdi}>!\n\n"
-                            f"🔎 Offre sur **{city}** chez **{company}**.\n"
-                            f"📈 Poste recherché : **{title}**\n"
-                            f"💻 Technologies : **{technologies_text}**\n"
-                            f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
-                        )
-                    else:
-                        thread_content = (
-                            f"👋 Bonjour Apprenants !\n\n"
-                            f"🔎 Offre sur **{city}** chez **{company}**.\n"
-                            f"📈 Poste recherché : **{title}**\n"
-                            f"💻 Technologies : **{technologies_text}**\n"
-                            f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
-                        )
+                if departement in normandie and job.get("job_state") != "IDF":
+                    normandie_count += 1
+                    thread_content = (
+                        f"👋 Bonjour Apprenants <@{role_ping_cdi}>!\n\n"
+                        f"🔎 Offre sur **{city}** chez **{company}**.\n"
+                        f"📈 Poste recherché : **{title}**\n"
+                        f"💻 Technologies : **{technologies_text}**\n"
+                        f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
+                    )
+                else:
+                    thread_content = (
+                        f"👋 Bonjour Apprenants !\n\n"
+                        f"🔎 Offre sur **{city}** chez **{company}**.\n"
+                        f"📈 Poste recherché : **{title}**\n"
+                        f"💻 Technologies : **{technologies_text}**\n"
+                        f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
+                    )
 
-                    # Chercher un thread existant avec le même titre
-                    existing_thread = None
-                    for thread in all_threads:
-                        if thread.name == thread_title:
-                            existing_thread = thread
-                            found_threads.append(existing_thread)
-                            break
+                # Chercher un thread existant avec le même titre
+                existing_thread = None
+                for thread in all_threads:
+                    if thread.name == thread_title:
+                        existing_thread = thread
+                        found_threads.append(existing_thread)
+                        break
 
-                    # Si un thread avec le même titre existe déjà, passe au suivant
-                    if existing_thread:
-                        print("Thread trouvé :", existing_thread.name)
-                        continue
+                # Si un thread avec le même titre existe déjà, passe au suivant
+                if existing_thread:
+                    print("Thread trouvé :", existing_thread.name)
+                    continue
 
-                    # Gérer les tags
-                    thread_tags = []
-                    for tech in extracted_techs[:5]:  # Limite de 5 tags
-                        tag = next((t for t in available_tags if t.name.lower() == tech.lower()), None)
-                        if not tag:
-                            # Vérifier si le nombre de tags existants est inférieur à 20
-                            if len(available_tags) < 20:
-                                # Créer le tag si il n'existe pas et si le nombre de tags est inférieur à 20
-                                tag = await forum_channel_cdi.create_tag(name=tech)
-                                available_tags.append(tag)
-                            else:
-                                # print(f"Nombre maximum de tags atteint. Impossible de créer le tag: {tech}")
-                                continue
-                        thread_tags.append(tag)
+                # Gérer les tags
+                thread_tags = []
+                for tech in extracted_techs[:5]:  # Limite de 5 tags
+                    tag = next((t for t in available_tags if t.name.lower() == tech.lower()), None)
+                    if not tag:
+                        # Vérifier si le nombre de tags existants est inférieur à 20
+                        if len(available_tags) < 20:
+                            # Créer le tag si il n'existe pas et si le nombre de tags est inférieur à 20
+                            tag = await forum_channel_cdi.create_tag(name=tech)
+                            available_tags.append(tag)
+                        else:
+                            # print(f"Nombre maximum de tags atteint. Impossible de créer le tag: {tech}")
+                            continue
+                    thread_tags.append(tag)
 
-                    # Créer le nouveau thread
-                    try:
-                        thread = await forum_channel_cdi.create_thread(
-                            name=thread_title, content=thread_content, applied_tags=thread_tags
-                        )
-                        new_threads_created = True
-                        await asyncio.sleep(1)
-                    except discord.errors.HTTPException as e:
-                        if e.code == 429:
-                            print("Rate limited by Discord, retrying later.")
-                            break
-
+                # Créer le nouveau thread
+                try:
+                    thread = await forum_channel_cdi.create_thread(
+                        name=thread_title, content=thread_content, applied_tags=thread_tags
+                    )
+                    new_threads_created = True
                     await asyncio.sleep(1)
+                except discord.errors.HTTPException as e:
+                    if e.code == 429:
+                        print("Rate limited by Discord, retrying later.")
+                        break
+
+                await asyncio.sleep(1)
 
         # Vérifier si aucun nouveau thread n'a été créé
         if not new_threads_created:
