@@ -118,8 +118,10 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
 
             # Vérification des mots interdits
             if contains_forbidden_words(company) or contains_forbidden_words(publisher):
-                print(f"L'offre de {company} a été ignorée en raison de mots interdits.")
-                continue  # Sauter à l'offre suivante si un mot interdit est trouvé
+                print(f"Offre ignorée : {company}, Mot(s) interdit(s) détecté(s).")
+                if departement in normandie and job.get("job_state") != "IDF":
+                    print("L'offre ignorée était de Normandie.")
+                continue
 
             if title and link and company:
                 # Extraire les technologies de la description
@@ -139,8 +141,22 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
 
                 thread_title = f"{company} - {title}"
 
+                # Chercher un thread existant avec le même titre
+                existing_thread = None
+                for thread in all_threads:
+                    if thread.name == thread_title:
+                        existing_thread = thread
+                        found_threads.append(existing_thread)
+                        break
+
+                # Si un thread avec le même titre existe déjà, passe au suivant
+                if existing_thread:
+                    print("Thread found:", existing_thread.name)
+                    continue
+
                 if departement in normandie and job.get("job_state") != "IDF":
                     normandie_count += 1
+                    print(f"Offre de Normandie comptée : {title}, {city}, de l'entreprise {company}")
                     thread_content = (
                         f"👋 Bonjour Apprenants <@{role_p1_2023}>, <@{role_p2_2023}>!\n\n"
                         f"🔎 Offre sur **{city}** chez **{company}**.\n"
@@ -156,19 +172,6 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
                         f"💻 Technologies : **{technologies_text}**\n"
                         f"🔗 Pour plus de détails et pour postuler, cliquez sur le lien : [Postuler]({link})"
                     )
-
-                # Chercher un thread existant avec le même titre
-                existing_thread = None
-                for thread in all_threads:
-                    if thread.name == thread_title:
-                        existing_thread = thread
-                        found_threads.append(existing_thread)
-                        break
-
-                # Si un thread avec le même titre existe déjà, passe au suivant
-                if existing_thread:
-                    print("Thread found:", existing_thread.name)
-                    continue
 
                 # Gérer les tags
                 thread_tags = []
