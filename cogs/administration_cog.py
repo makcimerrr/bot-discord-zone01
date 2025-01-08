@@ -181,5 +181,42 @@ class Administration(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.command(name='update_fulltime', aliases=['update_cdi'], description="Force la mise à jour des offres d'emploi pour les CDI.")
+    @is_admin()
+    async def update_cdi(self, ctx):
+        """Force la mise à jour des offres d'emploi pour les CDI."""
+        embed_loading = discord.Embed(
+            title="🔄 Mise à Jour en Cours",
+            description="La liste des offres d'emploi pour les CDI est en cours de mise à jour, veuillez patienter...",
+            color=discord.Color.orange()
+        )
+        embed_loading.add_field(name="Query :", value=self.query_fulltime, inline=False)
+        embed_loading.set_thumbnail(
+            url="https://i.imgur.com/5AGlfwy.gif"
+        )  # Lien vers une icône d'engrenage animée
+        embed_loading.set_footer(text="unique_identifier")
+        loading_message = await ctx.send(embed=embed_loading)
+
+        await send_cdilist(self.bot, ctx, loading_message)
+
+    @commands.command(name='update_internships', aliases=['update_jobs'],
+                      description="Force la mise à jour des offres d'emploi pour les alternances.")
+    @is_admin()
+    async def update_job(self, ctx):
+        """Force la mise à jour des offres d'emploi pour les alternances."""
+        embed_loading = discord.Embed(
+            title="🔄 Mise à Jour en Cours",
+            description="La liste des offres d'emploi pour l'alternance est en cours de mise à jour. Veuillez patienter...",
+            color=discord.Color.orange()
+        )
+        embed_loading.add_field(name="Query :", value=self.query_intern, inline=False)
+        embed_loading.set_thumbnail(
+            url="https://i.imgur.com/5AGlfwy.gif"  # Lien vers une icône d'engrenage animée
+        )
+        embed_loading.set_footer(text="unique_identifier")
+        loading_message = await ctx.send(embed=embed_loading)
+
+        await send_jobslist(self.bot, ctx, loading_message)
+
 async def setup(bot):
     await bot.add_cog(Administration(bot))
