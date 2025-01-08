@@ -1,5 +1,5 @@
 import os
-
+from pathlib import Path
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -15,7 +15,8 @@ class Configuration(commands.Cog):
     @is_admin()
     async def show_query_intern(self, ctx):
         """Commande pour afficher la query actuelle pour les alternances/stages."""
-        load_dotenv(override=True)  # Recharger les variables d'environnement
+        env_path = Path('../.env')  # Charger le fichier .env situé à la racine du projet
+        load_dotenv(dotenv_path=env_path, override=True)
         query_intern = os.getenv('QUERY_INTERNSHIP')  # Récupérer la variable mise à jour
 
         if not query_intern or query_intern == "":
