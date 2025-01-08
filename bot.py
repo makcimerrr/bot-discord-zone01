@@ -7,7 +7,7 @@ from discord.ext import commands, tasks
 from discord.ui import Modal, TextInput
 
 from cogs.gestion_help import SupremeHelpCommand
-from utils.config_loader import config, discord_token, forum_channel_id, role_ping
+from utils.config_loader import config, discord_token, forum_channel_id
 from utils.scheduler import start_scheduler
 
 intents = discord.Intents.all()
@@ -24,7 +24,7 @@ async def load_extensions(bot):
     for extension in initial_extensions:
         try:
             await bot.load_extension(extension)
-            # print(f"Loaded {extension}")
+            print(f"Loaded {extension}")
         except Exception as e:
             print(f"Failed to load extension {extension}: {e}")
 
@@ -58,6 +58,7 @@ async def on_error(event, *args, **kwargs):
     with open("err.log", "a") as f:
         f.write(f"Error in {event}: {args[0]}\n")
 
+
 @bot.event
 async def on_message(message):
     try:
@@ -65,7 +66,6 @@ async def on_message(message):
         await bot.process_commands(message)
     except Exception as e:
         logging.error(f"An error occurred in event on_message: {message}", exc_info=True)
-
 
 
 @bot.event
@@ -110,7 +110,7 @@ async def on_command_error(ctx, error):
                 # Modifier le dernier embed avec les nouvelles erreurs
                 embed.title = "❌ Erreur d'Exécution"
                 embed.description = "Une erreur s'est produite lors de l'exécution de la commande. Veuillez réessayer plus tard."
-                embed.color=discord.Color.red()
+                embed.color = discord.Color.red()
                 embed.set_thumbnail(url=None)
                 embed.add_field(name="Erreur", value=error_message)
                 embed.add_field(name="Fichier", value=filename)
