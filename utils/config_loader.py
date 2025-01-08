@@ -2,8 +2,8 @@ import json
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-
+# Spécifiez le chemin du fichier .env, par exemple dans le dossier racine
+load_dotenv(dotenv_path="../.env")  # "../" pour accéder à la racine du projet à partir du dossier du bot
 
 def load_config():
     with open('data/config.json', 'r') as f:
