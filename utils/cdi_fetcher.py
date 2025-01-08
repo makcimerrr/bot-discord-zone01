@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 import requests
 from dotenv import load_dotenv
 
@@ -15,7 +17,8 @@ async def fetch_api_fulltime(bot):
     # Obtenir la valeur de query_fulltime à partir du Cog
     query_fulltime = query_cog.get_query_fulltime()"""
 
-    load_dotenv(override=True)
+    env_path = Path('../.env')  # Charger le fichier .env situé à la racine du projet
+    load_dotenv(dotenv_path=env_path, override=True)
     query_fulltime = os.getenv('QUERY_FULLTIME')
 
     # Vérifier si une query a été définie

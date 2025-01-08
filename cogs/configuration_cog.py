@@ -38,7 +38,8 @@ class Configuration(commands.Cog):
     @is_admin()
     async def show_query_fulltime(self, ctx):
         """Commande pour afficher la query actuelle pour les emplois à temps plein."""
-        load_dotenv(override=True)  # Recharger les variables d'environnement
+        env_path = Path('../.env')  # Charger le fichier .env situé à la racine du projet
+        load_dotenv(dotenv_path=env_path, override=True)
         query_fulltime = os.getenv('QUERY_FULLTIME')  # Récupérer la variable mise à jour
         if not query_fulltime or query_fulltime == "":
             embed = discord.Embed(
