@@ -158,7 +158,7 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
                     normandie_count += 1
                     print(f"Offre de Normandie comptée : {title}, {city}, de l'entreprise {company}")
                     thread_content = (
-                        f"👋 Bonjour Apprenants <@{role_p1_2023}>, <@{role_p2_2023}>!\n\n"
+                        f"👋 Bonjour Apprenants <@&{role_p1_2023}>, <@&{role_p2_2023}>!\n\n"
                         f"🔎 Offre sur **{city}** chez **{company}**.\n"
                         f"📈 Poste recherché : **{title}**\n"
                         f"💻 Technologies : **{technologies_text}**\n"

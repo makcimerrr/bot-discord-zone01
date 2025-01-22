@@ -150,7 +150,7 @@ async def send_cdilist(bot, ctx=None, loading_message=None):
                     normandie_count += 1
                     print(f"Offre de Normandie comptée : {title}, {city}, de l'entreprise {company}")
                     thread_content = (
-                        f"👋 Bonjour Apprenants <@{role_ping_cdi}>!\n\n"
+                        f"👋 Bonjour Apprenants <@&{role_ping_cdi}>!\n\n"
                         f"🔎 Offre sur **{city}** chez **{company}**.\n"
                         f"📈 Poste recherché : **{title}**\n"
                         f"💻 Technologies : **{technologies_text}**\n"
