@@ -2,7 +2,7 @@ import discord
 import asyncio
 
 from utils.utils_function import contains_forbidden_words, extract_technologies
-from utils.config_loader import forum_channel_id, guild_id, technologies, role_p1_2023, role_p2_2023
+from utils.config_loader import forum_channel_id, guild_id, technologies, role_ping_alternance
 from utils.intern_fetcher import fetch_api_intern
 from utils.utils_departement import get_departement
 
@@ -158,7 +158,7 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
                     normandie_count += 1
                     print(f"Offre de Normandie comptée : {title}, {city}, de l'entreprise {company}")
                     thread_content = (
-                        f"👋 Bonjour Apprenants <@&{role_p1_2023}>, <@&{role_p2_2023}>!\n\n"
+                        f"👋 Bonjour Apprenants <@&{role_ping_alternance}> !\n\n"
                         f"🔎 Offre sur **{city}** chez **{company}**.\n"
                         f"📈 Poste recherché : **{title}**\n"
                         f"💻 Technologies : **{technologies_text}**\n"
