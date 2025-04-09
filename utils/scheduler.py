@@ -47,13 +47,16 @@ async def fetch_and_send_progress(bot):
 
             # Création de l'embed
             embed = discord.Embed(
-                title=f"🛠 {item.get('currentProject', 'Non spécifié')}",
-                color=discord.Color.blue() if item['success'] else discord.Color.red()
+                title=f"📚 Projet en cours : `{item.get('currentProject', 'Non spécifié')}`",
+                description=f"👤 **Promotion** : `{item['promotionName']}`",
+                color=discord.Color.green() if item['success'] else discord.Color.red(),
+                timestamp=datetime.utcnow()
             )
+            embed.set_author(name="Suivi de progression Zone01", icon_url="https://example.com/logo.png")
             embed.add_field(
-                name="📊 **Progression**",
-                value=f"{item['progress']}% {progress_emoji}",
-                inline=False
+                name="📈 Progression",
+                value=f"`{item['progress']}%`  \n{progress_emoji}",
+                inline=True
             )
             # Extraction de la date à partir de 'agenda'
             agenda_str = item.get('agenda', ['Non spécifié'])[0]
@@ -71,9 +74,9 @@ async def fetch_and_send_progress(bot):
                 formatted_date = 'Non spécifié'  # Si la date n'a pas été trouvée dans la chaîne
 
             embed.add_field(
-                name="📅 **Échéance**",
-                value=formatted_date,
-                inline=False
+                name="⏳ Échéance estimée",
+                value=f"`{formatted_date}`",
+                inline=True
             )
             if 'notes' in item and item['notes']:
                 embed.add_field(
@@ -81,8 +84,7 @@ async def fetch_and_send_progress(bot):
                     value=item['notes'],
                     inline=False
                 )
-            embed.set_footer(text=f"Zone01 Normandie - Suivi de progression - {item['promotionName']} ",
-                             icon_url="https://example.com/footer-icon.png")
+            embed.set_footer(text="Zone01 Normandie • Mise à jour automatique", icon_url="https://example.com/footer-icon.png")
 
             # Associer chaque promotion à un salon spécifique
             channel_name = f"channel_progress_{item['promotionName'].replace(' ', '_')}"
@@ -143,7 +145,7 @@ def start_scheduler(bot):
     async def schedule_fetch_progress_morning():
         await fetch_and_send_progress(bot)
 
-    @scheduler.scheduled_job("cron", hour=15, minute=35)  # Run at 6 PM
+    @scheduler.scheduled_job("cron", hour=16, minute=51)  # Run at 6 PM
     async def schedule_fetch_progress_evening():
         await fetch_and_send_progress(bot)
 
