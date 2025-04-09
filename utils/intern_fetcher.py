@@ -28,8 +28,8 @@ async def fetch_api_intern(bot):
 
     url = "https://jsearch.p.rapidapi.com/search"
 
-    querystring = {"query": query_intern, "page": "1", "num_pages": "1", "country": "fr", "date_posted": "today",
-                   "employment_types": "INTERN", "radius": "200"}
+    querystring = {"query": query_intern, "page": "1", "num_pages": "10", "country": "fr", "date_posted": "today",
+                   "employment_types": "INTERN", "radius": "450"}
 
     headers = {
         "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),

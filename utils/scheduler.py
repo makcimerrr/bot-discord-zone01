@@ -25,15 +25,16 @@ async def joblist_evening(bot):
     print("Updated list internship auto 2!")
 
 
-async def cdi_morning(bot):
+""""async def cdi_morning(bot):
     await send_cdilist(bot)  # Appelez la méthode send_joblist
     print("Updated list full-time auto 1!")
+"""
 
 
-async def cdi_evening(bot):
+"""async def cdi_evening(bot):
     await send_cdilist(bot)  # Appelez la méthode send_joblist
     print("Updated list full-time auto 2!")
-
+"""
 
 async def fetch_and_send_progress(bot):
     """Récupère la progression et envoie les embeds dans les salons appropriés."""
@@ -131,12 +132,12 @@ def start_scheduler(bot):
     @scheduler.scheduled_job("cron", hour=9, minute=0)  # Run at 9 AM
     async def schedule_joblist_morning():
         await joblist_morning(bot)
-        await cdi_morning(bot)
+        # await cdi_morning(bot)
 
     @scheduler.scheduled_job("cron", hour=18, minute=0)  # Run at 6 PM
     async def schedule_joblist_evening():
         await joblist_evening(bot)
-        await cdi_evening(bot)
+        # await cdi_evening(bot)
 
     @scheduler.scheduled_job("cron", hour=9, minute=0)  # Run at 9 AM
     async def schedule_fetch_progress_morning():
