@@ -116,6 +116,11 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
 
             normandie = ["Calvados", "Eure", "Manche", "Orne", "Seine-Maritime"]
 
+            excluded_companies = ["stages"]
+            if company.lower() in excluded_companies:
+                print(f"Offre ignorée : {company}, Mot(s) interdit(s) détecté(s).")
+                continue
+
             # Vérification des mots interdits
             if contains_forbidden_words(company) or contains_forbidden_words(publisher):
                 print(f"Offre ignorée : {company}, Mot(s) interdit(s) détecté(s).")
