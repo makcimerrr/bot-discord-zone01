@@ -145,7 +145,7 @@ def start_scheduler(bot):
     async def schedule_fetch_progress_morning():
         await fetch_and_send_progress(bot)
 
-    @scheduler.scheduled_job("cron", hour=16, minute=51)  # Run at 6 PM
+    @scheduler.scheduled_job("cron", hour=18, minute=0)  # Run at 6 PM
     async def schedule_fetch_progress_evening():
         await fetch_and_send_progress(bot)
 
