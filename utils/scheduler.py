@@ -12,7 +12,10 @@ from utils.config_loader import config
 scheduler = AsyncIOScheduler()
 
 # Définir la locale en français pour formater les mois en français
-locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
+try:
+    locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
+except locale.Error:
+    print("⚠️ Locale fr_FR.UTF-8 non disponible. Les mois seront affichés en anglais.")
 
 
 async def joblist_morning(bot):
