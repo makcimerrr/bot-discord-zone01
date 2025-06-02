@@ -155,7 +155,7 @@ def start_scheduler(bot):
         await fetch_and_send_progress(bot)
 
     @scheduler.scheduled_job(
-        CronTrigger(day='1-7', day_of_week='mon', hour=17, minute=0)
+        CronTrigger(day='1-7', day_of_week='mon', hour=14, minute=0)
     )
     async def monthly_task():
         await send_monthly_message(bot)
