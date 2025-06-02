@@ -1,43 +1,61 @@
-import json
+import os
+import requests
+from dotenv import load_dotenv
 from pathlib import Path
 
-from dotenv import load_dotenv
-import os
-
-# Spécifiez le chemin du fichier .env, par exemple dans le dossier racine
-env_path = Path('../.env')  # Charger le fichier .env situé à la racine du projet
+# Load .env
+env_path = Path('../.env')
 load_dotenv(dotenv_path=env_path, override=True)
-def load_config():
-    with open('data/config.json', 'r') as f:
-        return json.load(f)
 
+API_URL = os.getenv("CONFIG_API_URL")  # Exemple : http://localhost:8000
 
-def load_technologies():
-    with open('data/technologies.json', 'r') as f:
-        return json.load(f)
+# ---------- Config Discord (ID rôles, channels, etc.) ----------
 
+def get_config_value(key: str):
+    """Récupère une valeur spécifique de config Discord depuis l'API"""
+    try:
+        response = requests.get(f"{API_URL}/config")
+        response.raise_for_status()
+        return response.json().get(key)
+    except Exception as e:
+        print(f"[Config] Erreur pour '{key}' : {e}")
+        return None
 
-config = load_config()
-techs = load_technologies()
+# Exemple d’utilisation : get_config_value("role_ping_cdi")
 
-# Variables
+# ---------- Technologies ----------
 
-technologies = techs["technologies"]
-role_ping_cdi = config["role_ping_cdi"]
-forum_channel_id = config["forum_channel_id"]
-forum_channel_id_cdi = config["forum_channel_id_cdi"]
-guild_id = config["guild_id"]
-role_p1_2023 = config["role_p1_2023"]
-role_p2_2023 = config["role_p2_2023"]
-role_p1_2024 = config["role_p1_2024"]
-role_help = config["role_help"]
-role_ping_alternance = config["role_ping_alternance"]
-channel_inter_promo = config["channel_inter_promo"]
-discord_token = os.getenv("TOKEN")
-query_intern = os.getenv("QUERY_INTERNSHIP")
-query_fulltime = os.getenv("QUERY_FULLTIME")
-channel_progress_P1_2022 = config["channel_progress_P1_2022"]
-channel_progress_P1_2023 = config["channel_progress_P1_2023"]
-channel_progress_P2_2023 = config["channel_progress_P2_2023"]
-channel_progress_P1_2024 = config["channel_progress_P1_2024"]
-forbidden_words = ["Openclassrooms", "MyDigitalSchool", "ISCOD", "EPSI", "2I Academy", "Studi CFA"]
+def get_technologies():
+    try:
+        response = requests.get(f"{API_URL}/technologies")
+        response.raise_for_status()
+        return response.json().get("technologies", [])
+    except Exception as e:
+        print(f"[Technologies] Erreur : {e}")
+        return []
+
+# Exemple : get_technologies()
+
+# ---------- Forbidden Words ----------
+
+def get_forbidden_words():
+    try:
+        response = requests.get(f"{API_URL}/forbidden-words")
+        response.raise_for_status()
+        return response.json().get("forbidden_words", [])
+    except Exception as e:
+        print(f"[Forbidden Words] Erreur : {e}")
+        return []
+
+# Exemple : get_forbidden_words()
+
+# ---------- Variables d’environnement ----------
+
+def get_token():
+    return os.getenv("TOKEN")
+
+def get_query_intern():
+    return os.getenv("QUERY_INTERNSHIP")
+
+def get_query_fulltime():
+    return os.getenv("QUERY_FULLTIME")
