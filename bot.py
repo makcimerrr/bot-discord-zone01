@@ -9,6 +9,7 @@ from discord.ui import Modal, TextInput
 from cogs.gestion_help import SupremeHelpCommand
 from utils.config_loader import config, discord_token, forum_channel_id
 from utils.scheduler import start_scheduler
+from utils.handlers import handle_dm
 
 intents = discord.Intents.all()
 
@@ -147,6 +148,11 @@ async def on_command_error(ctx, error):
         )
         embed.set_footer(text="Veuillez vérifier la commande et réessayer.")
         await ctx.send(embed=embed)
+
+@bot.event
+async def on_message(message):
+    await handle_dm(bot, message)
+    await bot.process_commands(message)
 
 
 attributes = {

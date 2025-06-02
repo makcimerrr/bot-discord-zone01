@@ -3,11 +3,13 @@ import re
 import locale
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime
+from apscheduler.triggers.cron import CronTrigger
 
 from utils.utils_internship import send_jobslist
 from utils.utils_fulltime import send_cdilist
 from utils.progress_fetcher import fetch_progress
 from utils.config_loader import config
+from utils.notifier import send_monthly_message
 
 scheduler = AsyncIOScheduler()
 
@@ -151,5 +153,11 @@ def start_scheduler(bot):
     @scheduler.scheduled_job("cron", hour=18, minute=0)  # Run at 6 PM
     async def schedule_fetch_progress_evening():
         await fetch_and_send_progress(bot)
+
+    @scheduler.scheduled_job(
+        CronTrigger(day='1-7', day_of_week='mon', hour=10, minute=0)
+    )
+    async def monthly_task():
+        await send_monthly_message(bot)
 
     scheduler.start()
