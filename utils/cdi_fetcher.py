@@ -1,46 +1,45 @@
+import aiohttp
 import os
-from pathlib import Path
-
-import requests
-from dotenv import load_dotenv
+from typing import Tuple, Optional, List
+from utils.config_loader import fetch_job_query_details
 
 
-async def fetch_api_fulltime(bot):
-    """# On récupère le Cog QueryCog depuis l'instance du bot
-    query_cog = bot.get_cog('QueryCog')
+async def fetch_api_fulltime(bot) -> Tuple[List[dict], Optional[str], Optional[Exception]]:
+    """
+    Récupère les offres d'emploi full-time en utilisant la configuration dynamique
+    depuis l'API (query_fulltime).
+    """
+    # Récupération dynamique de la configuration de la query
+    query = await fetch_job_query_details("query_fulltime")
 
-    # Vérifier si le Cog est bien chargé
-    if query_cog is None:
-        print("Le Cog QueryCog n'est pas chargé.")
-        return [], "Le Cog QueryCog n'est pas chargé"
-
-    # Obtenir la valeur de query_fulltime à partir du Cog
-    query_fulltime = query_cog.get_query_fulltime()"""
-
-    env_path = Path('../.env')  # Charger le fichier .env situé à la racine du projet
-    load_dotenv(dotenv_path=env_path, override=True)
-    query_fulltime = os.getenv('QUERY_FULLTIME')
-
-    # Vérifier si une query a été définie
-    if query_fulltime is None or query_fulltime == "":
-        print("Aucune query n'a été définie.")
-        return [], "Aucune query n'a été définie", None
+    if query is None or not query.query:
+        print("❌ Aucune query_fulltime définie dans la base de données.")
+        return [], "Aucune query définie", None
 
     url = "https://jsearch.p.rapidapi.com/search"
 
-    querystring = {"query": query_fulltime, "page": "1", "num_pages": "1", "country": "fr", "date_posted": "today",
-                   "employment_types": "FULLTIME", "radius": "200"}
+    querystring = {
+        "query": query.query,
+        "page": str(query.page or 1),
+        "num_pages": str(query.num_pages or 10),
+        "country": query.country or "fr",
+        "date_posted": query.date_posted or "today",
+        "employment_types": query.employment_types or "FULLTIME",
+        "radius": str(query.radius or 50),
+    }
 
     headers = {
-        "x-rapidapi-key": os.getenv('RAPIDAPI_KEY'),
+        "x-rapidapi-key": os.getenv("RAPIDAPI_KEY"),
         "x-rapidapi-host": "jsearch.p.rapidapi.com"
     }
 
     try:
-        response = requests.get(url, headers=headers, params=querystring)
-        response.raise_for_status()
-        data = response.json().get('data', [])
-        return data if isinstance(data, list) else [], query_fulltime, None
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching JSearch jobs: {e}")
-        return [], query_fulltime, e
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers, params=querystring) as resp:
+                resp.raise_for_status()
+                result = await resp.json()
+                data = result.get("data", [])
+                return data if isinstance(data, list) else [], query.query, None
+    except Exception as e:
+        print(f"❌ Erreur JSearch: {e}")
+        return [], query.query, e
