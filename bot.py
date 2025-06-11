@@ -1,13 +1,10 @@
-import asyncio
 import traceback
-from sched import scheduler
 import discord
 import logging
-from discord.ext import commands, tasks
-from discord.ui import Modal, TextInput
+from discord.ext import commands
 
 from cogs.gestion_help import SupremeHelpCommand
-from utils.config_loader import config, discord_token, forum_channel_id
+from utils.config_loader import discord_token
 from utils.scheduler import start_scheduler
 
 intents = discord.Intents.all()
