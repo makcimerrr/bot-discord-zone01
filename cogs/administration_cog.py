@@ -8,6 +8,7 @@ from utils.config_loader import forbidden_words
 from utils.utils_fulltime import send_cdilist
 from utils.utils_function import is_admin
 from utils.utils_internship import send_jobslist
+from utils.timeline import fetch_and_send_progress
 
 class Administration(commands.Cog):
     def __init__(self, bot):
@@ -217,6 +218,11 @@ class Administration(commands.Cog):
         loading_message = await ctx.send(embed=embed_loading)
 
         await send_jobslist(self.bot, ctx, loading_message)
+
+    @commands.command(name='timeline', aliases=['tl'], description="Affiche la timeline des promotions.")
+    @is_admin()
+    async def timeline(self):
+        await fetch_and_send_progress(self.bot)
 
 async def setup(bot):
     await bot.add_cog(Administration(bot))
