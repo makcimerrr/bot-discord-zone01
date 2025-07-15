@@ -221,7 +221,7 @@ class Administration(commands.Cog):
 
     @commands.command(name='timeline', aliases=['tl'], description="Affiche la timeline des promotions.")
     @is_admin()
-    async def timeline(self):
+    async def timeline(self, ctx):
         await fetch_and_send_progress(self.bot)
 
 async def setup(bot):

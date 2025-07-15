@@ -40,6 +40,7 @@ channel_progress_P1_2022 = config["channel_progress_P1_2022"]
 channel_progress_P1_2023 = config["channel_progress_P1_2023"]
 channel_progress_P2_2023 = config["channel_progress_P2_2023"]
 channel_progress_P1_2024 = config["channel_progress_P1_2024"]
+channel_progress_P1_2025 = config["channel_progress_P1_2025"]
 forbidden_words = ["Openclassrooms", "MyDigitalSchool", "ISCOD", "EPSI", "2I Academy", "Studi CFA"]
 channel_id_feedback_alternance = int(os.getenv('CHANNEL_ID'))
 role_feedback_alternance = int(os.getenv('ROLE_ID'))
