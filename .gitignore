@@ -6,3 +6,10 @@ __pycache__/
 *.pyc
 
 /data/config.json
+
+myenv/
+
+docs/.DS_Store
+.DS_Store
+
+.idea/
