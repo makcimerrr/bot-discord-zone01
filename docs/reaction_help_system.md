@@ -38,16 +38,18 @@ Cette commande va créer un message avec un embed dans le canal spécifié. Les 
 
 1. Vous recevrez un MP du bot quand quelqu'un demande de l'aide
 2. Le message contient le nom de la personne qui a besoin d'aide
-3. Répondez au MP avec :
-   - `oui` ou `yes` : pour accepter d'aider
-   - `non` ou `no` : pour refuser (un autre Helper sera contacté)
+3. **Réagissez au message avec** :
+   - ✅ pour accepter d'aider
+   - ❌ pour refuser (un autre Helper sera contacté)
 
-4. Si vous acceptez :
+4. Si vous acceptez (✅) :
+   - Le message sera mis à jour avec un embed vert
    - Vous recevrez les coordonnées de la personne
    - La personne recevra vos coordonnées
    - Contactez la personne pour l'aider
 
-5. Si vous refusez :
+5. Si vous refusez (❌) :
+   - Le message sera mis à jour avec un embed rouge
    - Un autre Helper sera contacté automatiquement
    - Aucune action supplémentaire n'est requise
 
@@ -57,10 +59,10 @@ Cette commande va créer un message avec un embed dans le canal spécifié. Les 
 
 1. **Demande d'aide** : Un apprenant réagit avec 🆘 au message de demande d'aide
 2. **Sélection d'un Helper** : Le bot sélectionne aléatoirement un Helper qui n'a pas encore été contacté pour cette demande
-3. **Contact du Helper** : Le bot envoie un MP au Helper avec les détails de la demande
+3. **Contact du Helper** : Le bot envoie un MP au Helper avec les détails de la demande et ajoute automatiquement les réactions ✅ et ❌
 4. **Réponse du Helper** :
-   - Si `oui` : Le bot met en relation l'apprenant et le Helper, puis ferme la demande
-   - Si `non` : Le bot contacte un autre Helper aléatoire
+   - Si ✅ : Le bot met en relation l'apprenant et le Helper, puis ferme la demande
+   - Si ❌ : Le bot contacte un autre Helper aléatoire
 5. **Gestion des échecs** : Si tous les Helpers ont été contactés et aucun n'est disponible, l'apprenant est informé
 
 ### Stockage des données
@@ -77,11 +79,14 @@ Les demandes d'aide en cours sont stockées dans `data/help_requests.json` avec 
 }
 ```
 
-### Gestion des MPs
+### Gestion des Réactions
 
-Le fichier `utils/handlers.py` gère les messages privés reçus par le bot :
-- Si le message est une réponse à une demande d'aide (`oui`/`non`), il est traité par le système d'aide
-- Sinon, il est enregistré dans Notion comme auparavant
+Le système utilise les réactions Discord pour les interactions :
+- **🆘** dans un channel : Demande d'aide initiale
+- **✅** en MP : Helper accepte d'aider
+- **❌** en MP : Helper refuse d'aider
+
+Les réactions sont détectées par l'événement `on_raw_reaction_add` dans `cogs/reaction_help_cog.py`
 
 ## Avantages
 
