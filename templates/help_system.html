@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Système d'Aide - Bot Discord Zone01{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="text-white text-center mb-4">
+            <i class="bi bi-life-preserver"></i> Système d'Aide par Réaction
+        </h1>
+    </div>
+</div>
+
+<!-- Statistiques du Système d'Aide -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="stat-card">
+            <div class="stat-icon text-primary">
+                <i class="bi bi-inbox"></i>
+            </div>
+            <div class="stat-value text-primary">{{ requests|length }}</div>
+            <div class="stat-label">Demandes en Cours</div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="stat-card">
+            <div class="stat-icon text-success">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="stat-value text-success" id="helpers-assigned">
+                {{ requests|selectattr('current_helper')|list|length }}
+            </div>
+            <div class="stat-label">Helpers Assignés</div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="stat-card">
+            <div class="stat-icon text-warning">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div class="stat-value text-warning">
+                {{ requests|rejectattr('current_helper')|list|length }}
+            </div>
+            <div class="stat-label">En Attente</div>
+        </div>
+    </div>
+</div>
+
+<!-- Demandes d'Aide Actives -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-list-task"></i> Demandes d'Aide Actives
+                <button class="btn btn-sm btn-light float-end" onclick="refreshRequests()">
+                    <i class="bi bi-arrow-clockwise"></i> Actualiser
+                </button>
+            </div>
+            <div class="card-body">
+                {% if requests %}
+                <div class="table-responsive">
+                    <table class="table table-hover" id="requests-table">
+                        <thead>
+                            <tr>
+                                <th>ID Demande</th>
+                                <th>User ID</th>
+                                <th>Guild ID</th>
+                                <th>Helper Actuel</th>
+                                <th>Helpers Contactés</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for req in requests %}
+                            <tr>
+                                <td>
+                                    <code>{{ req.id[:20] }}...</code>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ req.user_id }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ req.guild_id }}</span>
+                                </td>
+                                <td>
+                                    {% if req.current_helper and req.current_helper != 'Aucun' %}
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-person-check"></i> {{ req.current_helper }}
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-warning">
+                                        <i class="bi bi-hourglass"></i> En attente
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        {{ req.contacted_helpers_count }} contacté(s)
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if req.current_helper and req.current_helper != 'Aucun' %}
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle"></i> Assigné
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-warning">
+                                        <i class="bi bi-clock"></i> En cours
+                                    </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+                    <h5 class="text-muted mt-3">Aucune demande d'aide en cours</h5>
+                    <p class="text-muted">Les demandes d'aide apparaîtront ici lorsque des utilisateurs en feront.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fonctionnement du Système -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-question-circle"></i> Comment Fonctionne le Système ?
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-1-circle" style="font-size: 3rem; color: #002e7a;"></i>
+                            </div>
+                            <h5>Réaction</h5>
+                            <p class="text-muted">Un apprenant réagit avec 🆘 au message d'aide</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-2-circle" style="font-size: 3rem; color: #002e7a;"></i>
+                            </div>
+                            <h5>Contact</h5>
+                            <p class="text-muted">Le bot contacte un Helper aléatoire en MP</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-3-circle" style="font-size: 3rem; color: #002e7a;"></i>
+                            </div>
+                            <h5>Réponse</h5>
+                            <p class="text-muted">Le Helper répond "oui" ou "non" en MP</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="alert alert-info mb-0">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>Important :</strong> Si un Helper refuse, un autre est automatiquement contacté jusqu'à ce qu'un soit disponible.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function refreshRequests() {
+        fetch('/api/help-requests')
+            .then(response => response.json())
+            .then(data => {
+                location.reload();
+            })
+            .catch(error => console.error('Erreur:', error));
+    }
+
+    // Actualisation automatique toutes les 30 secondes
+    setInterval(refreshRequests, 30000);
+</script>
+{% endblock %}

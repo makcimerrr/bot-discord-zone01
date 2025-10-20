@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Configuration - Bot Discord Zone01{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="text-white text-center mb-4">
+            <i class="bi bi-gear"></i> Configuration du Bot
+        </h1>
+    </div>
+</div>
+
+<!-- Variables d'Environnement -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-file-earmark-text"></i> Variables d'Environnement
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Valeur</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>QUERY_INTERNSHIP</code></td>
+                                <td>
+                                    <span class="badge badge-custom">{{ env_vars.QUERY_INTERNSHIP }}</span>
+                                </td>
+                                <td>Query de recherche pour les alternances/stages</td>
+                            </tr>
+                            <tr>
+                                <td><code>QUERY_FULLTIME</code></td>
+                                <td>
+                                    <span class="badge badge-custom">{{ env_vars.QUERY_FULLTIME }}</span>
+                                </td>
+                                <td>Query de recherche pour les emplois temps plein</td>
+                            </tr>
+                            <tr>
+                                <td><code>DISCORD_TOKEN</code></td>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-lock"></i> {{ env_vars.DISCORD_TOKEN }}
+                                    </span>
+                                </td>
+                                <td>Token d'authentification Discord</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-warning mt-3 mb-0">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Attention :</strong> Modifiez ces valeurs via les commandes Discord ou directement dans le fichier <code>.env</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Configuration Discord -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header">
+                <i class="bi bi-discord"></i> IDs Discord
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-server"></i> Guild ID</span>
+                        <code>{{ config.guild_id }}</code>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-megaphone"></i> Canal Inter-Promo</span>
+                        <code>{{ config.channel_inter_promo }}</code>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-inbox"></i> Forum Channel (Général)</span>
+                        <code>{{ config.forum_channel_id }}</code>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-inbox"></i> Forum Channel (CDI)</span>
+                        <code>{{ config.forum_channel_id_cdi }}</code>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header">
+                <i class="bi bi-person-badge"></i> Rôles Discord
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-life-preserver"></i> Rôle Helper</span>
+                        <code>{{ config.role_help }}</code>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-mortarboard"></i> Rôle P1 2023</span>
+                        <code>{{ config.role_p1_2023 }}</code>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-mortarboard"></i> Rôle P2 2023</span>
+                        <code>{{ config.role_p2_2023 }}</code>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-mortarboard"></i> Rôle P1 2024</span>
+                        <code>{{ config.role_p1_2024 }}</code>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Canaux de Progression -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-bar-chart"></i> Canaux de Progression
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Promotion</th>
+                                <th>Canal ID</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">P1 2022</span>
+                                </td>
+                                <td>
+                                    <code>{{ config.channel_progress_P1_2022 }}</code>
+                                </td>
+                                <td>Canal de progression pour la promo P1 2022</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">P1 2023</span>
+                                </td>
+                                <td>
+                                    <code>{{ config.channel_progress_P1_2023 }}</code>
+                                </td>
+                                <td>Canal de progression pour la promo P1 2023</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">P2 2023</span>
+                                </td>
+                                <td>
+                                    <code>{{ config.channel_progress_P2_2023 }}</code>
+                                </td>
+                                <td>Canal de progression pour la promo P2 2023</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">P1 2024</span>
+                                </td>
+                                <td>
+                                    <code>{{ config.channel_progress_P1_2024 }}</code>
+                                </td>
+                                <td>Canal de progression pour la promo P1 2024</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">P1 2025</span>
+                                </td>
+                                <td>
+                                    <code>{{ config.channel_progress_P1_2025 }}</code>
+                                </td>
+                                <td>Canal de progression pour la promo P1 2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

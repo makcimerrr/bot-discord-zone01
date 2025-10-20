@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - Bot Discord Zone01{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="text-white text-center mb-4">
+            <i class="bi bi-speedometer2"></i> Tableau de Bord
+        </h1>
+    </div>
+</div>
+
+<!-- Statistiques -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-people"></i>
+            </div>
+            <div class="stat-value" id="total-requests">{{ stats.total_help_requests }}</div>
+            <div class="stat-label">Demandes d'Aide Totales</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div class="stat-value" id="active-requests">{{ stats.active_requests }}</div>
+            <div class="stat-label">Demandes Actives</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-briefcase"></i>
+            </div>
+            <div class="stat-value">2</div>
+            <div class="stat-label">Queries Configurées</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="stat-value text-success">
+                <i class="bi bi-wifi"></i>
+            </div>
+            <div class="stat-label">Bot En Ligne</div>
+        </div>
+    </div>
+</div>
+
+<!-- Informations Principales -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-search"></i> Queries de Recherche
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6 class="text-primary">
+                        <i class="bi bi-mortarboard"></i> Alternances/Stages
+                    </h6>
+                    <p class="mb-0">
+                        <span class="badge badge-custom">{{ stats.query_intern }}</span>
+                    </p>
+                </div>
+                <hr>
+                <div>
+                    <h6 class="text-primary">
+                        <i class="bi bi-building"></i> Emplois Temps Plein (CDI)
+                    </h6>
+                    <p class="mb-0">
+                        <span class="badge badge-custom">{{ stats.query_fulltime }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-info-circle"></i> Informations du Serveur
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-discord text-primary"></i> Guild ID</span>
+                        <span class="badge bg-secondary">{{ config.guild_id }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-megaphone text-warning"></i> Canal Inter-Promo</span>
+                        <span class="badge bg-secondary">{{ config.channel_inter_promo }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-person-badge text-success"></i> Rôle Helper</span>
+                        <span class="badge bg-secondary">{{ config.role_help }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accès Rapide -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-lightning"></i> Accès Rapide
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <a href="/commands" class="btn btn-primary w-100 btn-lg">
+                            <i class="bi bi-terminal"></i> Commandes
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/help-system" class="btn btn-success w-100 btn-lg">
+                            <i class="bi bi-question-circle"></i> Système d'Aide
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/config" class="btn btn-warning w-100 btn-lg">
+                            <i class="bi bi-gear"></i> Configuration
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/logs" class="btn btn-info w-100 btn-lg">
+                            <i class="bi bi-file-text"></i> Logs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Mise à jour automatique des statistiques toutes les 10 secondes
+    setInterval(function() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-requests').textContent = data.total_help_requests;
+                document.getElementById('active-requests').textContent = data.active_requests;
+            })
+            .catch(error => console.error('Erreur:', error));
+    }, 10000);
+</script>
+{% endblock %}

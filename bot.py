@@ -10,12 +10,18 @@ from cogs.gestion_help import SupremeHelpCommand
 from utils.config_loader import config, discord_token, forum_channel_id
 from utils.scheduler import start_scheduler
 from utils.handlers import handle_dm
+from utils.logger import logger
+
+# Désactiver les logs Discord.py dans le terminal
+logging.getLogger('discord').setLevel(logging.CRITICAL)
+logging.getLogger('discord.http').setLevel(logging.CRITICAL)
+logging.getLogger('discord.gateway').setLevel(logging.CRITICAL)
 
 intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-initial_extensions = ['cogs.administration_cog', 'cogs.configuration_cog', 'cogs.utilitaire_cog']
+initial_extensions = ['cogs.administration_cog', 'cogs.configuration_cog', 'cogs.utilitaire_cog', 'cogs.reaction_help_cog']
 
 # Flag to check if the bot is loading for the first time
 first_ready = True
@@ -25,39 +31,40 @@ async def load_extensions(bot):
     for extension in initial_extensions:
         try:
             await bot.load_extension(extension)
-            print(f"Loaded {extension}")
+            logger.success(f"Extension chargée : {extension}", category="bot")
         except Exception as e:
-            print(f"Failed to load extension {extension}: {e}")
+            logger.error(f"Échec du chargement de l'extension {extension} : {e}", category="bot")
 
 
 @bot.event
 async def on_ready():
     global first_ready
-    print('Bot is ready.')
+    logger.success('Bot Discord démarré avec succès', category="bot")
 
     if first_ready:
         await load_extensions(bot)
         try:
             synced = await bot.tree.sync()
-            print(f"Synced {len(synced)} command(s)")
+            logger.success(f"Synchronisation de {len(synced)} commande(s) slash", category="bot")
         except Exception as e:
-            print(e)
+            logger.error(f"Erreur lors de la synchronisation des commandes : {e}", category="bot")
         # Start the scheduler to run the send_joblist and send_cdilist function twice a day
         start_scheduler(bot)
+        logger.info("Scheduler démarré pour les mises à jour automatiques", category="bot")
         first_ready = False
 
 
 @bot.event
 async def on_disconnect():
-    logging.warning("Bot disconnected, attempting to reconnect...")
-    print("Bot disconnected, attempting to reconnect...")
+    logger.warning("Bot déconnecté, tentative de reconnexion...", category="bot")
 
 
 @bot.event
 async def on_error(event, *args, **kwargs):
-    logging.error(f"An error occurred in event {event}: {args[0]}")
-    with open("err.log", "a") as f:
-        f.write(f"Error in {event}: {args[0]}\n")
+    error_msg = f"Erreur dans l'événement {event}"
+    if args:
+        error_msg += f": {args[0]}"
+    logger.error(error_msg, category="bot")
 
 
 @bot.event
@@ -66,22 +73,22 @@ async def on_message(message):
         # Your existing on_message code here
         await bot.process_commands(message)
     except Exception as e:
-        logging.error(f"An error occurred in event on_message: {message}", exc_info=True)
+        logger.error(f"Erreur dans on_message : {e}", category="bot")
 
 
 @bot.event
 async def on_resumed():
-    print("Bot reconnected.")
+    logger.success("Bot reconnecté à Discord", category="bot")
 
 
 @bot.event
 async def on_connect():
-    print("Bot connected to Discord.")
+    logger.success("Bot connecté à Discord", category="bot")
 
 
 @bot.event
 async def on_close():
-    print("Bot disconnected from Discord.")
+    logger.warning("Bot déconnecté de Discord", category="bot")
 
 
 # Ajoutez ce gestionnaire d'erreurs globalement dans votre fichier principal

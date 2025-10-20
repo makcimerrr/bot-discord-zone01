@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ui import Modal, TextInput, Button, View
 from datetime import datetime, timedelta
+from utils.logger import logger
 
 # Dictionnaire pour stocker les utilisateurs présents pour chaque événement
 event_attendees = {}
@@ -185,7 +186,7 @@ class EventCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("EventCog is ready.")
+        logger.success("EventCog chargé", category="cog")
 
     @app_commands.command(name="create_event", description="Creates an event with the provided details.")
     @is_admin()

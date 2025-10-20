@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ui import Modal, TextInput, Button, View
 from utils.config_loader import role_help, role_p1_2023, role_p2_2023, role_p1_2024, channel_inter_promo
+from utils.logger import logger
 
 # Dictionnaire pour les IDs de canal associés aux rôles
 role_channel_mapping = {
@@ -87,11 +88,11 @@ class HelpView(discord.ui.View):
                             if message.author == self.bot.user and "a besoin d'aide" in message.content and interaction.user.mention in message.content:
                                 try:
                                     await message.delete()
-                                    #print(f"Deleted message: {message.id}")  # Debugging
+                                    logger.info(f"Message d'aide supprimé : {message.id}", category="help_button")
                                 except discord.Forbidden:
-                                    print("Bot lacks permission to delete messages.")  # Debugging
+                                    logger.warning("Bot manque de permission pour supprimer les messages", category="help_button")
                                 except discord.HTTPException as e:
-                                    print(f"Failed to delete message: {e}")  # Debugging
+                                    logger.error(f"Échec de la suppression du message : {e}", category="help_button")
                     else:
                         await interaction.followup.send("Le canal pour envoyer le message d'aide est introuvable.", ephemeral=True)
                 else:
@@ -118,8 +119,8 @@ class HelpView(discord.ui.View):
                 # channel_id = channel_inter_promo
                 user_roles = [role.id for role in interaction.user.roles]  # Get the list of role IDs of the user
 
-                print("User Roles:", user_roles)  # Debugging line
-                print("Role Channel Mapping:", role_channel_mapping)  # Debugging line
+                logger.debug(f"User Roles: {user_roles}", category="help_button")
+                logger.debug(f"Role Channel Mapping: {role_channel_mapping}", category="help_button")
 
                 for role_id, target_channel_id in role_channel_mapping.items():
                     if role_id in user_roles:
@@ -152,7 +153,7 @@ class HelpCommand(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("EventCog is ready.")
+        logger.success("HelpCommand chargé", category="cog")
 
     @app_commands.command(name="send_help_embed", description="Envoie un embed d'aide dans le canal spécifié.")
     @is_admin()

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Commandes - Bot Discord Zone01{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="text-white text-center mb-4">
+            <i class="bi bi-terminal"></i> Liste des Commandes
+        </h1>
+    </div>
+</div>
+
+{% for category, cmds in commands.items() %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                {% if category == "Administration" %}
+                <i class="bi bi-tools"></i>
+                {% elif category == "Configuration" %}
+                <i class="bi bi-sliders"></i>
+                {% elif category == "Utilitaire" %}
+                <i class="bi bi-wrench"></i>
+                {% elif category == "Événements" %}
+                <i class="bi bi-calendar-event"></i>
+                {% elif category == "Système d'Aide" %}
+                <i class="bi bi-life-preserver"></i>
+                {% endif %}
+                {{ category }}
+                <span class="badge bg-light text-dark float-end">{{ cmds|length }} commande(s)</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Commande</th>
+                                <th>Description</th>
+                                <th>Utilisation</th>
+                                <th>Alias</th>
+                                <th>Accès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cmd in cmds %}
+                            <tr>
+                                <td>
+                                    <code class="text-primary">{{ cmd.name }}</code>
+                                </td>
+                                <td>{{ cmd.description }}</td>
+                                <td>
+                                    <code class="text-success">{{ cmd.usage }}</code>
+                                </td>
+                                <td>
+                                    {% if cmd.aliases %}
+                                        {% for alias in cmd.aliases %}
+                                        <span class="badge bg-secondary">{{ alias }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="text-muted">Aucun</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if cmd.admin_only %}
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-shield-lock"></i> Admin
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-unlock"></i> Tous
+                                    </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Légende -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-info-circle"></i> Légende
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="bi bi-shield-lock text-danger"></i> Commandes Admin</h6>
+                        <p class="text-muted">Ces commandes nécessitent les permissions d'administrateur du serveur.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="bi bi-unlock text-success"></i> Commandes Publiques</h6>
+                        <p class="text-muted">Ces commandes sont accessibles à tous les membres du serveur.</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="alert alert-info mb-0">
+                    <i class="bi bi-lightbulb"></i>
+                    <strong>Astuce :</strong> Utilisez la commande <code>!help &lt;nom_commande&gt;</code> dans Discord pour obtenir plus d'informations sur une commande spécifique.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

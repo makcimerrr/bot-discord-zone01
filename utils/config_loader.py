@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 
 # Spécifiez le chemin du fichier .env, par exemple dans le dossier racine
-env_path = Path('../.env')  # Charger le fichier .env situé à la racine du projet
+env_path = Path('.env')  # Charger le fichier .env situé à la racine du projet
 load_dotenv(dotenv_path=env_path, override=True)
 def load_config():
     with open('data/config.json', 'r') as f:
@@ -42,7 +42,7 @@ channel_progress_P2_2023 = config["channel_progress_P2_2023"]
 channel_progress_P1_2024 = config["channel_progress_P1_2024"]
 channel_progress_P1_2025 = config["channel_progress_P1_2025"]
 forbidden_words = ["Openclassrooms", "MyDigitalSchool", "ISCOD", "EPSI", "2I Academy", "Studi CFA"]
-channel_id_feedback_alternance = int(os.getenv('CHANNEL_ID'))
-role_feedback_alternance = int(os.getenv('ROLE_ID'))
+channel_id_feedback_alternance = int(os.getenv('CHANNEL_ID', 0)) if os.getenv('CHANNEL_ID') else None
+role_feedback_alternance = int(os.getenv('ROLE_ID', 0)) if os.getenv('ROLE_ID') else None
 notion_token = os.getenv("NOTION_TOKEN")
 notion_database_id = os.getenv("NOTION_DATABASE_ID")
