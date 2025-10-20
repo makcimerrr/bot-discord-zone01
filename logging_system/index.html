@@ -10,13 +10,9 @@
         <meta name="author" content="Makcimerrr">
       
       
-        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/config/">
+        <link rel="canonical" href="https://makcimerrr.github.io/bot-discord-zone01/logging_system/">
       
       
-        <link rel="prev" href="../utils/config_loader/">
-      
-      
-        <link rel="next" href="../contributor/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -24,7 +20,7 @@
     
     
       
-        <title>Configuration - Documentation du Bot Discord Zone01</title>
+        <title>Système de Logging Centralisé - Documentation du Bot Discord Zone01</title>
       
     
     
@@ -66,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configuration" class="md-skip">
+        <a href="#systeme-de-logging-centralise" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configuration
+              Système de Logging Centralisé
             
           </span>
         </div>
@@ -721,32 +717,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Configuration
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
         
   
   
@@ -757,59 +731,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#fichier-configjson" class="md-nav__link">
-    <span class="md-ellipsis">
-      🗂️ Fichier config.json
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#explications-des-champs" class="md-nav__link">
-    <span class="md-ellipsis">
-      📝 Explications des Champs
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="📝 Explications des Champs">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#assurez-vous-que-chaque-id-est-correctement-renseigne-pour-que-le-bot-fonctionne-comme-prevu" class="md-nav__link">
-    <span class="md-ellipsis">
-      Assurez-vous que chaque ID est correctement renseigné pour que le bot fonctionne comme prévu. 🛠️
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -863,28 +784,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#fichier-configjson" class="md-nav__link">
+  <a href="#description" class="md-nav__link">
     <span class="md-ellipsis">
-      🗂️ Fichier config.json
+      Description
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#explications-des-champs" class="md-nav__link">
+  <a href="#pourquoi-ce-systeme" class="md-nav__link">
     <span class="md-ellipsis">
-      📝 Explications des Champs
+      Pourquoi ce système ?
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="📝 Explications des Champs">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#assurez-vous-que-chaque-id-est-correctement-renseigne-pour-que-le-bot-fonctionne-comme-prevu" class="md-nav__link">
+  <a href="#fichiers" class="md-nav__link">
     <span class="md-ellipsis">
-      Assurez-vous que chaque ID est correctement renseigné pour que le bot fonctionne comme prévu. 🛠️
+      Fichiers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-logger-utilsloggerpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Logger (utils/logger.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#niveaux-de-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      Niveaux de Log
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-de-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      Catégories de Log
     </span>
   </a>
   
@@ -892,6 +849,267 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilisation-dans-le-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilisation dans le Code
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilisation dans le Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dans-un-cog" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dans un cog
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dans-le-bot-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dans le bot principal
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface Web
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface Web">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#page-des-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Page des Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#captures-decran" class="md-nav__link">
+    <span class="md-ellipsis">
+      Captures d'Écran
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-rest" class="md-nav__link">
+    <span class="md-ellipsis">
+      API REST
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API REST">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apilogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apilogsstats" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/logs/stats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apilogsclear" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /api/logs/clear
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limite-de-logs-en-memoire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limite de logs en mémoire
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desactivation-des-logs-discordpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Désactivation des logs Discord.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desactivation-des-logs-flask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Désactivation des logs Flask
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stockage-des-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stockage des Logs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avantages-du-systeme" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avantages du Système
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonnes-pratiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bonnes Pratiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bonnes Pratiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-choisir-le-bon-niveau" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Choisir le bon niveau
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-utiliser-des-categories-coherentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Utiliser des catégories cohérentes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-messages-clairs-et-descriptifs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Messages clairs et descriptifs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#depannage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dépannage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dépannage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#les-logs-ne-saffichent-pas-dans-linterface-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      Les logs ne s'affichent pas dans l'interface web
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erreur-no-module-named-utilslogger" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erreur "No module named 'utils.logger'"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-logs-sont-vides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Les logs sont vides
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Support
+    </span>
+  </a>
   
 </li>
       
@@ -914,36 +1132,314 @@
   
 
 
-<h1 id="configuration">⚙️ Configuration</h1>
-<p>Pour que le bot fonctionne correctement, un fichier de configuration est nécessaire. Suivez ces instructions pour le configurer :</p>
-<h2 id="fichier-configjson">🗂️ Fichier <code>config.json</code></h2>
-<p>Le fichier <code>data/config.json</code> doit être structuré comme suit :</p>
+<h1 id="systeme-de-logging-centralise">Système de Logging Centralisé</h1>
+<h2 id="description">Description</h2>
+<p>Le bot Discord Zone01 utilise un système de logging centralisé qui enregistre tous les événements du bot dans des fichiers JSON et les affiche dans l'interface web. <strong>Aucun log n'est affiché dans le terminal</strong> pour alléger la charge sur le serveur.</p>
+<h2 id="pourquoi-ce-systeme">Pourquoi ce système ?</h2>
+<ul>
+<li><strong>Performance</strong> : Pas d'affichage dans le terminal = moins de charge CPU</li>
+<li><strong>Traçabilité</strong> : Tous les logs sont sauvegardés dans un fichier JSON</li>
+<li><strong>Visualisation</strong> : Interface web moderne pour consulter les logs</li>
+<li><strong>Filtrage</strong> : Filtrer par niveau, catégorie, limite</li>
+<li><strong>Statistiques</strong> : Vue d'ensemble du nombre de logs par type</li>
+</ul>
+<h2 id="architecture">Architecture</h2>
+<h3 id="fichiers">Fichiers</h3>
+<pre><code>utils/logger.py          # Module de logging centralisé
+data/bot_logs.json       # Fichier de stockage des logs
+templates/logs.html      # Page web pour visualiser les logs
+</code></pre>
+<h3 id="module-logger-utilsloggerpy">Module Logger (utils/logger.py)</h3>
+<p>Le module <code>logger.py</code> fournit une classe <code>BotLogger</code> avec les méthodes suivantes :</p>
+<pre><code class="language-python">from utils.logger import logger
+
+# Méthodes disponibles
+logger.info(&quot;Message d'information&quot;, category=&quot;bot&quot;)
+logger.success(&quot;Opération réussie&quot;, category=&quot;bot&quot;)
+logger.warning(&quot;Avertissement&quot;, category=&quot;bot&quot;)
+logger.error(&quot;Erreur critique&quot;, category=&quot;bot&quot;)
+logger.debug(&quot;Message de débogage&quot;, category=&quot;bot&quot;)
+</code></pre>
+<h3 id="niveaux-de-log">Niveaux de Log</h3>
+<table>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Icône</th>
+<th>Couleur</th>
+<th>Utilisation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INFO</td>
+<td>ℹ️</td>
+<td>Bleu</td>
+<td>Informations générales</td>
+</tr>
+<tr>
+<td>SUCCESS</td>
+<td>✅</td>
+<td>Vert</td>
+<td>Opération réussie</td>
+</tr>
+<tr>
+<td>WARNING</td>
+<td>⚠️</td>
+<td>Orange</td>
+<td>Avertissement</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>❌</td>
+<td>Rouge</td>
+<td>Erreur critique</td>
+</tr>
+<tr>
+<td>DEBUG</td>
+<td>🐛</td>
+<td>Gris</td>
+<td>Débogage</td>
+</tr>
+</tbody>
+</table>
+<h3 id="categories-de-log">Catégories de Log</h3>
+<p>Les logs sont organisés par catégories pour faciliter le filtrage :</p>
+<ul>
+<li><strong>bot</strong> : Événements du bot (démarrage, connexion, déconnexion)</li>
+<li><strong>cog</strong> : Chargement des cogs/extensions</li>
+<li><strong>help_system</strong> : Système d'aide par réaction</li>
+<li><strong>help_button</strong> : Système d'aide par bouton</li>
+<li><strong>notion</strong> : Intégration Notion</li>
+<li><strong>web</strong> : Interface web</li>
+<li><strong>general</strong> : Catégorie par défaut</li>
+</ul>
+<h2 id="utilisation-dans-le-code">Utilisation dans le Code</h2>
+<h3 id="dans-un-cog">Dans un cog</h3>
+<pre><code class="language-python">from utils.logger import logger
+
+class MyCog(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        logger.success(&quot;MyCog chargé&quot;, category=&quot;cog&quot;)
+
+    @commands.command()
+    async def my_command(self, ctx):
+        try:
+            # Votre code ici
+            logger.info(&quot;Commande exécutée avec succès&quot;, category=&quot;cog&quot;)
+        except Exception as e:
+            logger.error(f&quot;Erreur dans my_command : {e}&quot;, category=&quot;cog&quot;)
+</code></pre>
+<h3 id="dans-le-bot-principal">Dans le bot principal</h3>
+<pre><code class="language-python">from utils.logger import logger
+
+# Remplacer print() par logger
+# Avant
+print(&quot;Bot is ready&quot;)
+
+# Après
+logger.success(&quot;Bot Discord démarré avec succès&quot;, category=&quot;bot&quot;)
+</code></pre>
+<h2 id="interface-web">Interface Web</h2>
+<h3 id="page-des-logs">Page des Logs</h3>
+<p>Accessible sur : <code>http://localhost:5000/logs</code></p>
+<p><strong>Fonctionnalités :</strong></p>
+<ol>
+<li><strong>Statistiques en temps réel</strong></li>
+<li>Total des logs</li>
+<li>
+<p>Nombre de logs par niveau (INFO, SUCCESS, WARNING, ERROR, DEBUG)</p>
+</li>
+<li>
+<p><strong>Filtres</strong></p>
+</li>
+<li>Filtrer par niveau (INFO, SUCCESS, WARNING, ERROR, DEBUG)</li>
+<li>Filtrer par catégorie (bot, cog, help_system, etc.)</li>
+<li>
+<p>Limiter le nombre de logs affichés (50, 100, 200, 500)</p>
+</li>
+<li>
+<p><strong>Liste des logs</strong></p>
+</li>
+<li>Date/Heure de chaque log</li>
+<li>Niveau avec badge coloré</li>
+<li>Catégorie</li>
+<li>
+<p>Message du log</p>
+</li>
+<li>
+<p><strong>Actions</strong></p>
+</li>
+<li>Actualiser les logs</li>
+<li>Effacer tous les logs</li>
+<li>Actualisation automatique toutes les 15 secondes</li>
+</ol>
+<h3 id="captures-decran">Captures d'Écran</h3>
+<p>La page de logs affiche :
+- Statistiques en haut (cartes colorées par niveau)
+- Formulaire de filtrage
+- Table des logs avec scroll
+- Légende des niveaux</p>
+<h2 id="api-rest">API REST</h2>
+<h3 id="get-apilogs">GET <code>/api/logs</code></h3>
+<p>Récupère les logs avec filtres optionnels.</p>
+<p><strong>Paramètres de requête :</strong>
+- <code>level</code> : Filtrer par niveau (INFO, SUCCESS, WARNING, ERROR, DEBUG)
+- <code>category</code> : Filtrer par catégorie
+- <code>limit</code> : Nombre maximum de logs (défaut: 100)</p>
+<p><strong>Exemple :</strong></p>
+<pre><code>GET /api/logs?level=ERROR&amp;category=bot&amp;limit=50
+</code></pre>
+<p><strong>Réponse :</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;timestamp&quot;: &quot;2025-01-20T10:30:00.000000&quot;,
+    &quot;level&quot;: &quot;ERROR&quot;,
+    &quot;category&quot;: &quot;bot&quot;,
+    &quot;message&quot;: &quot;Erreur lors de la synchronisation des commandes&quot;
+  }
+]
+</code></pre>
+<h3 id="get-apilogsstats">GET <code>/api/logs/stats</code></h3>
+<p>Récupère les statistiques des logs.</p>
+<p><strong>Réponse :</strong></p>
 <pre><code class="language-json">{
-  &quot;forum_channel_id&quot;: votre_canal_id,                   // ID du canal pour les offres d'alternance
-  &quot;forum_channel_id_cdi&quot;: votre_canal_id_cdi,           // ID du canal pour les offres CDI, CDD, Freelance, Intérim
-  &quot;role_ping&quot;: votre_role_id,                          // ID du rôle pour les notifications d'alternance
-  &quot;role_ping_cdi&quot;: votre_role_id_cdi,                  // ID du rôle pour les notifications CDI, CDD, Freelance, Intérim
-  &quot;guild_id&quot;: votre_guild_id,                          // ID de votre serveur Discord
-  &quot;role_p1_2023&quot;: votre_role_id_p1_2023,               // ID du rôle pour les apprenants P1 2023
-  &quot;role_p2_2023&quot;: votre_role_id_p2_2023,               // ID du rôle pour les apprenants P2 2023
-  &quot;role_p1_2024&quot;: votre_role_id_p1_2024,               // ID du rôle pour les apprenants P1 2024
-  &quot;role_help&quot;: votre_role_id_help                       // ID du rôle pour les demandes d'aide
+  &quot;total&quot;: 245,
+  &quot;info&quot;: 120,
+  &quot;success&quot;: 80,
+  &quot;warning&quot;: 30,
+  &quot;error&quot;: 10,
+  &quot;debug&quot;: 5
 }
 </code></pre>
-<h2 id="explications-des-champs">📝 Explications des Champs</h2>
-<ul>
-<li><code>forum_channel_id</code> : L'ID du canal où les offres d'alternance seront publiées.</li>
-<li><code>forum_channel_id_cdi</code> : L'ID du canal où les offres CDI, CDD, Freelance, Intérim seront publiées.</li>
-<li><code>role_ping</code> : L'ID du rôle qui sera mentionné pour les notifications d'alternance.</li>
-<li><code>role_ping_cdi</code> : L'ID du rôle qui sera mentionné pour les notifications CDI, CDD, Freelance, Intérim.</li>
-<li><code>guild_id</code> : L'ID de votre serveur Discord, nécessaire pour que le bot puisse interagir avec le bon serveur.</li>
-<li><code>role_p1_2023</code> : L'ID du rôle pour les apprenants de la promo P1 2023.</li>
-<li><code>role_p2_2023</code> : L'ID du rôle pour les apprenants de la promo P2 2023.</li>
-<li><code>role_p1_2024</code> : L'ID du rôle pour les apprenants de la promo P1 2024.</li>
-<li><code>role_help</code> : L'ID du rôle utilisé pour les demandes d'aide.</li>
-</ul>
-<h3 id="assurez-vous-que-chaque-id-est-correctement-renseigne-pour-que-le-bot-fonctionne-comme-prevu">Assurez-vous que chaque ID est correctement renseigné pour que le bot fonctionne comme prévu. 🛠️</h3>
-<p>Cette version est conçue pour être plus engageante et facile à comprendre, avec des commentaires pour expliquer chaque champ dans le fichier de configuration.</p>
+<h3 id="post-apilogsclear">POST <code>/api/logs/clear</code></h3>
+<p>Efface tous les logs.</p>
+<p><strong>Réponse :</strong></p>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Logs effacés&quot;
+}
+</code></pre>
+<h2 id="configuration">Configuration</h2>
+<h3 id="limite-de-logs-en-memoire">Limite de logs en mémoire</h3>
+<p>Par défaut, le logger garde <strong>500 logs</strong> en mémoire. Cette limite peut être modifiée dans <code>utils/logger.py</code> :</p>
+<pre><code class="language-python">MAX_LOGS_IN_MEMORY = 500  # Modifier cette valeur
+</code></pre>
+<h3 id="desactivation-des-logs-discordpy">Désactivation des logs Discord.py</h3>
+<p>Les logs de la bibliothèque <code>discord.py</code> sont désactivés dans le terminal pour éviter le bruit. Cela est configuré dans <code>bot.py</code> :</p>
+<pre><code class="language-python">logging.getLogger('discord').setLevel(logging.CRITICAL)
+logging.getLogger('discord.http').setLevel(logging.CRITICAL)
+logging.getLogger('discord.gateway').setLevel(logging.CRITICAL)
+</code></pre>
+<h3 id="desactivation-des-logs-flask">Désactivation des logs Flask</h3>
+<p>Les logs du serveur Flask sont également désactivés dans <code>web_interface.py</code> :</p>
+<pre><code class="language-python">import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+</code></pre>
+<h2 id="stockage-des-logs">Stockage des Logs</h2>
+<p>Les logs sont stockés dans <code>data/bot_logs.json</code> au format JSON :</p>
+<pre><code class="language-json">[
+  {
+    &quot;timestamp&quot;: &quot;2025-01-20T10:30:00.000000&quot;,
+    &quot;level&quot;: &quot;SUCCESS&quot;,
+    &quot;category&quot;: &quot;bot&quot;,
+    &quot;message&quot;: &quot;Bot Discord démarré avec succès&quot;
+  },
+  {
+    &quot;timestamp&quot;: &quot;2025-01-20T10:30:05.123456&quot;,
+    &quot;level&quot;: &quot;INFO&quot;,
+    &quot;category&quot;: &quot;help_system&quot;,
+    &quot;message&quot;: &quot;Helper John a accepté d'aider Alice&quot;
+  }
+]
+</code></pre>
+<h2 id="avantages-du-systeme">Avantages du Système</h2>
+<ol>
+<li><strong>Performance</strong> ✅</li>
+<li>Pas d'affichage dans le terminal</li>
+<li>Moins de charge CPU</li>
+<li>
+<p>Meilleure performance sur serveur</p>
+</li>
+<li>
+<p><strong>Traçabilité</strong> ✅</p>
+</li>
+<li>Tous les logs sont sauvegardés</li>
+<li>Historique complet des événements</li>
+<li>
+<p>Facile à archiver</p>
+</li>
+<li>
+<p><strong>Visualisation</strong> ✅</p>
+</li>
+<li>Interface web moderne</li>
+<li>Filtrage puissant</li>
+<li>
+<p>Statistiques en temps réel</p>
+</li>
+<li>
+<p><strong>Maintenance</strong> ✅</p>
+</li>
+<li>Débogage facilité</li>
+<li>Détection rapide des erreurs</li>
+<li>Analyse des performances</li>
+</ol>
+<h2 id="bonnes-pratiques">Bonnes Pratiques</h2>
+<h3 id="1-choisir-le-bon-niveau">1. Choisir le bon niveau</h3>
+<pre><code class="language-python"># INFO : Informations générales
+logger.info(&quot;Utilisateur a exécuté la commande !ping&quot;, category=&quot;bot&quot;)
+
+# SUCCESS : Opération réussie
+logger.success(&quot;Extension chargée : cogs.administration_cog&quot;, category=&quot;bot&quot;)
+
+# WARNING : Quelque chose d'anormal mais non critique
+logger.warning(&quot;Impossible d'envoyer un MP à l'utilisateur&quot;, category=&quot;help_system&quot;)
+
+# ERROR : Erreur critique
+logger.error(&quot;Échec de la connexion à la base de données&quot;, category=&quot;bot&quot;)
+
+# DEBUG : Informations de débogage (désactiver en production)
+logger.debug(f&quot;Variables : user={user}, guild={guild}&quot;, category=&quot;bot&quot;)
+</code></pre>
+<h3 id="2-utiliser-des-categories-coherentes">2. Utiliser des catégories cohérentes</h3>
+<pre><code class="language-python"># Bon
+logger.info(&quot;Message&quot;, category=&quot;bot&quot;)
+logger.info(&quot;Message&quot;, category=&quot;help_system&quot;)
+
+# Mauvais
+logger.info(&quot;Message&quot;, category=&quot;Bot&quot;)  # Incohérent (majuscule)
+logger.info(&quot;Message&quot;, category=&quot;help system&quot;)  # Mauvais (espace)
+</code></pre>
+<h3 id="3-messages-clairs-et-descriptifs">3. Messages clairs et descriptifs</h3>
+<pre><code class="language-python"># Bon
+logger.success(&quot;Helper John a accepté d'aider Alice&quot;, category=&quot;help_system&quot;)
+
+# Mauvais
+logger.success(&quot;OK&quot;, category=&quot;help_system&quot;)
+</code></pre>
+<h2 id="depannage">Dépannage</h2>
+<h3 id="les-logs-ne-saffichent-pas-dans-linterface-web">Les logs ne s'affichent pas dans l'interface web</h3>
+<ol>
+<li>Vérifiez que le fichier <code>data/bot_logs.json</code> existe</li>
+<li>Vérifiez les permissions du fichier</li>
+<li>Actualisez la page des logs</li>
+</ol>
+<h3 id="erreur-no-module-named-utilslogger">Erreur "No module named 'utils.logger'"</h3>
+<p>Assurez-vous que le fichier <code>utils/logger.py</code> existe et que le bot est démarré depuis la racine du projet.</p>
+<h3 id="les-logs-sont-vides">Les logs sont vides</h3>
+<p>Le bot vient probablement d'être démarré. Attendez quelques événements ou exécutez des commandes pour générer des logs.</p>
+<h2 id="support">Support</h2>
+<p>Pour toute question sur le système de logging :
+- Consultez cette documentation
+- Vérifiez les logs d'erreur dans l'interface web
+- Contactez les administrateurs</p>
+<hr />
+<p><strong>Développé pour optimiser les performances et faciliter le débogage du Bot Discord Zone01</strong></p>
 
 
 
