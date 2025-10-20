@@ -1,5 +1,6 @@
 import re
 import discord
+from discord import app_commands
 from utils.config_loader import forbidden_words
 from discord.ext import commands
 
@@ -37,6 +38,7 @@ def extract_technologies(description, technologies):
 
 
 def is_admin():
+    """Décorateur pour les commandes normales (prefix commands)"""
     async def predicate(ctx):
         if ctx.author.id == 360058840240226316 or ctx.author.id == 190547491916087296 or ctx.author.id == 163179195042758657:
             return True
@@ -44,3 +46,12 @@ def is_admin():
             raise commands.MissingPermissions(["administrator"])
 
     return commands.check(predicate)
+
+def is_admin_slash():
+    """Décorateur pour les slash commands (app_commands)"""
+    async def predicate(interaction: discord.Interaction) -> bool:
+        # Vérifier si l'utilisateur est admin ou fait partie des IDs autorisés
+        return (interaction.user.guild_permissions.administrator or
+                interaction.user.id in [360058840240226316, 190547491916087296, 163179195042758657])
+
+    return app_commands.check(predicate)

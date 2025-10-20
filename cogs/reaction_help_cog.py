@@ -6,18 +6,13 @@ import json
 import os
 from utils.config_loader import role_help
 from utils.logger import logger
+from utils.utils_function import is_admin_slash
 
 # Fichier pour stocker les demandes d'aide en cours
 HELP_REQUESTS_FILE = "data/help_requests.json"
 
 # Emoji pour demander de l'aide
 HELP_EMOJI = "🆘"
-
-def is_admin():
-    """Vérifie si l'utilisateur est admin"""
-    async def predicate(interaction: discord.Interaction) -> bool:
-        return interaction.user.guild_permissions.administrator
-    return app_commands.check(predicate)
 
 class ReactionHelpSystem(commands.Cog):
     def __init__(self, bot):
@@ -37,7 +32,7 @@ class ReactionHelpSystem(commands.Cog):
             json.dump(self.help_requests, f, indent=2)
 
     @app_commands.command(name="setup_reaction_help", description="Configure le message de demande d'aide par réaction")
-    @is_admin()
+    @is_admin_slash()
     async def setup_reaction_help(self, interaction: discord.Interaction, channel: discord.TextChannel):
         """Envoie un message avec une réaction pour demander de l'aide"""
 
