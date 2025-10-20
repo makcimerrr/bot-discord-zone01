@@ -171,6 +171,15 @@ class ReactionHelpSystem(commands.Cog):
                 return
 
             request_data = self.help_requests[request_id]
+
+            # Vérifier si la demande a déjà été traitée (éviter les doubles clics)
+            if request_data.get('response_processed', False):
+                return
+
+            # Marquer immédiatement comme traitée pour éviter les doublons
+            self.help_requests[request_id]['response_processed'] = True
+            self.save_help_requests()
+
             user_id = request_data['user_id']
             guild_id = request_data['guild_id']
 
@@ -187,6 +196,9 @@ class ReactionHelpSystem(commands.Cog):
             try:
                 dm_channel = await helper.create_dm()
                 message = await dm_channel.fetch_message(payload.message_id)
+
+                # Supprimer immédiatement toutes les réactions pour verrouiller le choix
+                await message.clear_reactions()
             except:
                 logger.error("Impossible de récupérer le message DM", category="help_system")
                 return
@@ -198,13 +210,11 @@ class ReactionHelpSystem(commands.Cog):
                     description=(
                         f"Merci ! Tu as accepté d'aider **{user.name}**.\n"
                         f"Tu peux le contacter directement : {user.mention}\n\n"
-                        f"Bon courage ! 💪"
+                        f"Bon courage ! 💪\n\n"
+                        f"_Votre choix a été enregistré et ne peut plus être modifié._"
                     ),
                     color=0x00ff00
                 ))
-
-                # Supprimer les réactions
-                await message.clear_reactions()
 
                 # Informer l'utilisateur qu'un Helper a accepté
                 try:
@@ -227,13 +237,11 @@ class ReactionHelpSystem(commands.Cog):
                     title="❌ Demande Refusée",
                     description=(
                         "Pas de problème ! Un autre Helper va être contacté.\n"
-                        "Merci d'avoir répondu ! 😊"
+                        "Merci d'avoir répondu ! 😊\n\n"
+                        f"_Votre choix a été enregistré et ne peut plus être modifié._"
                     ),
                     color=0xff0000
                 ))
-
-                # Supprimer les réactions
-                await message.clear_reactions()
 
                 logger.info(f"Helper {helper.name} a refusé, contact d'un autre Helper", category="help_system")
 
