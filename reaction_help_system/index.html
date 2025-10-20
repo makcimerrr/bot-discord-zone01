@@ -896,9 +896,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gestion-des-mps" class="md-nav__link">
+  <a href="#gestion-des-reactions" class="md-nav__link">
     <span class="md-ellipsis">
-      Gestion des MPs
+      Gestion des Réactions
     </span>
   </a>
   
@@ -987,22 +987,24 @@
 <ol>
 <li>Vous recevrez un MP du bot quand quelqu'un demande de l'aide</li>
 <li>Le message contient le nom de la personne qui a besoin d'aide</li>
-<li>Répondez au MP avec :</li>
-<li><code>oui</code> ou <code>yes</code> : pour accepter d'aider</li>
+<li><strong>Réagissez au message avec</strong> :</li>
+<li>✅ pour accepter d'aider</li>
 <li>
-<p><code>non</code> ou <code>no</code> : pour refuser (un autre Helper sera contacté)</p>
+<p>❌ pour refuser (un autre Helper sera contacté)</p>
 </li>
 <li>
-<p>Si vous acceptez :</p>
+<p>Si vous acceptez (✅) :</p>
 </li>
+<li>Le message sera mis à jour avec un embed vert</li>
 <li>Vous recevrez les coordonnées de la personne</li>
 <li>La personne recevra vos coordonnées</li>
 <li>
 <p>Contactez la personne pour l'aider</p>
 </li>
 <li>
-<p>Si vous refusez :</p>
+<p>Si vous refusez (❌) :</p>
 </li>
+<li>Le message sera mis à jour avec un embed rouge</li>
 <li>Un autre Helper sera contacté automatiquement</li>
 <li>Aucune action supplémentaire n'est requise</li>
 </ol>
@@ -1011,10 +1013,10 @@
 <ol>
 <li><strong>Demande d'aide</strong> : Un apprenant réagit avec 🆘 au message de demande d'aide</li>
 <li><strong>Sélection d'un Helper</strong> : Le bot sélectionne aléatoirement un Helper qui n'a pas encore été contacté pour cette demande</li>
-<li><strong>Contact du Helper</strong> : Le bot envoie un MP au Helper avec les détails de la demande</li>
+<li><strong>Contact du Helper</strong> : Le bot envoie un MP au Helper avec les détails de la demande et ajoute automatiquement les réactions ✅ et ❌</li>
 <li><strong>Réponse du Helper</strong> :</li>
-<li>Si <code>oui</code> : Le bot met en relation l'apprenant et le Helper, puis ferme la demande</li>
-<li>Si <code>non</code> : Le bot contacte un autre Helper aléatoire</li>
+<li>Si ✅ : Le bot met en relation l'apprenant et le Helper, puis ferme la demande</li>
+<li>Si ❌ : Le bot contacte un autre Helper aléatoire</li>
 <li><strong>Gestion des échecs</strong> : Si tous les Helpers ont été contactés et aucun n'est disponible, l'apprenant est informé</li>
 </ol>
 <h3 id="stockage-des-donnees">Stockage des données</h3>
@@ -1028,10 +1030,12 @@
   }
 }
 </code></pre>
-<h3 id="gestion-des-mps">Gestion des MPs</h3>
-<p>Le fichier <code>utils/handlers.py</code> gère les messages privés reçus par le bot :
-- Si le message est une réponse à une demande d'aide (<code>oui</code>/<code>non</code>), il est traité par le système d'aide
-- Sinon, il est enregistré dans Notion comme auparavant</p>
+<h3 id="gestion-des-reactions">Gestion des Réactions</h3>
+<p>Le système utilise les réactions Discord pour les interactions :
+- <strong>🆘</strong> dans un channel : Demande d'aide initiale
+- <strong>✅</strong> en MP : Helper accepte d'aider
+- <strong>❌</strong> en MP : Helper refuse d'aider</p>
+<p>Les réactions sont détectées par l'événement <code>on_raw_reaction_add</code> dans <code>cogs/reaction_help_cog.py</code></p>
 <h2 id="avantages">Avantages</h2>
 <ul>
 <li><strong>Automatique</strong> : Aucune intervention manuelle nécessaire</li>
