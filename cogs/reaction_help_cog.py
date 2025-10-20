@@ -122,16 +122,24 @@ class ReactionHelpSystem(commands.Cog):
             description=(
                 f"**{user.mention}** ({user.name}) a besoin d'aide !\n\n"
                 f"Peux-tu l'aider cette semaine ?\n\n"
-                f"**Réponds avec :**\n"
-                f"✅ `oui` - Si tu es disponible\n"
-                f"❌ `non` - Si tu n'es pas disponible\n\n"
+                f"**Réagis à ce message :**\n"
+                f"✅ Si tu es disponible\n"
+                f"❌ Si tu n'es pas disponible\n\n"
                 f"_ID de la demande : {request_id}_"
             ),
             color=0xff6b6b
         )
 
         try:
-            await helper.send(embed=embed)
+            dm_message = await helper.send(embed=embed)
+            # Ajouter les réactions au message
+            await dm_message.add_reaction("✅")
+            await dm_message.add_reaction("❌")
+
+            # Enregistrer le message ID pour le tracking
+            self.help_requests[request_id]['message_id'] = dm_message.id
+            self.save_help_requests()
+
             logger.info(f"Helper {helper.name} contacté pour la demande {request_id}", category="help_system")
         except discord.Forbidden:
             logger.warning(f"Impossible d'envoyer un MP à {helper.name}", category="help_system")
@@ -140,12 +148,101 @@ class ReactionHelpSystem(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        """Détecte quand quelqu'un ajoute une réaction au message d'aide"""
+        """Détecte les réactions (demandes d'aide et réponses des Helpers)"""
 
         # Ignorer les réactions du bot
         if payload.user_id == self.bot.user.id:
             return
 
+        # CAS 1 : Réaction dans un DM (réponse du Helper)
+        if payload.guild_id is None:
+            # Vérifier si c'est une réaction valide (✅ ou ❌)
+            if str(payload.emoji) not in ["✅", "❌"]:
+                return
+
+            # Chercher la demande correspondante
+            request_id = None
+            for req_id, req_data in self.help_requests.items():
+                if req_data.get('message_id') == payload.message_id and req_data.get('current_helper') == payload.user_id:
+                    request_id = req_id
+                    break
+
+            if not request_id:
+                return
+
+            request_data = self.help_requests[request_id]
+            user_id = request_data['user_id']
+            guild_id = request_data['guild_id']
+
+            # Récupérer l'utilisateur et le guild
+            try:
+                user = await self.bot.fetch_user(user_id)
+                guild = self.bot.get_guild(guild_id)
+                helper = await self.bot.fetch_user(payload.user_id)
+            except:
+                logger.error("Impossible de récupérer l'utilisateur ou le serveur", category="help_system")
+                return
+
+            # Récupérer le channel DM et le message
+            try:
+                dm_channel = await helper.create_dm()
+                message = await dm_channel.fetch_message(payload.message_id)
+            except:
+                logger.error("Impossible de récupérer le message DM", category="help_system")
+                return
+
+            if str(payload.emoji) == "✅":
+                # Helper accepte d'aider
+                await message.edit(embed=discord.Embed(
+                    title="✅ Demande Acceptée",
+                    description=(
+                        f"Merci ! Tu as accepté d'aider **{user.name}**.\n"
+                        f"Tu peux le contacter directement : {user.mention}\n\n"
+                        f"Bon courage ! 💪"
+                    ),
+                    color=0x00ff00
+                ))
+
+                # Supprimer les réactions
+                await message.clear_reactions()
+
+                # Informer l'utilisateur qu'un Helper a accepté
+                try:
+                    await user.send(
+                        f"🎉 Super nouvelle ! **{helper.name}** a accepté de t'aider !\n"
+                        f"Il/Elle va te contacter prochainement.\n\n"
+                        f"En attendant, n'hésite pas à le/la contacter : {helper.mention}"
+                    )
+                    logger.success(f"Helper {helper.name} a accepté d'aider {user.name}", category="help_system")
+                except discord.Forbidden:
+                    logger.warning(f"Impossible d'envoyer un MP à {user.name}", category="help_system")
+
+                # Supprimer la demande d'aide
+                del self.help_requests[request_id]
+                self.save_help_requests()
+
+            else:  # ❌
+                # Helper refuse d'aider
+                await message.edit(embed=discord.Embed(
+                    title="❌ Demande Refusée",
+                    description=(
+                        "Pas de problème ! Un autre Helper va être contacté.\n"
+                        "Merci d'avoir répondu ! 😊"
+                    ),
+                    color=0xff0000
+                ))
+
+                # Supprimer les réactions
+                await message.clear_reactions()
+
+                logger.info(f"Helper {helper.name} a refusé, contact d'un autre Helper", category="help_system")
+
+                # Contacter un autre Helper
+                await self.contact_helper(user, guild, request_id)
+
+            return
+
+        # CAS 2 : Réaction dans un channel (demande d'aide initiale)
         # Vérifier si c'est la bonne réaction
         if str(payload.emoji) != HELP_EMOJI:
             return
