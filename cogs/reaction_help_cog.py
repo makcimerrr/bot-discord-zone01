@@ -199,18 +199,28 @@ class ReactionHelpSystem(commands.Cog):
 
             # Récupérer le channel DM et le message
             try:
-                # Utiliser le channel_id du payload pour récupérer le canal DM
-                dm_channel = self.bot.get_channel(payload.channel_id)
-                if not dm_channel:
-                    # Si get_channel ne marche pas, essayer fetch_channel
-                    dm_channel = await self.bot.fetch_channel(payload.channel_id)
+                logger.info(f"Tentative de récupération du channel {payload.channel_id}", category="help_system")
+
+                # Créer le canal DM avec le helper directement
+                dm_channel = await helper.create_dm()
+                logger.info(f"Canal DM créé/récupéré: {dm_channel.id}", category="help_system")
 
                 message = await dm_channel.fetch_message(payload.message_id)
+                logger.info(f"Message {payload.message_id} récupéré avec succès", category="help_system")
 
                 # Supprimer immédiatement toutes les réactions pour verrouiller le choix
                 await message.clear_reactions()
+                logger.info(f"Réactions supprimées du message", category="help_system")
+            except discord.Forbidden as e:
+                logger.error(f"Permission refusée pour accéder au DM: {e}", category="help_system")
+                return
+            except discord.NotFound as e:
+                logger.error(f"Message ou canal DM introuvable: {e}", category="help_system")
+                return
             except Exception as e:
-                logger.error(f"Impossible de récupérer le message DM: {e}", category="help_system")
+                logger.error(f"Erreur inattendue lors de la récupération du message DM: {type(e).__name__} - {e}", category="help_system")
+                import traceback
+                logger.error(f"Traceback: {traceback.format_exc()}", category="help_system")
                 return
 
             if str(payload.emoji) == "✅":
