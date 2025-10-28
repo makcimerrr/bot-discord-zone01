@@ -193,19 +193,24 @@ class ReactionHelpSystem(commands.Cog):
                 user = await self.bot.fetch_user(user_id)
                 guild = self.bot.get_guild(guild_id)
                 helper = await self.bot.fetch_user(payload.user_id)
-            except:
-                logger.error("Impossible de récupérer l'utilisateur ou le serveur", category="help_system")
+            except Exception as e:
+                logger.error(f"Impossible de récupérer l'utilisateur ou le serveur: {e}", category="help_system")
                 return
 
             # Récupérer le channel DM et le message
             try:
-                dm_channel = await helper.create_dm()
+                # Utiliser le channel_id du payload pour récupérer le canal DM
+                dm_channel = self.bot.get_channel(payload.channel_id)
+                if not dm_channel:
+                    # Si get_channel ne marche pas, essayer fetch_channel
+                    dm_channel = await self.bot.fetch_channel(payload.channel_id)
+
                 message = await dm_channel.fetch_message(payload.message_id)
 
                 # Supprimer immédiatement toutes les réactions pour verrouiller le choix
                 await message.clear_reactions()
-            except:
-                logger.error("Impossible de récupérer le message DM", category="help_system")
+            except Exception as e:
+                logger.error(f"Impossible de récupérer le message DM: {e}", category="help_system")
                 return
 
             if str(payload.emoji) == "✅":
