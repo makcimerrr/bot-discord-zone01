@@ -156,9 +156,15 @@ class ReactionHelpSystem(commands.Cog):
 
         # CAS 1 : Réaction dans un DM (réponse du Helper)
         if payload.guild_id is None:
+            logger.info(f"Réaction DM détectée: {payload.emoji} de user {payload.user_id} sur message {payload.message_id}", category="help_system")
+
             # Vérifier si c'est une réaction valide (✅ ou ❌)
             if str(payload.emoji) not in ["✅", "❌"]:
+                logger.info(f"Réaction ignorée: emoji non valide {payload.emoji}", category="help_system")
                 return
+
+            logger.info(f"Recherche de la demande correspondante parmi {len(self.help_requests)} demandes", category="help_system")
+            logger.info(f"Contenu help_requests: {self.help_requests}", category="help_system")
 
             # Chercher la demande correspondante
             request_id = None
@@ -168,7 +174,10 @@ class ReactionHelpSystem(commands.Cog):
                     break
 
             if not request_id:
+                logger.warning(f"Aucune demande trouvée pour message_id={payload.message_id} et current_helper={payload.user_id}", category="help_system")
                 return
+
+            logger.success(f"Demande trouvée: {request_id}", category="help_system")
 
             request_data = self.help_requests[request_id]
 
