@@ -176,10 +176,6 @@ class ReactionHelpSystem(commands.Cog):
             if request_data.get('response_processed', False):
                 return
 
-            # Marquer immédiatement comme traitée pour éviter les doublons
-            self.help_requests[request_id]['response_processed'] = True
-            self.save_help_requests()
-
             user_id = request_data['user_id']
             guild_id = request_data['guild_id']
 
@@ -204,12 +200,20 @@ class ReactionHelpSystem(commands.Cog):
                 return
 
             if str(payload.emoji) == "✅":
+                # Marquer comme traitée pour éviter les doubles clics
+                self.help_requests[request_id]['response_processed'] = True
+                self.save_help_requests()
+
                 # Helper accepte d'aider
                 await message.edit(embed=discord.Embed(
                     title="✅ Demande Acceptée",
                     description=(
-                        f"Merci ! Tu as accepté d'aider **{user.name}**.\n"
-                        f"Tu peux le contacter directement : {user.mention}\n\n"
+                        f"Merci ! Tu as accepté d'aider **{user.name}**.\n\n"
+                        f"**Coordonnées du demandeur :**\n"
+                        f"• Nom : {user.name}\n"
+                        f"• ID Discord : {user.id}\n"
+                        f"• Mention : {user.mention}\n\n"
+                        f"Tu peux maintenant le contacter en MP pour lui proposer ton aide !\n"
                         f"Bon courage ! 💪\n\n"
                         f"_Votre choix a été enregistré et ne peut plus être modifié._"
                     ),
@@ -221,7 +225,7 @@ class ReactionHelpSystem(commands.Cog):
                     await user.send(
                         f"🎉 Super nouvelle ! **{helper.name}** a accepté de t'aider !\n"
                         f"Il/Elle va te contacter prochainement.\n\n"
-                        f"En attendant, n'hésite pas à le/la contacter : {helper.mention}"
+                        f"Tu peux aussi le/la contacter directement : {helper.mention}"
                     )
                     logger.success(f"Helper {helper.name} a accepté d'aider {user.name}", category="help_system")
                 except discord.Forbidden:
@@ -232,6 +236,10 @@ class ReactionHelpSystem(commands.Cog):
                 self.save_help_requests()
 
             else:  # ❌
+                # Marquer comme traitée pour ce helper spécifique
+                self.help_requests[request_id]['response_processed'] = True
+                self.save_help_requests()
+
                 # Helper refuse d'aider
                 await message.edit(embed=discord.Embed(
                     title="❌ Demande Refusée",
@@ -244,6 +252,12 @@ class ReactionHelpSystem(commands.Cog):
                 ))
 
                 logger.info(f"Helper {helper.name} a refusé, contact d'un autre Helper", category="help_system")
+
+                # Réinitialiser le flag pour permettre au prochain helper de répondre
+                self.help_requests[request_id]['response_processed'] = False
+                self.help_requests[request_id].pop('current_helper', None)
+                self.help_requests[request_id].pop('message_id', None)
+                self.save_help_requests()
 
                 # Contacter un autre Helper
                 await self.contact_helper(user, guild, request_id)
