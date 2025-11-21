@@ -6,7 +6,7 @@ import logging
 from discord.ext import commands, tasks
 from discord.ui import Modal, TextInput
 
-from cogs.gestion_help import SupremeHelpCommand
+from cogs.help_cog import SupremeHelpCommand
 from utils.config_loader import config, discord_token, forum_channel_id
 from utils.scheduler import start_scheduler
 from utils.handlers import handle_dm
