@@ -100,5 +100,233 @@
     "level": "INFO",
     "category": "bot",
     "message": "Scheduler d\u00e9marr\u00e9 pour les mises \u00e0 jour automatiques"
+  },
+  {
+    "timestamp": "2025-11-21T12:25:19.748369",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:25:21.559840",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:25:27.013661",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T12:25:29.052253",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T12:41:24.842850",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:41:25.591071",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:41:31.045492",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T12:41:33.078436",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T12:46:19.935531",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:46:24.418717",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:46:29.991921",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T12:46:32.003988",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T12:51:18.988239",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:51:22.701178",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:51:28.641989",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T12:51:30.644792",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T12:56:17.182238",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:56:18.050832",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T12:56:23.588379",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T12:56:25.590863",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T13:01:11.149256",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T13:01:23.543714",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T13:01:29.533434",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T13:01:31.536882",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T13:20:44.120656",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T13:21:00.654574",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T13:21:06.159617",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T13:21:08.178200",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T13:26:18.884908",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T13:28:02.974246",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T13:28:08.618778",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T13:28:10.638094",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T13:57:26.210662",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T14:00:16.899727",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T14:00:22.447276",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T14:00:24.463861",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T14:34:25.629703",
+    "level": "WARNING",
+    "category": "bot",
+    "message": "Bot d\u00e9connect\u00e9, tentative de reconnexion..."
+  },
+  {
+    "timestamp": "2025-11-21T14:34:26.008552",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot reconnect\u00e9 \u00e0 Discord"
   }
 ]
