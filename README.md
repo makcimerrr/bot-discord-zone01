@@ -55,6 +55,8 @@ python bot.py
 ### Commandes Slash
 - `/setup_reaction_help` - Configure le message d'aide avec bouton
 - `/reload_help_message` - Recharge le message d'aide
+- `/show_config` - Affiche la configuration du bot
+- `/edit_config` - Modifie la configuration (canaux/rôles)
 
 ### Commandes Prefix (!)
 - `!ping` - Test de latence
