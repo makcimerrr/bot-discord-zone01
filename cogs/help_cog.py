@@ -49,17 +49,20 @@ class SupremeHelpCommand(commands.Cog, commands.HelpCommand):
             "Administration": "🛠️",
             "Configuration": "⚙️",
             "Utilitaire": "🧰",
+            "ReactionHelpSystem": "🆘",
             "Aucune Catégorie": "❓",
         }
 
         embed = discord.Embed(
             title="🔧 Commandes du Bot",
-            description="Pour avoir la description et l'utilisation d'une commande faites :\n" +
-                        "!help <nom de la commande>\n" +
-                        "_Les < > ne sont pas à inclure dans la commande_",
+            description="**Commandes avec préfixe `!`** :\n"
+                        "Pour avoir la description : `!help <commande>`\n\n"
+                        "**Commandes slash `/`** :\n"
+                        "Tapez `/` dans Discord pour voir toutes les commandes disponibles",
             color=discord.Color.blurple()
         )
 
+        # Commandes avec préfixe (!)
         for cog, commands_list in mapping.items():
             filtered = await self.filter_commands(commands_list, sort=True)
             if filtered:
@@ -75,6 +78,32 @@ class SupremeHelpCommand(commands.Cog, commands.HelpCommand):
                 embed.add_field(
                     name=f"{cog_icon} {cog_name} - {command_count}",
                     value=command_list,
+                    inline=False
+                )
+
+        # Ajouter les commandes slash
+        slash_commands = {}
+        for cog_name, cog in self.context.bot.cogs.items():
+            # Récupérer les commandes slash du cog
+            app_commands_list = [cmd for cmd in cog.get_app_commands() if hasattr(cog, 'get_app_commands')]
+
+            if app_commands_list:
+                slash_commands[cog_name] = app_commands_list
+
+        if slash_commands:
+            embed.add_field(
+                name="━━━━━━━━━━━━━━━━━━━━━━",
+                value="** **",
+                inline=False
+            )
+
+            for cog_name, cmds in slash_commands.items():
+                cog_icon = cog_icons.get(cog_name, "⚡")
+                cmd_list = " • ".join(f"`/{cmd.name}`" for cmd in cmds)
+
+                embed.add_field(
+                    name=f"{cog_icon} {cog_name} (Slash) - {len(cmds)}",
+                    value=cmd_list,
                     inline=False
                 )
 
