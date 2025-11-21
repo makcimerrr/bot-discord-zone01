@@ -164,7 +164,7 @@ class Configuration(commands.Cog):
     @is_admin_slash()
     @app_commands.describe(
         key="La clé de configuration à modifier",
-        value="La nouvelle valeur (ID du canal ou rôle)"
+        value="ID, mention de canal (#canal) ou mention de rôle (@role)"
     )
     @app_commands.choices(key=[
         app_commands.Choice(name="Canal Inter-Promo", value="channel_inter_promo"),
@@ -185,18 +185,38 @@ class Configuration(commands.Cog):
     ])
     async def edit_config(self, interaction: discord.Interaction, key: str, value: str):
         """Édite une valeur de configuration"""
+        import re
+
         config = self.load_config()
 
-        # Valider que la valeur est un ID valide (nombre)
-        try:
-            value_int = int(value)
-        except ValueError:
-            await interaction.response.send_message(
-                f"❌ Erreur : La valeur doit être un ID valide (nombre entier).\n"
-                f"Exemple : `1234567890123456789`",
-                ephemeral=True
-            )
-            return
+        # Extraire l'ID depuis les mentions ou utiliser l'ID directement
+        value_int = None
+
+        # Vérifier si c'est une mention de canal (<#123456789>)
+        channel_match = re.match(r'<#(\d+)>', value)
+        if channel_match:
+            value_int = int(channel_match.group(1))
+
+        # Vérifier si c'est une mention de rôle (<@&123456789>)
+        if not value_int:
+            role_match = re.match(r'<@&(\d+)>', value)
+            if role_match:
+                value_int = int(role_match.group(1))
+
+        # Si ce n'est pas une mention, essayer de parser comme un nombre
+        if not value_int:
+            try:
+                value_int = int(value)
+            except ValueError:
+                await interaction.response.send_message(
+                    f"❌ Erreur : La valeur doit être un ID valide, une mention de canal (#canal) ou une mention de rôle (@role).\n"
+                    f"Exemples :\n"
+                    f"• ID direct : `1234567890123456789`\n"
+                    f"• Mention de canal : `#general`\n"
+                    f"• Mention de rôle : `@Helper`",
+                    ephemeral=True
+                )
+                return
 
         # Récupérer l'ancienne valeur
         old_value = config.get(key, "Non définie")
