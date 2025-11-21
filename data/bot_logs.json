@@ -52,5 +52,53 @@
     "level": "INFO",
     "category": "config",
     "message": "Configuration affich\u00e9e par makcimefn"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:17.140571",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot connect\u00e9 \u00e0 Discord"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:19.255324",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Bot Discord d\u00e9marr\u00e9 avec succ\u00e8s"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:19.266986",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Extension charg\u00e9e : cogs.administration_cog"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:19.271572",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Extension charg\u00e9e : cogs.configuration_cog"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:19.273950",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Extension charg\u00e9e : cogs.utilitaire_cog"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:19.278540",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Extension charg\u00e9e : cogs.reaction_help_cog"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:19.659263",
+    "level": "SUCCESS",
+    "category": "bot",
+    "message": "Synchronisation de 4 commande(s) slash"
+  },
+  {
+    "timestamp": "2025-11-21T10:51:19.666027",
+    "level": "INFO",
+    "category": "bot",
+    "message": "Scheduler d\u00e9marr\u00e9 pour les mises \u00e0 jour automatiques"
   }
 ]
