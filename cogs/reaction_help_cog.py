@@ -14,10 +14,61 @@ HELP_REQUESTS_FILE = "data/help_requests.json"
 # Emoji pour demander de l'aide
 HELP_EMOJI = "🆘"
 
+class HelpButtonView(discord.ui.View):
+    """Vue persistante contenant le bouton pour demander de l'aide"""
+    def __init__(self, cog):
+        super().__init__(timeout=None)
+        self.cog = cog
+
+    @discord.ui.button(label="Demander de l'aide", style=discord.ButtonStyle.danger, emoji="🆘", custom_id="help_request_button")
+    async def help_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        """Gestionnaire du bouton de demande d'aide"""
+        await interaction.response.defer(ephemeral=True)
+
+        user = interaction.user
+        guild = interaction.guild
+
+        # Créer un ID unique pour cette demande
+        request_id = f"{user.id}_{interaction.message.id}"
+
+        # Vérifier si une demande est déjà en cours pour cet utilisateur
+        if request_id in self.cog.help_requests:
+            try:
+                await interaction.followup.send(
+                    "⏳ Tu as déjà une demande d'aide en cours. Un Helper va bientôt te contacter !",
+                    ephemeral=True
+                )
+            except discord.Forbidden:
+                pass
+            return
+
+        # Envoyer un message de confirmation à l'utilisateur
+        try:
+            await user.send(
+                "✅ Ta demande d'aide a été enregistrée ! Un Helper va être contacté et viendra vers toi."
+            )
+            await interaction.followup.send(
+                "✅ Ta demande d'aide a été enregistrée ! Un Helper va te contacter en MP.",
+                ephemeral=True
+            )
+            logger.success(f"Nouvelle demande d'aide de {user.name} (ID: {request_id})", category="help_system")
+        except discord.Forbidden:
+            logger.warning(f"Impossible d'envoyer un MP à {user.name}", category="help_system")
+            await interaction.followup.send(
+                "⚠️ Je ne peux pas t'envoyer de MP. Vérifie tes paramètres de confidentialité.",
+                ephemeral=True
+            )
+            return
+
+        # Contacter un Helper
+        await self.cog.contact_helper(user, guild, request_id)
+
 class ReactionHelpSystem(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.help_requests = self.load_help_requests()
+        # Ajouter la vue persistante au bot
+        bot.add_view(HelpButtonView(self))
 
     def load_help_requests(self):
         """Charge les demandes d'aide depuis le fichier JSON"""
@@ -31,15 +82,12 @@ class ReactionHelpSystem(commands.Cog):
         with open(HELP_REQUESTS_FILE, 'w') as f:
             json.dump(self.help_requests, f, indent=2)
 
-    @app_commands.command(name="setup_reaction_help", description="Configure le message de demande d'aide par réaction")
-    @is_admin_slash()
-    async def setup_reaction_help(self, interaction: discord.Interaction, channel: discord.TextChannel):
-        """Envoie un message avec une réaction pour demander de l'aide"""
-
+    async def send_help_message(self, channel: discord.TextChannel):
+        """Envoie le message d'aide avec le bouton dans un channel"""
         embed = discord.Embed(
             title="🆘 Besoin d'aide ?",
             description=(
-                "Si tu as besoin d'aide, réagis à ce message avec 🆘\n\n"
+                "Si tu as besoin d'aide, clique sur le bouton ci-dessous\n\n"
                 "Un Helper sera automatiquement contacté et viendra te donner un coup de main !"
             ),
             color=0x002e7a,
@@ -50,13 +98,85 @@ class ReactionHelpSystem(commands.Cog):
             icon_url="https://zone01rouennormandie.org/wp-content/uploads/2024/03/01talent-profil-400x400-1.jpg"
         )
 
-        message = await channel.send(embed=embed)
-        await message.add_reaction(HELP_EMOJI)
+        # Créer la vue avec le bouton
+        view = HelpButtonView(self)
+        message = await channel.send(embed=embed, view=view)
+        return message
+
+    @app_commands.command(name="setup_reaction_help", description="Configure le message de demande d'aide avec un bouton")
+    @is_admin_slash()
+    async def setup_reaction_help(self, interaction: discord.Interaction, channel: discord.TextChannel):
+        """Envoie un message avec un bouton pour demander de l'aide"""
+        await self.send_help_message(channel)
 
         await interaction.response.send_message(
             f"✅ Message de demande d'aide configuré dans {channel.mention}",
             ephemeral=True
         )
+
+    @app_commands.command(name="reload_help_message", description="Recharge le message d'aide dans un channel (supprime l'ancien si existant)")
+    @is_admin_slash()
+    async def reload_help_message(self, interaction: discord.Interaction, channel: discord.TextChannel):
+        """Supprime l'ancien message d'aide et en envoie un nouveau"""
+        await interaction.response.defer(ephemeral=True)
+
+        deleted_count = 0
+
+        try:
+            # Parcourir les messages récents du channel pour trouver ceux du bot avec le titre "Besoin d'aide"
+            async for message in channel.history(limit=100):
+                if message.author == self.bot.user and message.embeds:
+                    for embed in message.embeds:
+                        if embed.title and "Besoin d'aide" in embed.title:
+                            try:
+                                await message.delete()
+                                deleted_count += 1
+                                logger.info(f"Message d'aide supprimé dans {channel.name}", category="help_system")
+                            except discord.Forbidden:
+                                logger.warning(f"Impossible de supprimer le message dans {channel.name} (permissions insuffisantes)", category="help_system")
+                            except Exception as e:
+                                logger.error(f"Erreur lors de la suppression du message: {e}", category="help_system")
+        except discord.Forbidden:
+            await interaction.followup.send(
+                f"❌ Je n'ai pas les permissions pour lire l'historique de {channel.mention}",
+                ephemeral=True
+            )
+            return
+        except Exception as e:
+            logger.error(f"Erreur lors de la recherche de messages: {e}", category="help_system")
+            await interaction.followup.send(
+                f"❌ Une erreur est survenue lors de la recherche de messages: {str(e)}",
+                ephemeral=True
+            )
+            return
+
+        # Envoyer le nouveau message
+        try:
+            await self.send_help_message(channel)
+
+            if deleted_count > 0:
+                await interaction.followup.send(
+                    f"✅ {deleted_count} ancien(s) message(s) d'aide supprimé(s) et nouveau message configuré dans {channel.mention}",
+                    ephemeral=True
+                )
+            else:
+                await interaction.followup.send(
+                    f"✅ Aucun ancien message trouvé. Nouveau message d'aide configuré dans {channel.mention}",
+                    ephemeral=True
+                )
+
+            logger.success(f"Message d'aide rechargé dans {channel.name} ({deleted_count} message(s) supprimé(s))", category="help_system")
+        except discord.Forbidden:
+            await interaction.followup.send(
+                f"❌ Je n'ai pas les permissions pour envoyer des messages dans {channel.mention}",
+                ephemeral=True
+            )
+        except Exception as e:
+            logger.error(f"Erreur lors de l'envoi du nouveau message: {e}", category="help_system")
+            await interaction.followup.send(
+                f"❌ Une erreur est survenue lors de l'envoi du nouveau message: {str(e)}",
+                ephemeral=True
+            )
 
     async def get_available_helpers(self, guild, excluded_helpers=None):
         """Récupère la liste des Helpers disponibles (excluant ceux déjà contactés)"""
