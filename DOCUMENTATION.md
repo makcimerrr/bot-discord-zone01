@@ -278,18 +278,61 @@ Les logs sont stockés dans `data/bot_logs.json` et peuvent être consultés en 
 
 Affiche la timeline et la progression des différentes promotions sur le parcours Zone01.
 
+### 5. Gestion de la configuration
+
+Le bot permet de gérer facilement la configuration via des commandes slash.
+
+**Fonctionnalités :**
+- **Affichage de la config** : Visualise tous les IDs configurés avec leurs noms
+- **Modification en ligne** : Change les IDs de canaux et rôles sans éditer manuellement `config.json`
+- **Validation automatique** : Vérifie que les IDs correspondent à des canaux/rôles existants
+- **Logs des modifications** : Toutes les modifications sont enregistrées
+
+**Utilisation :**
+
+1. Pour voir la configuration actuelle :
+   ```
+   /show_config
+   ```
+   Affiche un embed avec :
+   - Informations du serveur
+   - Liste des canaux configurés (avec mentions)
+   - Liste des rôles configurés (avec mentions)
+
+2. Pour modifier un ID :
+   ```
+   /edit_config key: [sélection] value: [ID]
+   ```
+   - Sélectionner la clé dans la liste déroulante
+   - Entrer le nouvel ID (nombre)
+   - Le bot valide et confirme la modification
+   - Affiche si le canal/rôle a été trouvé
+
+**Avantages :**
+- Plus besoin d'éditer manuellement `config.json`
+- Validation immédiate des IDs
+- Historique des modifications dans les logs
+- Interface intuitive avec sélection par menu
+
 ---
 
 ## 🎮 Commandes disponibles
 
 ### Commandes Slash (/)
 
-#### Administration
+#### Système d'aide
 
 | Commande | Description | Paramètres | Admin |
 |----------|-------------|------------|-------|
 | `/setup_reaction_help` | Configure le message d'aide avec bouton | `channel` | ✅ |
 | `/reload_help_message` | Recharge le message d'aide (supprime l'ancien) | `channel` | ✅ |
+
+#### Configuration
+
+| Commande | Description | Paramètres | Admin |
+|----------|-------------|------------|-------|
+| `/show_config` | Affiche un résumé de la configuration du bot | Aucun | ✅ |
+| `/edit_config` | Édite la configuration (IDs canaux/rôles) | `key`, `value` | ✅ |
 
 #### Utilitaire
 
@@ -320,6 +363,15 @@ Les commandes utilitaires utilisent le préfixe `!` :
 
 # Recharger le message d'aide après un redémarrage
 /reload_help_message channel: #aide
+
+# Afficher la configuration du bot
+/show_config
+
+# Modifier un ID de canal dans la configuration
+/edit_config key: Forum Alternances value: 1234567890123456789
+
+# Modifier un ID de rôle dans la configuration
+/edit_config key: Rôle Helper value: 9876543210987654321
 
 # Vérifier la latence du bot
 !ping
