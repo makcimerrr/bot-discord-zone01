@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 
 # Spécifiez le chemin du fichier .env, par exemple dans le dossier racine
-env_path = Path('../.env')  # Charger le fichier .env situé dans le répertoire parent
+env_path = Path(__file__).parent.parent / '.env'  # Charger le fichier .env situé dans le répertoire racine du projet
 load_dotenv(dotenv_path=env_path, override=True)
 def load_config():
     with open('data/config.json', 'r') as f:
