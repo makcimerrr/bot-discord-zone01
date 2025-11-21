@@ -3,4 +3,3 @@ requests
 apscheduler
 python-dotenv
 notion-client
-flask
