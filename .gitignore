@@ -13,3 +13,5 @@ docs/.DS_Store
 .DS_Store
 
 .idea/
+
+data/bot_logs.json
