@@ -301,15 +301,21 @@ Le bot permet de gérer facilement la configuration via des commandes slash.
 
 2. Pour modifier un ID :
    ```
-   /edit_config key: [sélection] value: [ID]
+   /edit_config key: [sélection] value: [ID ou mention]
    ```
    - Sélectionner la clé dans la liste déroulante
-   - Entrer le nouvel ID (nombre)
-   - Le bot valide et confirme la modification
+   - Entrer la valeur de 3 façons possibles :
+     - **Mention de canal** : `#general` (Discord auto-complète)
+     - **Mention de rôle** : `@Helper` (Discord auto-complète)
+     - **ID direct** : `1234567890123456789`
+   - Le bot extrait automatiquement l'ID depuis la mention
+   - Valide et confirme la modification
    - Affiche si le canal/rôle a été trouvé
 
 **Avantages :**
 - Plus besoin d'éditer manuellement `config.json`
+- **Support des mentions @ et #** (plus facile et rapide)
+- Discord auto-complète les mentions
 - Validation immédiate des IDs
 - Historique des modifications dans les logs
 - Interface intuitive avec sélection par menu
@@ -367,11 +373,14 @@ Les commandes utilitaires utilisent le préfixe `!` :
 # Afficher la configuration du bot
 /show_config
 
-# Modifier un ID de canal dans la configuration
-/edit_config key: Forum Alternances value: 1234567890123456789
+# Modifier la configuration avec une mention de canal
+/edit_config key: Forum Alternances value: #alternances
 
-# Modifier un ID de rôle dans la configuration
-/edit_config key: Rôle Helper value: 9876543210987654321
+# Modifier la configuration avec une mention de rôle
+/edit_config key: Rôle Helper value: @Helper
+
+# Ou utiliser un ID direct
+/edit_config key: ID du Serveur value: 1234567890123456789
 
 # Vérifier la latence du bot
 !ping
