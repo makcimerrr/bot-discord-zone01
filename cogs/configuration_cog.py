@@ -160,6 +160,88 @@ class Configuration(commands.Cog):
         await interaction.response.send_message(embed=embed, ephemeral=True)
         logger.info(f"Configuration affichée par {interaction.user.name}", category="config")
 
+    @app_commands.command(name="add_promotion", description="Ajoute une nouvelle promotion avec son canal de progression")
+    @is_admin_slash()
+    @app_commands.describe(
+        promotion_name="Le nom de la promotion (ex: P2 2025, P1 2026)",
+        channel="Le canal de progression (mention #canal ou ID)"
+    )
+    async def add_promotion(self, interaction: discord.Interaction, promotion_name: str, channel: str):
+        """Ajoute une nouvelle configuration de promotion avec son canal"""
+        import re
+
+        config = self.load_config()
+
+        # Créer la clé de configuration basée sur le nom de la promotion
+        config_key = f"channel_progress_{promotion_name.replace(' ', '_')}"
+
+        # Extraire l'ID du canal
+        channel_id = None
+
+        # Vérifier si c'est une mention de canal (<#123456789>)
+        channel_match = re.match(r'<#(\d+)>', channel)
+        if channel_match:
+            channel_id = int(channel_match.group(1))
+        else:
+            # Sinon, essayer de parser comme un nombre
+            try:
+                channel_id = int(channel)
+            except ValueError:
+                await interaction.response.send_message(
+                    f"❌ Erreur : La valeur doit être un ID valide ou une mention de canal (#canal).\n"
+                    f"Exemples :\n"
+                    f"• ID direct : `1234567890123456789`\n"
+                    f"• Mention de canal : `#progression-p2-2025`",
+                    ephemeral=True
+                )
+                return
+
+        # Vérifier si la promotion existe déjà
+        if config_key in config:
+            await interaction.response.send_message(
+                f"⚠️ La promotion `{promotion_name}` existe déjà avec le canal <#{config[config_key]}>.\n"
+                f"Utilisez `/edit_config` pour la modifier.",
+                ephemeral=True
+            )
+            return
+
+        # Vérifier que le canal existe
+        channel_obj = self.bot.get_channel(channel_id)
+        if not channel_obj:
+            await interaction.response.send_message(
+                f"⚠️ Avertissement : Le canal avec l'ID `{channel_id}` n'a pas été trouvé.\n"
+                f"Voulez-vous continuer quand même ? (La configuration sera sauvegardée)",
+                ephemeral=True
+            )
+
+        # Ajouter la nouvelle promotion à la config
+        config[config_key] = channel_id
+        self.save_config(config)
+
+        # Construire le message de confirmation
+        embed = discord.Embed(
+            title="✅ Promotion Ajoutée",
+            description=f"La promotion `{promotion_name}` a été configurée avec succès",
+            color=0x00ff00,
+            timestamp=discord.utils.utcnow()
+        )
+
+        embed.add_field(name="📚 Promotion", value=f"`{promotion_name}`", inline=False)
+        embed.add_field(name="🔑 Clé de config", value=f"`{config_key}`", inline=False)
+        embed.add_field(name="📺 Canal ID", value=f"`{channel_id}`", inline=True)
+
+        if channel_obj:
+            embed.add_field(
+                name="✅ Canal trouvé",
+                value=f"{channel_obj.mention} ({channel_obj.name})",
+                inline=False
+            )
+
+        embed.set_footer(text="La promotion est maintenant disponible pour le suivi automatique")
+
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+        logger.success(f"Promotion ajoutée par {interaction.user.name}: {promotion_name} -> {channel_id}", category="config")
+
     @app_commands.command(name="edit_config", description="Édite la configuration du bot (IDs de canaux ou rôles)")
     @is_admin_slash()
     @app_commands.describe(
