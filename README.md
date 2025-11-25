@@ -35,6 +35,7 @@ python bot.py
 - Les étudiants peuvent demander de l'aide via un bouton
 - Le bot contacte automatiquement des Helpers disponibles
 - Gestion intelligente des refus et acceptations
+- **Nouveau** : Historique complet des demandes avec statistiques
 
 ### 💼 Gestion d'offres d'emploi
 - Recherche automatique d'offres d'alternance et CDI sur LinkedIn
@@ -42,21 +43,37 @@ python bot.py
 - Mise à jour 2x par jour via scheduler
 
 ### 📊 Suivi de progression
-- Affichage de la timeline des promotions
+- Affichage de la timeline des promotions avec suivi en temps réel
 - Suivi de la progression des étudiants
+- **Nouveau** : Mise à jour interactive avec barre de progression
+
+### ⚙️ Configuration dynamique
+- **Nouveau** : Ajout de promotions à la volée avec `/add_promotion`
+- Configuration automatique des canaux et rôles pour chaque promotion
+- Affichage dynamique de toutes les promotions configurées
 
 ### 📝 Système de logging
 - Logs détaillés avec niveaux (INFO, SUCCESS, WARNING, ERROR)
 - Catégorisation par système (bot, help_system, jobs, scheduler)
 - Stockage persistant dans `data/bot_logs.json`
+- **Nouveau** : Logs dédiés pour le système d'aide avec statistiques
 
 ## 🎮 Commandes principales
 
 ### Commandes Slash
+
+#### Configuration
+- `/show_config` - Affiche la configuration du bot avec toutes les promotions
+- `/edit_config` - Modifie la configuration (canaux/rôles)
+- **`/add_promotion`** - Ajoute une nouvelle promotion avec son canal et rôle ✨
+
+#### Système d'aide
 - `/setup_reaction_help` - Configure le message d'aide avec bouton
 - `/reload_help_message` - Recharge le message d'aide
-- `/show_config` - Affiche la configuration du bot
-- `/edit_config` - Modifie la configuration (canaux/rôles)
+- **`/help_logs`** - Affiche l'historique et les statistiques du système d'aide ✨
+
+#### Progression
+- **`/timeline`** - Met à jour la progression avec suivi en temps réel ✨
 
 ### Commandes Prefix (!)
 - `!ping` - Test de latence
@@ -65,7 +82,7 @@ python bot.py
 - `!setqueryFulltime <query>` - Définit la recherche de CDI (admin)
 - `!update_internships` - Force la mise à jour des alternances (admin)
 - `!update_fulltime` - Force la mise à jour des CDI (admin)
-- `!timeline` - Affiche la timeline des promotions (admin)
+- `!timeline` - Affiche la timeline des promotions (admin) - _Version classique_
 
 ## 📁 Structure du projet
 
@@ -88,10 +105,11 @@ bot-discord-zone01/
 │   ├── handlers.py
 │   └── ...
 └── data/                       # Données persistantes
-    ├── config.json
-    ├── bot_logs.json
-    ├── help_requests.json
-    └── technologies.json
+    ├── config.json             # Configuration du bot
+    ├── bot_logs.json           # Logs généraux
+    ├── help_requests.json      # Demandes d'aide en cours
+    ├── help_logs.json          # Historique des demandes d'aide
+    └── technologies.json       # Technologies pour les offres
 ```
 
 ## 🔧 Configuration
