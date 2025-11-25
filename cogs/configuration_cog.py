@@ -96,20 +96,15 @@ class Configuration(commands.Cog):
                 inline=False
             )
 
-        # Canaux
+        # Canaux généraux
         channels_info = []
-        channel_keys = [
+        general_channel_keys = [
             ("channel_inter_promo", "Canal Inter-Promo"),
             ("forum_channel_id", "Forum Alternances"),
-            ("forum_channel_id_cdi", "Forum CDI"),
-            ("channel_progress_P1_2022", "Progression P1 2022"),
-            ("channel_progress_P1_2023", "Progression P1 2023"),
-            ("channel_progress_P2_2023", "Progression P2 2023"),
-            ("channel_progress_P1_2024", "Progression P1 2024"),
-            ("channel_progress_P1_2025", "Progression P1 2025")
+            ("forum_channel_id_cdi", "Forum CDI")
         ]
 
-        for key, label in channel_keys:
+        for key, label in general_channel_keys:
             channel_id = config.get(key)
             if channel_id:
                 channel = self.bot.get_channel(channel_id)
@@ -120,23 +115,20 @@ class Configuration(commands.Cog):
 
         if channels_info:
             embed.add_field(
-                name="📺 Canaux",
+                name="📺 Canaux Généraux",
                 value="\n".join(channels_info),
                 inline=False
             )
 
-        # Rôles
+        # Rôles généraux
         roles_info = []
-        role_keys = [
+        general_role_keys = [
             ("role_help", "Helper"),
             ("role_ping_cdi", "Ping CDI"),
-            ("role_ping_alternance", "Ping Alternance"),
-            ("role_p1_2023", "P1 2023"),
-            ("role_p2_2023", "P2 2023"),
-            ("role_p1_2024", "P1 2024")
+            ("role_ping_alternance", "Ping Alternance")
         ]
 
-        for key, label in role_keys:
+        for key, label in general_role_keys:
             role_id = config.get(key)
             if role_id:
                 role = guild.get_role(role_id) if guild else None
@@ -147,8 +139,54 @@ class Configuration(commands.Cog):
 
         if roles_info:
             embed.add_field(
-                name="👥 Rôles",
+                name="👥 Rôles Généraux",
                 value="\n".join(roles_info),
+                inline=False
+            )
+
+        # Promotions (détection dynamique)
+        promotions = {}
+        for key in config:
+            if key.startswith("channel_progress_"):
+                promo_name = key.replace("channel_progress_", "").replace("_", " ")
+                if promo_name not in promotions:
+                    promotions[promo_name] = {}
+                promotions[promo_name]["channel"] = config[key]
+            elif key.startswith("role_") and key not in ["role_help", "role_ping_cdi", "role_ping_alternance"]:
+                promo_name = key.replace("role_", "").replace("_", " ").title()
+                if promo_name not in promotions:
+                    promotions[promo_name] = {}
+                promotions[promo_name]["role"] = config[key]
+
+        if promotions:
+            promo_info = []
+            for promo_name in sorted(promotions.keys()):
+                promo_data = promotions[promo_name]
+                info_parts = [f"**{promo_name}:**"]
+
+                # Canal
+                if "channel" in promo_data:
+                    channel_id = promo_data["channel"]
+                    channel = self.bot.get_channel(channel_id)
+                    if channel:
+                        info_parts.append(f"  📺 {channel.mention}")
+                    else:
+                        info_parts.append(f"  📺 ID `{channel_id}` (non trouvé)")
+
+                # Rôle
+                if "role" in promo_data:
+                    role_id = promo_data["role"]
+                    role = guild.get_role(role_id) if guild else None
+                    if role:
+                        info_parts.append(f"  👥 {role.mention}")
+                    else:
+                        info_parts.append(f"  👥 ID `{role_id}` (non trouvé)")
+
+                promo_info.append("\n".join(info_parts))
+
+            embed.add_field(
+                name="📚 Promotions",
+                value="\n".join(promo_info),
                 inline=False
             )
 
@@ -160,20 +198,22 @@ class Configuration(commands.Cog):
         await interaction.response.send_message(embed=embed, ephemeral=True)
         logger.info(f"Configuration affichée par {interaction.user.name}", category="config")
 
-    @app_commands.command(name="add_promotion", description="Ajoute une nouvelle promotion avec son canal de progression")
+    @app_commands.command(name="add_promotion", description="Ajoute une nouvelle promotion avec son canal et rôle")
     @is_admin_slash()
     @app_commands.describe(
         promotion_name="Le nom de la promotion (ex: P2 2025, P1 2026)",
-        channel="Le canal de progression (mention #canal ou ID)"
+        channel="Le canal de progression (mention #canal ou ID)",
+        role="Le rôle de la promotion (mention @role ou ID)"
     )
-    async def add_promotion(self, interaction: discord.Interaction, promotion_name: str, channel: str):
-        """Ajoute une nouvelle configuration de promotion avec son canal"""
+    async def add_promotion(self, interaction: discord.Interaction, promotion_name: str, channel: str, role: str):
+        """Ajoute une nouvelle configuration de promotion avec son canal et rôle"""
         import re
 
         config = self.load_config()
 
-        # Créer la clé de configuration basée sur le nom de la promotion
-        config_key = f"channel_progress_{promotion_name.replace(' ', '_')}"
+        # Créer les clés de configuration basées sur le nom de la promotion
+        channel_config_key = f"channel_progress_{promotion_name.replace(' ', '_')}"
+        role_config_key = f"role_{promotion_name.replace(' ', '_').lower()}"
 
         # Extraire l'ID du canal
         channel_id = None
@@ -188,7 +228,7 @@ class Configuration(commands.Cog):
                 channel_id = int(channel)
             except ValueError:
                 await interaction.response.send_message(
-                    f"❌ Erreur : La valeur doit être un ID valide ou une mention de canal (#canal).\n"
+                    f"❌ Erreur : Le canal doit être un ID valide ou une mention de canal (#canal).\n"
                     f"Exemples :\n"
                     f"• ID direct : `1234567890123456789`\n"
                     f"• Mention de canal : `#progression-p2-2025`",
@@ -196,10 +236,31 @@ class Configuration(commands.Cog):
                 )
                 return
 
+        # Extraire l'ID du rôle
+        role_id = None
+
+        # Vérifier si c'est une mention de rôle (<@&123456789>)
+        role_match = re.match(r'<@&(\d+)>', role)
+        if role_match:
+            role_id = int(role_match.group(1))
+        else:
+            # Sinon, essayer de parser comme un nombre
+            try:
+                role_id = int(role)
+            except ValueError:
+                await interaction.response.send_message(
+                    f"❌ Erreur : Le rôle doit être un ID valide ou une mention de rôle (@role).\n"
+                    f"Exemples :\n"
+                    f"• ID direct : `1234567890123456789`\n"
+                    f"• Mention de rôle : `@P2 2025`",
+                    ephemeral=True
+                )
+                return
+
         # Vérifier si la promotion existe déjà
-        if config_key in config:
+        if channel_config_key in config or role_config_key in config:
             await interaction.response.send_message(
-                f"⚠️ La promotion `{promotion_name}` existe déjà avec le canal <#{config[config_key]}>.\n"
+                f"⚠️ La promotion `{promotion_name}` existe déjà.\n"
                 f"Utilisez `/edit_config` pour la modifier.",
                 ephemeral=True
             )
@@ -207,15 +268,19 @@ class Configuration(commands.Cog):
 
         # Vérifier que le canal existe
         channel_obj = self.bot.get_channel(channel_id)
+        channel_warning = None
         if not channel_obj:
-            await interaction.response.send_message(
-                f"⚠️ Avertissement : Le canal avec l'ID `{channel_id}` n'a pas été trouvé.\n"
-                f"Voulez-vous continuer quand même ? (La configuration sera sauvegardée)",
-                ephemeral=True
-            )
+            channel_warning = f"⚠️ Le canal avec l'ID `{channel_id}` n'a pas été trouvé."
+
+        # Vérifier que le rôle existe
+        role_obj = interaction.guild.get_role(role_id) if interaction.guild else None
+        role_warning = None
+        if not role_obj:
+            role_warning = f"⚠️ Le rôle avec l'ID `{role_id}` n'a pas été trouvé."
 
         # Ajouter la nouvelle promotion à la config
-        config[config_key] = channel_id
+        config[channel_config_key] = channel_id
+        config[role_config_key] = role_id
         self.save_config(config)
 
         # Construire le message de confirmation
@@ -227,20 +292,54 @@ class Configuration(commands.Cog):
         )
 
         embed.add_field(name="📚 Promotion", value=f"`{promotion_name}`", inline=False)
-        embed.add_field(name="🔑 Clé de config", value=f"`{config_key}`", inline=False)
-        embed.add_field(name="📺 Canal ID", value=f"`{channel_id}`", inline=True)
+        embed.add_field(name="🔑 Clé canal", value=f"`{channel_config_key}`", inline=False)
+        embed.add_field(name="🔑 Clé rôle", value=f"`{role_config_key}`", inline=False)
 
+        # Information sur le canal
         if channel_obj:
             embed.add_field(
-                name="✅ Canal trouvé",
+                name="📺 Canal",
                 value=f"{channel_obj.mention} ({channel_obj.name})",
+                inline=True
+            )
+        else:
+            embed.add_field(
+                name="📺 Canal ID",
+                value=f"`{channel_id}`",
+                inline=True
+            )
+
+        # Information sur le rôle
+        if role_obj:
+            embed.add_field(
+                name="👥 Rôle",
+                value=f"{role_obj.mention} ({role_obj.name})",
+                inline=True
+            )
+        else:
+            embed.add_field(
+                name="👥 Rôle ID",
+                value=f"`{role_id}`",
+                inline=True
+            )
+
+        # Ajouter les avertissements s'il y en a
+        if channel_warning or role_warning:
+            warnings = []
+            if channel_warning:
+                warnings.append(channel_warning)
+            if role_warning:
+                warnings.append(role_warning)
+            embed.add_field(
+                name="⚠️ Avertissements",
+                value="\n".join(warnings),
                 inline=False
             )
 
         embed.set_footer(text="La promotion est maintenant disponible pour le suivi automatique")
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
-        logger.success(f"Promotion ajoutée par {interaction.user.name}: {promotion_name} -> {channel_id}", category="config")
+        logger.success(f"Promotion ajoutée par {interaction.user.name}: {promotion_name} -> canal:{channel_id}, rôle:{role_id}", category="config")
 
     @app_commands.command(name="edit_config", description="Édite la configuration du bot (IDs de canaux ou rôles)")
     @is_admin_slash()
