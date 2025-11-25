@@ -20,9 +20,10 @@
 Le Bot Discord Zone01 est un bot personnalisé conçu pour gérer et automatiser diverses tâches sur le serveur Discord de Zone01 Rouen Normandie. Il offre des fonctionnalités d'administration, de gestion d'aide entre étudiants, et de suivi automatique des offres d'emploi (alternances et CDI).
 
 ### Principales fonctionnalités :
-- **Système d'aide automatisé** : Permet aux étudiants de demander de l'aide via un bouton, et contacte automatiquement des Helpers disponibles
+- **Système d'aide automatisé** : Permet aux étudiants de demander de l'aide via un bouton, contacte automatiquement des Helpers disponibles, et enregistre tout l'historique avec statistiques
 - **Gestion d'offres d'emploi** : Recherche et publication automatique d'offres d'alternance et de CDI depuis LinkedIn (via API Coresignal)
-- **Suivi de progression** : Affichage de la timeline et progression des promotions
+- **Suivi de progression** : Affichage de la timeline et progression des promotions avec mise à jour en temps réel
+- **Configuration dynamique** : Ajout de promotions à la volée avec configuration automatique des canaux et rôles
 - **Logging centralisé** : Système de logs détaillé avec différents niveaux et catégories
 - **Commandes d'administration** : Gestion des configurations et mises à jour
 
@@ -332,13 +333,21 @@ Le bot permet de gérer facilement la configuration via des commandes slash.
 |----------|-------------|------------|-------|
 | `/setup_reaction_help` | Configure le message d'aide avec bouton | `channel` | ✅ |
 | `/reload_help_message` | Recharge le message d'aide (supprime l'ancien) | `channel` | ✅ |
+| `/help_logs` | ✨ Affiche l'historique des demandes avec statistiques | `limit` (optionnel, défaut: 20) | ✅ |
 
 #### Configuration
 
 | Commande | Description | Paramètres | Admin |
 |----------|-------------|------------|-------|
-| `/show_config` | Affiche un résumé de la configuration du bot | Aucun | ✅ |
+| `/show_config` | Affiche la configuration avec toutes les promotions | Aucun | ✅ |
 | `/edit_config` | Édite la configuration (IDs canaux/rôles) | `key`, `value` | ✅ |
+| `/add_promotion` | ✨ Ajoute une nouvelle promotion dynamiquement | `promotion_name`, `channel`, `role` | ✅ |
+
+#### Progression
+
+| Commande | Description | Paramètres | Admin |
+|----------|-------------|------------|-------|
+| `/timeline` | ✨ Met à jour la progression avec suivi en temps réel | Aucun | ✅ |
 
 #### Utilitaire
 
@@ -370,8 +379,14 @@ Les commandes utilitaires utilisent le préfixe `!` :
 # Recharger le message d'aide après un redémarrage
 /reload_help_message channel: #aide
 
+# ✨ Consulter l'historique des demandes d'aide (30 derniers événements)
+/help_logs limit: 30
+
 # Afficher la configuration du bot
 /show_config
+
+# ✨ Ajouter une nouvelle promotion
+/add_promotion promotion_name: P2 2025 channel: #progression-p2-2025 role: @P2 2025
 
 # Modifier la configuration avec une mention de canal
 /edit_config key: Forum Alternances value: #alternances
@@ -382,6 +397,9 @@ Les commandes utilitaires utilisent le préfixe `!` :
 # Ou utiliser un ID direct
 /edit_config key: ID du Serveur value: 1234567890123456789
 
+# ✨ Mettre à jour la progression avec suivi en temps réel
+/timeline
+
 # Vérifier la latence du bot
 !ping
 
@@ -390,6 +408,9 @@ Les commandes utilitaires utilisent le préfixe `!` :
 
 # Forcer la mise à jour des offres
 !update_internships
+
+# Version classique de timeline (sans suivi)
+!timeline
 ```
 
 ---
