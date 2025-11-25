@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
 import discord
+from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv, set_key
 
 from utils.config_loader import forbidden_words
 from utils.utils_fulltime import send_cdilist
-from utils.utils_function import is_admin
+from utils.utils_function import is_admin, is_admin_slash
 from utils.utils_internship import send_jobslist
 from utils.timeline import fetch_and_send_progress
 
@@ -223,6 +224,186 @@ class Administration(commands.Cog):
     @is_admin()
     async def timeline(self, ctx):
         await fetch_and_send_progress(self.bot)
+
+    @app_commands.command(name="timeline", description="Met à jour la progression des promotions avec suivi en temps réel")
+    @is_admin_slash()
+    async def timeline_slash(self, interaction: discord.Interaction):
+        """Met à jour la progression de toutes les promotions avec suivi en temps réel"""
+        from utils.progress_fetcher import fetch_progress
+        from utils.config_loader import config
+        import re
+        from datetime import datetime
+
+        # Message initial
+        embed = discord.Embed(
+            title="⏳ Mise à jour en cours...",
+            description="Récupération des données de progression...",
+            color=discord.Color.blue(),
+            timestamp=discord.utils.utcnow()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+        # Récupération des données
+        progress_data = await fetch_progress()
+
+        if not progress_data:
+            embed_error = discord.Embed(
+                title="❌ Erreur",
+                description="Impossible de récupérer les données de progression pour le moment.",
+                color=discord.Color.red(),
+                timestamp=discord.utils.utcnow()
+            )
+            await interaction.edit_original_response(embed=embed_error)
+            return
+
+        # Mise à jour : traitement en cours
+        total_promos = len(progress_data)
+        embed_processing = discord.Embed(
+            title="🔄 Traitement en cours...",
+            description=f"Traitement de {total_promos} promotion(s)...",
+            color=discord.Color.blue(),
+            timestamp=discord.utils.utcnow()
+        )
+        await interaction.edit_original_response(embed=embed_processing)
+
+        # Traitement de chaque promotion
+        success_count = 0
+        error_count = 0
+        errors = []
+
+        for idx, item in enumerate(progress_data, 1):
+            # Mise à jour de la progression
+            embed_update = discord.Embed(
+                title="🔄 Traitement en cours...",
+                description=f"Traitement de la promotion **{item['promotionName']}** ({idx}/{total_promos})",
+                color=discord.Color.blue(),
+                timestamp=discord.utils.utcnow()
+            )
+            embed_update.add_field(
+                name="📊 Progression",
+                value=f"`{idx}/{total_promos}` promotions traitées",
+                inline=False
+            )
+            await interaction.edit_original_response(embed=embed_update)
+
+            # Création de l'embed de progression
+            progress_emoji = "🟩" * (item['progress'] // 10) + "🟥" * (10 - (item['progress'] // 10))
+
+            embed_progress = discord.Embed(
+                title=f"📚 Projet en cours : `{item.get('currentProject', 'Non spécifié')}`",
+                description=f"👤 **Promotion** : `{item['promotionName']}`",
+                color=discord.Color.green() if item['success'] else discord.Color.red(),
+                timestamp=datetime.utcnow()
+            )
+            embed_progress.set_author(name="Suivi de progression Zone01", icon_url="https://example.com/logo.png")
+            embed_progress.add_field(
+                name="📈 Progression",
+                value=f"`{item['progress']}%`  \n{progress_emoji}",
+                inline=True
+            )
+
+            # Extraction de la date
+            agenda_str = item.get('agenda', ['Non spécifié'])[0]
+            match = re.search(r"(Fin de la promo:|Fin du projet actuel :)\s*(\d{4}-\d{2}-\d{2})", agenda_str)
+
+            if match:
+                date_str = match.group(2)
+                try:
+                    date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+                    formatted_date = f"Le {date_obj.day} {date_obj.strftime('%B')} {date_obj.year}"
+                except ValueError:
+                    formatted_date = 'Non spécifié'
+            else:
+                formatted_date = 'Non spécifié'
+
+            embed_progress.add_field(
+                name="⏳ Échéance estimée",
+                value=f"`{formatted_date}`",
+                inline=True
+            )
+
+            if 'notes' in item and item['notes']:
+                embed_progress.add_field(
+                    name="📝 **Notes supplémentaires**",
+                    value=item['notes'],
+                    inline=False
+                )
+
+            embed_progress.set_footer(text="Zone01 Normandie • Mise à jour automatique", icon_url="https://example.com/footer-icon.png")
+
+            # Envoi dans le canal approprié
+            channel_name = f"channel_progress_{item['promotionName'].replace(' ', '_')}"
+            channel_id = config.get(channel_name)
+
+            channel_modo_id = 1257310056546963479
+            channel_modo = self.bot.get_channel(channel_modo_id)
+
+            if channel_id:
+                channel = self.bot.get_channel(channel_id)
+                if channel:
+                    # Supprimer les anciens messages
+                    async for message in channel.history(limit=100):
+                        if message.author == self.bot.user:
+                            await message.delete()
+                    # Envoi de l'embed
+                    await channel.send(embed=embed_progress)
+                    success_count += 1
+                else:
+                    error_count += 1
+                    errors.append(f"❌ {item['promotionName']}: Canal ID `{channel_id}` non trouvé")
+                    # Envoi erreur au canal modo
+                    if channel_modo:
+                        embed_error = discord.Embed(
+                            title="🚫 Erreur Automatique",
+                            description=f"Salon avec l'ID {channel_id} pour la promotion {item['promotionName']} non trouvé.",
+                            color=discord.Color.red()
+                        )
+                        await channel_modo.send(embed=embed_error)
+            else:
+                error_count += 1
+                errors.append(f"❌ {item['promotionName']}: Canal non configuré")
+                # Envoi erreur au canal modo
+                if channel_modo:
+                    embed_error = discord.Embed(
+                        title="🚫 Erreur Automatique",
+                        description=f"Channel non configuré pour la promotion {item['promotionName']}.",
+                        color=discord.Color.red()
+                    )
+                    await channel_modo.send(embed=embed_error)
+
+        # Message final
+        if error_count == 0:
+            embed_final = discord.Embed(
+                title="✅ Mise à jour terminée",
+                description=f"Toutes les promotions ont été mises à jour avec succès !",
+                color=discord.Color.green(),
+                timestamp=discord.utils.utcnow()
+            )
+            embed_final.add_field(
+                name="📊 Résumé",
+                value=f"✅ **{success_count}** promotion(s) mise(s) à jour\n❌ **{error_count}** erreur(s)",
+                inline=False
+            )
+        else:
+            embed_final = discord.Embed(
+                title="⚠️ Mise à jour terminée avec des erreurs",
+                description=f"Certaines promotions n'ont pas pu être mises à jour.",
+                color=discord.Color.orange(),
+                timestamp=discord.utils.utcnow()
+            )
+            embed_final.add_field(
+                name="📊 Résumé",
+                value=f"✅ **{success_count}** promotion(s) mise(s) à jour\n❌ **{error_count}** erreur(s)",
+                inline=False
+            )
+            if errors:
+                embed_final.add_field(
+                    name="🚨 Erreurs",
+                    value="\n".join(errors[:10]),  # Limiter à 10 erreurs
+                    inline=False
+                )
+
+        await interaction.edit_original_response(embed=embed_final)
 
 async def setup(bot):
     await bot.add_cog(Administration(bot))
