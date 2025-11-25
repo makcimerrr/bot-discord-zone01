@@ -10,6 +10,8 @@ from utils.utils_function import is_admin_slash
 
 # Fichier pour stocker les demandes d'aide en cours
 HELP_REQUESTS_FILE = "data/help_requests.json"
+# Fichier pour stocker l'historique des demandes d'aide
+HELP_LOGS_FILE = "data/help_logs.json"
 
 # Emoji pour demander de l'aide
 HELP_EMOJI = "🆘"
@@ -52,6 +54,8 @@ class HelpButtonView(discord.ui.View):
                 ephemeral=True
             )
             logger.success(f"Nouvelle demande d'aide de {user.name} (ID: {request_id})", category="help_system")
+            # Enregistrer l'événement dans les logs
+            self.cog.log_help_event("request", user.id, user.name, request_id=request_id)
         except discord.Forbidden:
             logger.warning(f"Impossible d'envoyer un MP à {user.name}", category="help_system")
             await interaction.followup.send(
@@ -67,6 +71,7 @@ class ReactionHelpSystem(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.help_requests = self.load_help_requests()
+        self.help_logs = self.load_help_logs()
         # Ajouter la vue persistante au bot
         bot.add_view(HelpButtonView(self))
 
@@ -81,6 +86,33 @@ class ReactionHelpSystem(commands.Cog):
         """Sauvegarde les demandes d'aide dans le fichier JSON"""
         with open(HELP_REQUESTS_FILE, 'w') as f:
             json.dump(self.help_requests, f, indent=2)
+
+    def load_help_logs(self):
+        """Charge l'historique des demandes d'aide"""
+        if os.path.exists(HELP_LOGS_FILE):
+            with open(HELP_LOGS_FILE, 'r') as f:
+                return json.load(f)
+        return []
+
+    def save_help_logs(self):
+        """Sauvegarde l'historique des demandes d'aide"""
+        with open(HELP_LOGS_FILE, 'w') as f:
+            json.dump(self.help_logs, f, indent=2)
+
+    def log_help_event(self, event_type, user_id, user_name, helper_id=None, helper_name=None, request_id=None):
+        """Enregistre un événement du système d'aide"""
+        from datetime import datetime
+        event = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "type": event_type,  # "request", "contact", "accept", "refuse", "no_helper"
+            "user_id": user_id,
+            "user_name": user_name,
+            "helper_id": helper_id,
+            "helper_name": helper_name,
+            "request_id": request_id
+        }
+        self.help_logs.append(event)
+        self.save_help_logs()
 
     async def send_help_message(self, channel: discord.TextChannel):
         """Envoie le message d'aide avec le bouton dans un channel"""
@@ -113,6 +145,91 @@ class ReactionHelpSystem(commands.Cog):
             f"✅ Message de demande d'aide configuré dans {channel.mention}",
             ephemeral=True
         )
+
+    @app_commands.command(name="help_logs", description="Affiche l'historique des demandes d'aide du système d'helper")
+    @is_admin_slash()
+    @app_commands.describe(
+        limit="Nombre de logs à afficher (par défaut: 20, max: 50)"
+    )
+    async def help_logs_command(self, interaction: discord.Interaction, limit: int = 20):
+        """Affiche l'historique des demandes d'aide"""
+        await interaction.response.defer(ephemeral=True)
+
+        # Limiter le nombre de logs
+        limit = min(limit, 50)
+
+        if not self.help_logs:
+            embed = discord.Embed(
+                title="📋 Logs du système d'aide",
+                description="Aucun log disponible pour le moment.",
+                color=discord.Color.blue(),
+                timestamp=discord.utils.utcnow()
+            )
+            await interaction.followup.send(embed=embed, ephemeral=True)
+            return
+
+        # Récupérer les derniers logs
+        recent_logs = self.help_logs[-limit:]
+
+        # Statistiques
+        total_requests = len([log for log in self.help_logs if log['type'] == 'request'])
+        total_accepts = len([log for log in self.help_logs if log['type'] == 'accept'])
+        total_refuses = len([log for log in self.help_logs if log['type'] == 'refuse'])
+        total_contacts = len([log for log in self.help_logs if log['type'] == 'contact'])
+
+        embed = discord.Embed(
+            title="📋 Logs du système d'aide",
+            description=f"Affichage des {len(recent_logs)} derniers événements",
+            color=0x002e7a,
+            timestamp=discord.utils.utcnow()
+        )
+
+        # Ajouter les statistiques globales
+        embed.add_field(
+            name="📊 Statistiques globales",
+            value=(
+                f"**Total demandes:** {total_requests}\n"
+                f"**Total acceptations:** {total_accepts}\n"
+                f"**Total refus:** {total_refuses}\n"
+                f"**Total contacts:** {total_contacts}\n"
+                f"**Taux d'acceptation:** {round((total_accepts / total_contacts * 100) if total_contacts > 0 else 0, 1)}%"
+            ),
+            inline=False
+        )
+
+        # Formater les logs
+        logs_text = []
+        for log in reversed(recent_logs):
+            from datetime import datetime
+            timestamp = datetime.fromisoformat(log['timestamp'])
+            formatted_time = timestamp.strftime("%d/%m %H:%M")
+
+            if log['type'] == 'request':
+                logs_text.append(f"`{formatted_time}` 🆘 **Demande** de <@{log['user_id']}>")
+            elif log['type'] == 'contact':
+                logs_text.append(f"`{formatted_time}` 📧 **Contact** de <@{log['helper_id']}> pour <@{log['user_id']}>")
+            elif log['type'] == 'accept':
+                logs_text.append(f"`{formatted_time}` ✅ **Acceptation** par <@{log['helper_id']}> pour <@{log['user_id']}>")
+            elif log['type'] == 'refuse':
+                logs_text.append(f"`{formatted_time}` ❌ **Refus** par <@{log['helper_id']}> pour <@{log['user_id']}>")
+
+        # Diviser en plusieurs fields si nécessaire (limite de 1024 caractères par field)
+        chunk_size = 15
+        for i in range(0, len(logs_text), chunk_size):
+            chunk = logs_text[i:i + chunk_size]
+            embed.add_field(
+                name=f"📝 Événements récents" if i == 0 else "\u200b",
+                value="\n".join(chunk),
+                inline=False
+            )
+
+        embed.set_footer(
+            text="Zone01",
+            icon_url="https://zone01rouennormandie.org/wp-content/uploads/2024/03/01talent-profil-400x400-1.jpg"
+        )
+
+        await interaction.followup.send(embed=embed, ephemeral=True)
+        logger.info(f"Logs d'aide consultés par {interaction.user.name}", category="help_system")
 
     @app_commands.command(name="reload_help_message", description="Recharge le message d'aide dans un channel (supprime l'ancien si existant)")
     @is_admin_slash()
@@ -261,6 +378,9 @@ class ReactionHelpSystem(commands.Cog):
             self.save_help_requests()
 
             logger.info(f"Helper {helper.name} contacté pour la demande {request_id}", category="help_system")
+            # Enregistrer l'événement dans les logs
+            user_data = self.help_requests[request_id]
+            self.log_help_event("contact", user_data['user_id'], "User", helper.id, helper.name, request_id)
         except discord.Forbidden:
             logger.warning(f"Impossible d'envoyer un MP à {helper.name}", category="help_system")
             # Si on ne peut pas envoyer de MP au Helper, on en contacte un autre
@@ -359,6 +479,8 @@ class ReactionHelpSystem(commands.Cog):
                         f"Tu peux aussi le/la contacter directement : {helper.mention}"
                     )
                     logger.success(f"Helper {helper.name} a accepté d'aider {user.name}", category="help_system")
+                    # Enregistrer l'événement dans les logs
+                    self.log_help_event("accept", user.id, user.name, helper.id, helper.name, request_id)
                 except discord.Forbidden:
                     logger.warning(f"Impossible d'envoyer un MP à {user.name}", category="help_system")
 
@@ -383,6 +505,8 @@ class ReactionHelpSystem(commands.Cog):
                 ))
 
                 logger.info(f"Helper {helper.name} a refusé, contact d'un autre Helper", category="help_system")
+                # Enregistrer l'événement dans les logs
+                self.log_help_event("refuse", user.id, user.name, helper.id, helper.name, request_id)
 
                 # Réinitialiser le flag pour permettre au prochain helper de répondre
                 self.help_requests[request_id]['response_processed'] = False
