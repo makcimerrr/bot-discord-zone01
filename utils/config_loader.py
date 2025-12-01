@@ -32,6 +32,7 @@ role_p2_2023 = config["role_p2_2023"]
 role_p1_2024 = config["role_p1_2024"]
 role_help = config["role_help"]
 role_ping_alternance = config["role_ping_alternance"]
+role_alternants = config["role_alternants"]
 channel_inter_promo = config["channel_inter_promo"]
 discord_token = os.getenv("TOKEN")
 query_intern = os.getenv("QUERY_INTERNSHIP")

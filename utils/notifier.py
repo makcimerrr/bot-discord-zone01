@@ -1,11 +1,11 @@
 import discord
 from dotenv import load_dotenv
-from utils.config_loader import role_feedback_alternance, channel_id_feedback_alternance
+from utils.config_loader import role_alternants, channel_id_feedback_alternance
 
 load_dotenv(override=True)
 
-async def send_monthly_message(bot):
 
+async def send_monthly_message(bot):
     try:
         channel = bot.get_channel(channel_id_feedback_alternance)
         if channel is None:
@@ -13,9 +13,9 @@ async def send_monthly_message(bot):
             return
 
         guild = channel.guild
-        role = guild.get_role(role_feedback_alternance)
+        role = guild.get_role(role_alternants)
         if not role:
-            print(f"❌ Rôle ID {role_feedback_alternance} introuvable")
+            print(f"❌ Rôle ID {role_alternants} introuvable")
             return
 
         members = [
