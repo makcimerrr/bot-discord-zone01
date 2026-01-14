@@ -24,25 +24,19 @@ def add_response_to_notion(user, response):
     # Format de la colonne mensuelle
     date_column = first_monday.strftime("Mois du %d/%m/%Y")
 
-    # Récupération de la base de données
-    print(f"[DEBUG] notion_database_id: {notion_database_id}")
-    database = notion.databases.retrieve(database_id=notion_database_id)
-    print(f"[DEBUG] database response keys: {database.keys() if database else 'None'}")
-
-    # Création de la colonne si elle n'existe pas
-    if date_column not in database.get('properties', {}):
-        try:
-            notion.databases.update(
-                database_id=notion_database_id,
-                properties={
-                    date_column: {
-                        "rich_text": {}
-                    }
+    # Création de la colonne si elle n'existe pas (on essaie directement)
+    try:
+        notion.databases.update(
+            database_id=notion_database_id,
+            properties={
+                date_column: {
+                    "rich_text": {}
                 }
-            )
-        except Exception as e:
-            print(f"Erreur lors de la création de la colonne : {e}")
-            raise
+            }
+        )
+    except Exception as e:
+        # La colonne existe peut-être déjà, on continue
+        print(f"[DEBUG] Création colonne (ignoré si existe déjà): {e}")
 
     # Recherche de l'utilisateur existant
     results = notion.databases.query(
