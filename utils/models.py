@@ -25,10 +25,12 @@ def add_response_to_notion(user, response):
     date_column = first_monday.strftime("Mois du %d/%m/%Y")
 
     # Récupération de la base de données
+    print(f"[DEBUG] notion_database_id: {notion_database_id}")
     database = notion.databases.retrieve(database_id=notion_database_id)
+    print(f"[DEBUG] database response keys: {database.keys() if database else 'None'}")
 
     # Création de la colonne si elle n'existe pas
-    if date_column not in database['properties']:
+    if date_column not in database.get('properties', {}):
         try:
             notion.databases.update(
                 database_id=notion_database_id,
