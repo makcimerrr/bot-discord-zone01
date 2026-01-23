@@ -1,5 +1,6 @@
 import discord
 import re
+import json
 from datetime import datetime
 from utils.progress_fetcher import fetch_progress
 from utils.config_loader import config
@@ -10,8 +11,26 @@ async def fetch_and_send_progress(bot):
     ## print(progress_data)
 
     if progress_data:
-        for item in progress_data:
-            progress_emoji = "🟩" * (item['progress'] // 10) + "🟥" * (10 - (item['progress'] // 10))
+        for raw_item in progress_data:
+            # Ensure item is a dict (some sources may return JSON strings)
+            item = raw_item
+            if isinstance(raw_item, str):
+                try:
+                    item = json.loads(raw_item)
+                except Exception:
+                    print(f"Unable to parse item as JSON: {raw_item!r}")
+                    continue
+            if not isinstance(item, dict):
+                print(f"Unexpected item type: {type(item)} - skipping")
+                continue
+
+            # Safely extract progress and build emoji bar
+            try:
+                progress_val = int(item.get('progress', 0))
+            except (ValueError, TypeError):
+                progress_val = 0
+            completed = max(0, min(10, progress_val // 10))
+            progress_emoji = "🟩" * completed + "🟥" * (10 - completed)
 
             # Création de l'embed
             embed = discord.Embed(
