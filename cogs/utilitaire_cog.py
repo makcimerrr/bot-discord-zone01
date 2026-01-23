@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from datetime import datetime
 from utils.logger import logger
+from utils.utils_function import is_admin
 
 
 class Utilitaire(commands.Cog):
@@ -101,7 +102,7 @@ class Utilitaire(commands.Cog):
         await interaction.followup.send(embed=embed, ephemeral=True)
 
     @app_commands.command(name="logs_clear", description="Efface tous les logs du bot")
-    @app_commands.default_permissions(administrator=True)
+    @is_admin()
     async def logs_clear_command(self, interaction: discord.Interaction):
         """Efface tous les logs du bot"""
         stats = logger.get_stats()
