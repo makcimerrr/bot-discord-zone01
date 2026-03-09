@@ -1,4 +1,5 @@
 discord.py
+aiohttp
 requests
 apscheduler
 python-dotenv

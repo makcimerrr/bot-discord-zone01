@@ -47,3 +47,7 @@ channel_id_feedback_alternance = config["channel_id_feedback_alternance"]
 role_feedback_alternance = int(os.getenv('ROLE_ID', 0)) if os.getenv('ROLE_ID') else None
 notion_token = os.getenv("NOTION_TOKEN")
 notion_database_id = os.getenv("NOTION_DATABASE_ID")
+
+# Serveur web pour le flux de connexion Zone01
+connect_base_url = os.getenv("CONNECT_BASE_URL", "http://localhost:8080")
+connect_port = int(os.getenv("CONNECT_PORT", "8080"))

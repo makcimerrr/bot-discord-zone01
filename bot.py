@@ -7,10 +7,11 @@ from discord.ext import commands, tasks
 from discord.ui import Modal, TextInput
 
 from cogs.help_cog import SupremeHelpCommand
-from utils.config_loader import config, discord_token, forum_channel_id
+from utils.config_loader import config, discord_token, forum_channel_id, connect_base_url, connect_port
 from utils.scheduler import start_scheduler
 from utils.handlers import handle_dm
 from utils.logger import logger
+from utils.web_server import start_web_server
 
 # Désactiver les logs Discord.py dans le terminal
 logging.getLogger('discord').setLevel(logging.CRITICAL)
@@ -20,6 +21,7 @@ logging.getLogger('discord.gateway').setLevel(logging.CRITICAL)
 intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix="!", intents=intents)
+bot.connect_base_url = connect_base_url  # URL publique utilisée pour générer les liens /connect
 
 initial_extensions = ['cogs.administration_cog', 'cogs.configuration_cog', 'cogs.utilitaire_cog', 'cogs.reaction_help_cog', 'cogs.connect_cog']
 
@@ -51,6 +53,8 @@ async def on_ready():
         # Start the scheduler to run the send_joblist and send_cdilist function twice a day
         start_scheduler(bot)
         logger.info("Scheduler démarré pour les mises à jour automatiques", category="bot")
+        # Start the web server for the OAuth2-like connect flow
+        await start_web_server(bot, port=connect_port)
         first_ready = False
 
 
