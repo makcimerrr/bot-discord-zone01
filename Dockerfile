@@ -1,5 +1,5 @@
 # Utilise une image officielle Python
-FROM python:3.11-slim
+FROM python:3.14.3-slim
 
 # Définir le répertoire de travail
 WORKDIR /app
@@ -14,11 +14,10 @@ COPY data ./data
 # Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Installer python-dotenv pour la gestion du .env
-RUN pip install python-dotenv
-
 # Copier le fichier .env
 COPY .env .
+
+EXPOSE 8080
 
 # Commande pour lancer le bot
 CMD ["python", "bot.py"]
