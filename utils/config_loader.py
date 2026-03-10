@@ -49,5 +49,5 @@ notion_token = os.getenv("NOTION_TOKEN")
 notion_database_id = os.getenv("NOTION_DATABASE_ID")
 
 # Serveur web pour le flux de connexion Zone01
-connect_base_url = os.getenv("CONNECT_BASE_URL", "http://localhost:8080")
-connect_port = int(os.getenv("CONNECT_PORT", "8080"))
+connect_base_url = os.getenv("CONNECT_BASE_URL")
+connect_port = int(os.getenv("CONNECT_PORT"))
