@@ -78,6 +78,10 @@ class Configuration(commands.Cog):
     @is_admin_slash()
     async def show_config(self, interaction: discord.Interaction):
         """Affiche la configuration actuelle du bot sous forme d'embed"""
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         config = self.load_config()
 
         embed = discord.Embed(
@@ -207,6 +211,10 @@ class Configuration(commands.Cog):
     )
     async def add_promotion(self, interaction: discord.Interaction, promotion_name: str, channel: str, role: str):
         """Ajoute une nouvelle configuration de promotion avec son canal et rôle"""
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         import re
 
         config = self.load_config()
@@ -366,6 +374,10 @@ class Configuration(commands.Cog):
     ])
     async def edit_config(self, interaction: discord.Interaction, key: str, value: str):
         """Édite une valeur de configuration"""
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         import re
 
         config = self.load_config()

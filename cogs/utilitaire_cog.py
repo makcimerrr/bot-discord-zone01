@@ -46,6 +46,10 @@ class Utilitaire(commands.Cog):
         """Affiche les logs généraux du bot"""
         await interaction.response.defer(ephemeral=True)
 
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         limit = min(max(1, limit), 50)
 
         level_filter = level.value if level and level.value != "all" else None
@@ -202,6 +206,10 @@ class Utilitaire(commands.Cog):
     ):
         """Exporte les logs en fichier texte"""
         await interaction.response.defer(ephemeral=True)
+
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
 
         level_filter = level.value if level and level.value != "all" else None
         category_filter = category if category else None

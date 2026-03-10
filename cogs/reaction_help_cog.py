@@ -139,6 +139,10 @@ class ReactionHelpSystem(commands.Cog):
     @is_admin_slash()
     async def setup_reaction_help(self, interaction: discord.Interaction, channel: discord.TextChannel):
         """Envoie un message avec un bouton pour demander de l'aide"""
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         await self.send_help_message(channel)
 
         await interaction.response.send_message(
@@ -153,6 +157,10 @@ class ReactionHelpSystem(commands.Cog):
     )
     async def help_logs_command(self, interaction: discord.Interaction, limit: int = 20):
         """Affiche l'historique des demandes d'aide"""
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         await interaction.response.defer(ephemeral=True)
 
         # Limiter le nombre de logs
@@ -235,6 +243,10 @@ class ReactionHelpSystem(commands.Cog):
     @is_admin_slash()
     async def reload_help_message(self, interaction: discord.Interaction, channel: discord.TextChannel):
         """Supprime l'ancien message d'aide et en envoie un nouveau"""
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         await interaction.response.defer(ephemeral=True)
 
         deleted_count = 0

@@ -3,12 +3,12 @@ import re
 import json
 from datetime import datetime
 from utils.progress_fetcher import fetch_progress
-from utils.config_loader import config
+from utils.config_loader import load_config
 
 async def fetch_and_send_progress(bot):
     """Récupère la progression et envoie les embeds dans les salons appropriés."""
     progress_data = await fetch_progress()
-    ## print(progress_data)
+    config = load_config()
 
     if progress_data:
         for raw_item in progress_data:
