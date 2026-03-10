@@ -4,6 +4,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv, set_key
+import json
+from datetime import datetime, timezone
 
 from utils.config_loader import forbidden_words
 from utils.utils_fulltime import send_cdilist
@@ -230,7 +232,8 @@ class Administration(commands.Cog):
     async def timeline_slash(self, interaction: discord.Interaction):
         """Met à jour la progression de toutes les promotions avec suivi en temps réel"""
         from utils.progress_fetcher import fetch_progress
-        from utils.config_loader import config
+        from utils.config_loader import load_config
+        config = load_config()
         import re
         from datetime import datetime
 
@@ -243,10 +246,15 @@ class Administration(commands.Cog):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
+        if interaction.guild is None:
+            await interaction.response.send(content="❌ Cette commande ne peut pas être utilisée en message privé.", ephemeral=True)
+            return
+
         # Récupération des données
         progress_data = await fetch_progress()
 
-        if not progress_data:
+        # Correction : utiliser la liste 'data' du JSON
+        if not progress_data or "data" not in progress_data:
             embed_error = discord.Embed(
                 title="❌ Erreur",
                 description="Impossible de récupérer les données de progression pour le moment.",
@@ -256,8 +264,7 @@ class Administration(commands.Cog):
             await interaction.edit_original_response(embed=embed_error)
             return
 
-        # Mise à jour : traitement en cours
-        total_promos = len(progress_data)
+        total_promos = len(progress_data["data"])
         embed_processing = discord.Embed(
             title="🔄 Traitement en cours...",
             description=f"Traitement de {total_promos} promotion(s)...",
@@ -266,16 +273,38 @@ class Administration(commands.Cog):
         )
         await interaction.edit_original_response(embed=embed_processing)
 
-        # Traitement de chaque promotion
         success_count = 0
         error_count = 0
         errors = []
 
-        for idx, item in enumerate(progress_data, 1):
+        for idx, raw_item in enumerate(progress_data["data"], 1):
+            # Correction : ignorer les chaînes non-JSON
+            item = raw_item
+            if isinstance(raw_item, str):
+                if raw_item.strip().startswith('{') or raw_item.strip().startswith('['):
+                    try:
+                        item = json.loads(raw_item)
+                    except Exception:
+                        error_count += 1
+                        errors.append(f"Impossible de parser l'item en JSON : {raw_item!r}")
+                        continue
+                else:
+                    error_count += 1
+                    errors.append(f"Item ignoré (non-JSON) : {raw_item!r}")
+                    continue
+            if not isinstance(item, dict):
+                error_count += 1
+                errors.append(f"Type inattendu pour item : {type(item)}")
+                continue
+
+            # Correction : accès au nom de la promotion
+            promotion_key = item['promotion']['key'] if 'promotion' in item and 'key' in item['promotion'] else 'Inconnu'
+            promotion_title = item['promotion']['title'] if 'promotion' in item and 'title' in item['promotion'] else promotion_key
+
             # Mise à jour de la progression
             embed_update = discord.Embed(
                 title="🔄 Traitement en cours...",
-                description=f"Traitement de la promotion **{item['promotionName']}** ({idx}/{total_promos})",
+                description=f"Traitement de la promotion **{promotion_title}** ({idx}/{total_promos})",
                 color=discord.Color.blue(),
                 timestamp=discord.utils.utcnow()
             )
@@ -287,23 +316,25 @@ class Administration(commands.Cog):
             await interaction.edit_original_response(embed=embed_update)
 
             # Création de l'embed de progression
-            progress_emoji = "🟩" * (item['progress'] // 10) + "🟥" * (10 - (item['progress'] // 10))
+            progress_val = item['timeline']['progress'] if 'timeline' in item and 'progress' in item['timeline'] else 0
+            progress_emoji = "🟩" * (progress_val // 10) + "🟥" * (10 - (progress_val // 10))
 
             embed_progress = discord.Embed(
-                title=f"📚 Projet en cours : `{item.get('currentProject', 'Non spécifié')}`",
-                description=f"👤 **Promotion** : `{item['promotionName']}`",
-                color=discord.Color.green() if item['success'] else discord.Color.red(),
-                timestamp=datetime.utcnow()
+                title=f"📚 Projet en cours : `{item.get('currentProjects', {}).get('single', 'Non spécifié')}`",
+                description=f"👤 **Promotion** : `{promotion_title}`",
+                color=discord.Color.green() if item.get('status') == 'success' else discord.Color.red(),
+                timestamp=datetime.now(timezone.utc)
             )
             embed_progress.set_author(name="Suivi de progression Zone01", icon_url="https://example.com/logo.png")
             embed_progress.add_field(
                 name="📈 Progression",
-                value=f"`{item['progress']}%`  \n{progress_emoji}",
+                value=f"`{progress_val}%`  \n{progress_emoji}",
                 inline=True
             )
 
             # Extraction de la date
-            agenda_str = item.get('agenda', ['Non spécifié'])[0]
+            agenda_list = item['timeline']['agenda'] if 'timeline' in item and 'agenda' in item['timeline'] else ['Non spécifié']
+            agenda_str = agenda_list[0]
             match = re.search(r"(Fin de la promo:|Fin du projet actuel :)\s*(\d{4}-\d{2}-\d{2})", agenda_str)
 
             if match:
@@ -321,18 +352,16 @@ class Administration(commands.Cog):
                 value=f"`{formatted_date}`",
                 inline=True
             )
-
             if 'notes' in item and item['notes']:
                 embed_progress.add_field(
                     name="📝 **Notes supplémentaires**",
                     value=item['notes'],
                     inline=False
                 )
-
             embed_progress.set_footer(text="Zone01 Normandie • Mise à jour automatique", icon_url="https://example.com/footer-icon.png")
 
             # Envoi dans le canal approprié
-            channel_name = f"channel_progress_{item['promotionName'].replace(' ', '_')}"
+            channel_name = f"channel_progress_{promotion_key.replace(' ', '_')}"
             channel_id = config.get(channel_name)
 
             channel_modo_id = 1257310056546963479
@@ -350,23 +379,23 @@ class Administration(commands.Cog):
                     success_count += 1
                 else:
                     error_count += 1
-                    errors.append(f"❌ {item['promotionName']}: Canal ID `{channel_id}` non trouvé")
+                    errors.append(f"❌ {promotion_key}: Canal ID `{channel_id}` non trouvé")
                     # Envoi erreur au canal modo
                     if channel_modo:
                         embed_error = discord.Embed(
                             title="🚫 Erreur Automatique",
-                            description=f"Salon avec l'ID {channel_id} pour la promotion {item['promotionName']} non trouvé.",
+                            description=f"Salon avec l'ID {channel_id} pour la promotion {promotion_key} non trouvé.",
                             color=discord.Color.red()
                         )
                         await channel_modo.send(embed=embed_error)
             else:
                 error_count += 1
-                errors.append(f"❌ {item['promotionName']}: Canal non configuré")
+                errors.append(f"❌ {promotion_key}: Canal non configuré")
                 # Envoi erreur au canal modo
                 if channel_modo:
                     embed_error = discord.Embed(
                         title="🚫 Erreur Automatique",
-                        description=f"Channel non configuré pour la promotion {item['promotionName']}.",
+                        description=f"Channel non configuré pour la promotion {promotion_key}.",
                         color=discord.Color.red()
                     )
                     await channel_modo.send(embed=embed_error)
@@ -404,6 +433,128 @@ class Administration(commands.Cog):
                 )
 
         await interaction.edit_original_response(embed=embed_final)
+
+    @commands.command(name='addpromotion')
+    @is_admin()
+    async def add_promotion(self, ctx, promo_name: str, channel_id: int):
+        """Ajoute une promotion et son canal à la configuration (ex: !addpromotion P2_2025 1442246411075977246)"""
+        import json
+        config_path = Path('data/config.json')
+        try:
+            with open(config_path, 'r') as f:
+                config_data = json.load(f)
+        except Exception as e:
+            await ctx.send(f"Erreur lors de la lecture du fichier config.json : {e}")
+            return
+
+        key = f"channel_progress_{promo_name}"
+        if key in config_data:
+            await ctx.send(f"La promotion `{promo_name}` existe déjà dans la configuration.")
+            return
+
+        config_data[key] = channel_id
+        try:
+            with open(config_path, 'w') as f:
+                json.dump(config_data, f, indent=2)
+            await ctx.send(f"✅ Promotion `{promo_name}` ajoutée avec le canal `{channel_id}`.")
+        except Exception as e:
+            await ctx.send(f"Erreur lors de l'écriture dans config.json : {e}")
+
+        # Optionnel : informer qu'un redémarrage du bot peut être nécessaire
+        await ctx.send("ℹ️ Redémarrez le bot pour prendre en compte la modification si besoin.")
+
+    @commands.command(name='editpromotion')
+    @is_admin()
+    async def edit_promotion(self, ctx, promo_name: str, new_channel_id: int):
+        """Modifie le salon associé à une promotion existante (ex: !editpromotion P2_2025 1234567890123456789)"""
+        import json
+        config_path = Path('data/config.json')
+        try:
+            with open(config_path, 'r') as f:
+                config_data = json.load(f)
+        except Exception as e:
+            await ctx.send(f"Erreur lors de la lecture du fichier config.json : {e}")
+            return
+
+        key = f"channel_progress_{promo_name}"
+        if key not in config_data:
+            await ctx.send(f"❌ La promotion `{promo_name}` n'existe pas dans la configuration.")
+            return
+
+        old_channel_id = config_data[key]
+        config_data[key] = new_channel_id
+        try:
+            with open(config_path, 'w') as f:
+                json.dump(config_data, f, indent=2)
+            await ctx.send(f"✅ Salon de la promotion `{promo_name}` modifié : {old_channel_id} → {new_channel_id}.")
+        except Exception as e:
+            await ctx.send(f"Erreur lors de l'écriture dans config.json : {e}")
+
+        await ctx.send("ℹ️ Redémarrez le bot pour prendre en compte la modification si besoin.")
+
+    @commands.command(name='delpromotion')
+    @is_admin()
+    async def del_promotion(self, ctx, promo_name: str):
+        """Supprime le salon associé à une promotion (ex: !delpromotion P2_2025)"""
+        import json
+        config_path = Path('data/config.json')
+        try:
+            with open(config_path, 'r') as f:
+                config_data = json.load(f)
+        except Exception as e:
+            await ctx.send(f"Erreur lors de la lecture du fichier config.json : {e}")
+            return
+
+        key = f"channel_progress_{promo_name}"
+        if key not in config_data:
+            await ctx.send(f"❌ La promotion `{promo_name}` n'existe pas dans la configuration.")
+            return
+
+        del config_data[key]
+        try:
+            with open(config_path, 'w') as f:
+                json.dump(config_data, f, indent=2)
+            await ctx.send(f"✅ Salon de la promotion `{promo_name}` supprimé.")
+        except Exception as e:
+            await ctx.send(f"Erreur lors de l'écriture dans config.json : {e}")
+
+        await ctx.send("ℹ️ Redémarrez le bot pour prendre en compte la modification si besoin.")
+
+    @commands.command(name='promoslist')
+    @is_admin()
+    async def promos_list(self, ctx):
+        """Affiche un récapitulatif des promotions et leurs salons (channel_progress_<promo> et ID)"""
+        import json
+        config_path = Path('data/config.json')
+        try:
+            with open(config_path, 'r') as f:
+                config_data = json.load(f)
+        except Exception as e:
+            await ctx.send(f"Erreur lors de la lecture du fichier config.json : {e}")
+            return
+
+        promos = []
+        for key, value in config_data.items():
+            if key.startswith('channel_progress_'):
+                promo_name = key.replace('channel_progress_', '')
+                promos.append((promo_name, value))
+
+        if not promos:
+            await ctx.send("Aucune promotion configurée.")
+            return
+
+        embed = discord.Embed(
+            title="📋 Récapitulatif des promotions",
+            description="Liste des promotions et salons associés",
+            color=discord.Color.blue()
+        )
+        for promo_name, channel_id in promos:
+            embed.add_field(
+                name=f"{promo_name}",
+                value=f"Salon ID : `{channel_id}`",
+                inline=False
+            )
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Administration(bot))
