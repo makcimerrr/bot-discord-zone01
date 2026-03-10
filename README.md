@@ -200,6 +200,39 @@ docker-compose up -d
 
 Voir `DOCUMENTATION.md` pour plus d'options de déploiement.
 
+## 🐳 Déploiement avec Docker
+
+### Prérequis
+- Docker et Docker Compose installés
+- Un fichier `.env` à la racine du projet (voir `.env.example`)
+
+### Construction et lancement
+
+```bash
+# Construire l'image Docker
+docker compose build
+
+# Lancer le bot en arrière-plan
+docker compose up -d
+
+# Voir les logs du bot
+docker compose logs --tail=30
+```
+
+### Fichiers importants
+- `Dockerfile` : configuration du conteneur Python
+- `docker-compose.yml` : orchestration du service
+- `.env` : variables d'environnement (token Discord, etc.)
+
+### Personnalisation
+- Les données persistantes sont montées dans `/app/data` (voir `docker-compose.yml`)
+- Les variables d'environnement sont chargées automatiquement grâce à `python-dotenv`
+
+### Exemple de fichier `.env`
+Voir `.env.example` pour le format.
+
+---
+
 ## 🤝 Contribution
 
 Les contributions sont les bienvenues ! Consultez `DOCUMENTATION.md` pour les guidelines.

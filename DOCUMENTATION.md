@@ -705,15 +705,18 @@ pm2 logs bot-discord-zone01
 Créez un `Dockerfile` :
 
 ```dockerfile
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
 COPY requirements.txt .
+COPY bot.py .
+COPY cogs ./cogs
+COPY utils ./utils
+COPY data ./data
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
+RUN pip install python-dotenv
+COPY .env .
 CMD ["python", "bot.py"]
 ```
 
@@ -721,21 +724,24 @@ Créez un `docker-compose.yml` :
 
 ```yaml
 version: '3.8'
-
 services:
   bot:
     build: .
-    restart: unless-stopped
-    volumes:
-      - ./data:/app/data
+    container_name: discord_bot
     env_file:
       - .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    command: python bot.py
 ```
 
 Démarrer avec Docker :
 
 ```bash
-docker-compose up -d
+docker compose build
+docker compose up -d
+docker compose logs --tail=30
 ```
 
 ### Option 3 : Service systemd (Linux)
@@ -844,7 +850,7 @@ Ce projet est destiné à un usage interne pour Zone01 Rouen Normandie.
 ## 🙏 Remerciements
 
 - Discord.py pour la bibliothèque Discord
-- Coresignal pour l'API de recherche d'emploi LinkedIn
+- Coresignal pour l'API de recherche d'offres d'emploi LinkedIn
 - La communauté Zone01 Rouen Normandie
 
 ---
