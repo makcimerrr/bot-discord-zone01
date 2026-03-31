@@ -112,7 +112,7 @@ async def send_jobslist(bot, ctx=None, loading_message=None):
             if not city or city == "None":
                 city = job.get("job_state")
 
-            departement = get_departement(city)
+            departement = await get_departement(city)
 
             normandie = ["Calvados", "Eure", "Manche", "Orne", "Seine-Maritime"]
 

@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-import requests
+import aiohttp
 from dotenv import load_dotenv
 
 
@@ -37,10 +37,12 @@ async def fetch_api_fulltime(bot):
     }
 
     try:
-        response = requests.get(url, headers=headers, params=querystring)
-        response.raise_for_status()
-        data = response.json().get('data', [])
-        return data if isinstance(data, list) else [], query_fulltime, None
-    except requests.exceptions.RequestException as e:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers, params=querystring) as response:
+                response.raise_for_status()
+                json_data = await response.json()
+                data = json_data.get('data', [])
+                return data if isinstance(data, list) else [], query_fulltime, None
+    except aiohttp.ClientError as e:
         print(f"Error fetching JSearch jobs: {e}")
         return [], query_fulltime, e

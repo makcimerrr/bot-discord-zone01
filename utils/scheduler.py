@@ -49,26 +49,41 @@ def start_scheduler(bot):
     # Scheduler jobs with bot parameter
     @scheduler.scheduled_job("cron", hour=9, minute=0)  # Run at 9 AM
     async def schedule_joblist_morning():
-        await joblist_morning(bot)
-        await cdi_morning(bot)
+        try:
+            await joblist_morning(bot)
+            await cdi_morning(bot)
+        except Exception as e:
+            print(f"Erreur lors du joblist (matin) : {e}")
 
     @scheduler.scheduled_job("cron", hour=18, minute=0)  # Run at 6 PM
     async def schedule_joblist_evening():
-        await joblist_evening(bot)
-        await cdi_evening(bot)
+        try:
+            await joblist_evening(bot)
+            await cdi_evening(bot)
+        except Exception as e:
+            print(f"Erreur lors du joblist (soir) : {e}")
 
     @scheduler.scheduled_job("cron", hour=9, minute=0)  # Run at 9 AM
     async def schedule_fetch_progress_morning():
-        await fetch_and_send_progress(bot)
+        try:
+            await fetch_and_send_progress(bot)
+        except Exception as e:
+            print(f"Erreur lors du fetch progress (matin) : {e}")
 
     @scheduler.scheduled_job("cron", hour=18, minute=0)  # Run at 6 PM
     async def schedule_fetch_progress_evening():
-        await fetch_and_send_progress(bot)
+        try:
+            await fetch_and_send_progress(bot)
+        except Exception as e:
+            print(f"Erreur lors du fetch progress (soir) : {e}")
 
     @scheduler.scheduled_job(
         CronTrigger(day='1-7', day_of_week='mon', hour=14, minute=0)
     )
     async def monthly_task():
-        await send_monthly_message(bot)
+        try:
+            await send_monthly_message(bot)
+        except Exception as e:
+            print(f"Erreur lors du message mensuel : {e}")
 
     scheduler.start()
