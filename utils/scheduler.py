@@ -70,6 +70,13 @@ def start_scheduler(bot):
         except Exception as e:
             print(f"Erreur lors du fetch progress (matin) : {e}")
 
+    @scheduler.scheduled_job("cron", hour=13, minute=30)  # Run at 1:30 PM
+    async def schedule_fetch_progress_midday():
+        try:
+            await fetch_and_send_progress(bot)
+        except Exception as e:
+            print(f"Erreur lors du fetch progress (midi) : {e}")
+
     @scheduler.scheduled_job("cron", hour=18, minute=0)  # Run at 6 PM
     async def schedule_fetch_progress_evening():
         try:
