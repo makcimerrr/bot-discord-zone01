@@ -3,4 +3,4 @@ aiohttp
 requests
 apscheduler
 python-dotenv
-notion-client
+notion-client>=2.0.0

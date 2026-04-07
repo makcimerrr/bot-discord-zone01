@@ -5,7 +5,12 @@ from utils.config_loader import notion_database_id, notion_token
 
 load_dotenv(override=True)
 
-notion = Client(auth=notion_token)
+if not notion_token:
+    print("⚠️ NOTION_TOKEN non défini dans .env — l'enregistrement des réponses sera désactivé.")
+if not notion_database_id:
+    print("⚠️ NOTION_DATABASE_ID non défini dans .env — l'enregistrement des réponses sera désactivé.")
+
+notion = Client(auth=notion_token) if notion_token else None
 
 def get_first_monday_of_month(reference_date=None):
     """Retourne le premier lundi du mois (UTC)"""
@@ -18,6 +23,9 @@ def get_first_monday_of_month(reference_date=None):
     return first_monday.replace(hour=0, minute=0, second=0, microsecond=0)
 
 def add_response_to_notion(user, response):
+    if not notion or not notion_database_id:
+        raise RuntimeError("Notion non configuré (NOTION_TOKEN ou NOTION_DATABASE_ID manquant)")
+
     today = datetime.utcnow()
     first_monday = get_first_monday_of_month(today)
 
