@@ -10,7 +10,7 @@ if not notion_token:
 if not notion_database_id:
     print("⚠️ NOTION_DATABASE_ID non défini dans .env — l'enregistrement des réponses sera désactivé.")
 
-notion = Client(auth=notion_token.strip()) if notion_token else None
+notion = Client(auth=notion_token.strip(), notion_version="2022-06-28") if notion_token else None
 notion_database_id = notion_database_id.strip() if notion_database_id else None
 
 def get_first_monday_of_month(reference_date=None):
@@ -32,8 +32,6 @@ def add_response_to_notion(user, response):
 
     # Format de la colonne mensuelle
     date_column = first_monday.strftime("Mois du %d/%m/%Y")
-
-    print(f"[DEBUG] notion_database_id='{notion_database_id}' (len={len(notion_database_id)})")
 
     # Création de la colonne si elle n'existe pas (on essaie directement)
     try:
