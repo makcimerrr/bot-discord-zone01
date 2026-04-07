@@ -8,15 +8,18 @@ async def handle_dm(bot, message):
     if isinstance(message.channel, DMChannel) and not message.author.bot:
         # Les réponses des Helpers sont maintenant gérées par réactions
         # Ce handler gère uniquement les autres messages DM (ex: Notion)
+        loading_msg = await message.channel.send("⏳ Enregistrement en cours...")
         try:
             user = message.author.name
             response = message.content
 
             add_response_to_notion(user, response)
 
+            await loading_msg.delete()
             await message.channel.send("✅ Réponse enregistrée, merci !")
             logger.info(f"Réponse Notion enregistrée de {user}", category="notion")
 
         except Exception as e:
+            await loading_msg.delete()
             logger.error(f"Erreur Notion pour {message.author.name} : {e}", category="notion")
             await message.channel.send("❌ Une erreur est survenue lors de l'enregistrement.")
