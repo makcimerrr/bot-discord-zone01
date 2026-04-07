@@ -11,15 +11,6 @@ if not notion_database_id:
     print("⚠️ NOTION_DATABASE_ID non défini dans .env — l'enregistrement des réponses sera désactivé.")
 
 notion = Client(auth=notion_token) if notion_token else None
-_data_source_id = None
-
-def _get_data_source_id():
-    """Récupère le data_source_id à partir du database_id (API notion-client 2.7+)"""
-    global _data_source_id
-    if _data_source_id is None:
-        db = notion.databases.retrieve(database_id=notion_database_id)
-        _data_source_id = db["data_sources"][0]["id"]
-    return _data_source_id
 
 def get_first_monday_of_month(reference_date=None):
     """Retourne le premier lundi du mois (UTC)"""
@@ -41,15 +32,16 @@ def add_response_to_notion(user, response):
     # Format de la colonne mensuelle
     date_column = first_monday.strftime("Mois du %d/%m/%Y")
 
-    data_source_id = _get_data_source_id()
-
     # Création de la colonne si elle n'existe pas (on essaie directement)
     try:
-        notion.data_sources.update(
-            data_source_id=data_source_id,
-            properties={
-                date_column: {
-                    "rich_text": {}
+        notion.request(
+            path=f"databases/{notion_database_id}",
+            method="PATCH",
+            body={
+                "properties": {
+                    date_column: {
+                        "rich_text": {}
+                    }
                 }
             }
         )
@@ -58,12 +50,15 @@ def add_response_to_notion(user, response):
         print(f"[DEBUG] Création colonne (ignoré si existe déjà): {e}")
 
     # Recherche de l'utilisateur existant
-    results = notion.data_sources.query(
-        data_source_id=data_source_id,
-        filter={
-            "property": "pseudo",
-            "title": {
-                "equals": user
+    results = notion.request(
+        path=f"databases/{notion_database_id}/query",
+        method="POST",
+        body={
+            "filter": {
+                "property": "pseudo",
+                "title": {
+                    "equals": user
+                }
             }
         }
     )
@@ -71,31 +66,38 @@ def add_response_to_notion(user, response):
     try:
         if not results['results']:
             # Création de l'utilisateur si inexistant
-            notion.pages.create(
-                parent={"data_source_id": data_source_id},
-                properties={
-                    "pseudo": {
-                        "title": [{"text": {"content": user}}]
-                    },
-                    "Last Updated": {
-                        "date": {"start": datetime.utcnow().isoformat()}
-                    },
-                    date_column: {
-                        "rich_text": [{"text": {"content": response}}]
+            notion.request(
+                path="pages",
+                method="POST",
+                body={
+                    "parent": {"database_id": notion_database_id},
+                    "properties": {
+                        "pseudo": {
+                            "title": [{"text": {"content": user}}]
+                        },
+                        "Last Updated": {
+                            "date": {"start": datetime.utcnow().isoformat()}
+                        },
+                        date_column: {
+                            "rich_text": [{"text": {"content": response}}]
+                        }
                     }
                 }
             )
         else:
             # Mise à jour de la ligne existante
             page_id = results['results'][0]['id']
-            notion.pages.update(
-                page_id=page_id,
-                properties={
-                    "Last Updated": {
-                        "date": {"start": datetime.utcnow().isoformat()}
-                    },
-                    date_column: {
-                        "rich_text": [{"text": {"content": response}}]
+            notion.request(
+                path=f"pages/{page_id}",
+                method="PATCH",
+                body={
+                    "properties": {
+                        "Last Updated": {
+                            "date": {"start": datetime.utcnow().isoformat()}
+                        },
+                        date_column: {
+                            "rich_text": [{"text": {"content": response}}]
+                        }
                     }
                 }
             )
