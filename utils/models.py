@@ -11,6 +11,15 @@ if not notion_database_id:
     print("⚠️ NOTION_DATABASE_ID non défini dans .env — l'enregistrement des réponses sera désactivé.")
 
 notion = Client(auth=notion_token) if notion_token else None
+_data_source_id = None
+
+def _get_data_source_id():
+    """Récupère le data_source_id à partir du database_id (API notion-client 2.7+)"""
+    global _data_source_id
+    if _data_source_id is None:
+        db = notion.databases.retrieve(database_id=notion_database_id)
+        _data_source_id = db["data_sources"][0]["id"]
+    return _data_source_id
 
 def get_first_monday_of_month(reference_date=None):
     """Retourne le premier lundi du mois (UTC)"""
@@ -32,10 +41,12 @@ def add_response_to_notion(user, response):
     # Format de la colonne mensuelle
     date_column = first_monday.strftime("Mois du %d/%m/%Y")
 
+    data_source_id = _get_data_source_id()
+
     # Création de la colonne si elle n'existe pas (on essaie directement)
     try:
-        notion.databases.update(
-            database_id=notion_database_id,
+        notion.data_sources.update(
+            data_source_id=data_source_id,
             properties={
                 date_column: {
                     "rich_text": {}
@@ -47,8 +58,8 @@ def add_response_to_notion(user, response):
         print(f"[DEBUG] Création colonne (ignoré si existe déjà): {e}")
 
     # Recherche de l'utilisateur existant
-    results = notion.databases.query(
-        database_id=notion_database_id,
+    results = notion.data_sources.query(
+        data_source_id=data_source_id,
         filter={
             "property": "pseudo",
             "title": {
@@ -61,7 +72,7 @@ def add_response_to_notion(user, response):
         if not results['results']:
             # Création de l'utilisateur si inexistant
             notion.pages.create(
-                parent={"database_id": notion_database_id},
+                parent={"data_source_id": data_source_id},
                 properties={
                     "pseudo": {
                         "title": [{"text": {"content": user}}]
